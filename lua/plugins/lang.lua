@@ -40,7 +40,7 @@ return {
 			})
 		end,
 	},
-	
+
 	-- filesype plugin for `MarkDown`
 	{
 		"jzr/markdown.nvim",
@@ -62,7 +62,7 @@ return {
 			})
 		end,
 	},
-	
+
 	-- Faster LuaLS setup for Neovim
 	{ "folke/lazydev.nvim", ft = "lua", config = true },
 }
