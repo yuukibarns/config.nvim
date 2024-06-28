@@ -2,7 +2,7 @@ local opt = vim.opt_local
 opt.shiftwidth = 2
 --opt.conceallevel = 2
 opt.smoothscroll = false
---opt.spell = true
+opt.spell = true
 --vim.treesitter.start()
 
 -- vim.wo.foldmethod = "expr"
