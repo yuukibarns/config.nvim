@@ -2,7 +2,7 @@ return {
 
 	-- filesype plugin for `LaTeX`
 	{
-		"jzr/latex.nvim",
+		"yuukibarns/latex.nvim",
 		ft = "tex",
 		config = function()
 			require("latex").setup({
