@@ -1,5 +1,39 @@
 return {
 
+	-- cmdline tools and lsp servers
+	{
+		"williamboman/mason.nvim",
+		cmd = "Mason",
+		dependencies = {
+			"WhoIsSethDaniel/mason-tool-installer.nvim",
+			opts = {
+				ensure_installed = {
+					-- lsp
+					--"lua-language-server",
+					"texlab",
+					"clangd",
+					"jdtls",
+					-- formatter
+					"bibtex-tidy",
+					"latexindent",
+					"prettierd",
+					"stylua",
+				},
+			},
+		},
+		opts = { ui = { border = "rounded", height = 0.8 } },
+	},
+
+	--mason-lspconfig bridges mason.nvim with the lspconfig plugin
+	{
+		"williamboman/mason-lspconfig.nvim",
+		config = function()
+			require("mason-lspconfig").setup({
+				ensure_installed = { "jdtls" },
+			})
+		end,
+	},
+
 	-- lspconfig
 	{
 		"neovim/nvim-lspconfig",
@@ -68,30 +102,6 @@ return {
 				})
 			end
 		end,
-	},
-
-	-- cmdline tools and lsp servers
-	{
-		"williamboman/mason.nvim",
-		cmd = "Mason",
-		dependencies = {
-			"WhoIsSethDaniel/mason-tool-installer.nvim",
-			opts = {
-				ensure_installed = {
-					-- lsp
-					--"lua-language-server",
-					"texlab",
-					"clangd",
-					"jdtls",
-					-- formatter
-					"bibtex-tidy",
-					"latexindent",
-					"prettierd",
-					"stylua",
-				},
-			},
-		},
-		opts = { ui = { border = "rounded", height = 0.8 } },
 	},
 
 	--clangd_extensions
@@ -169,7 +179,7 @@ return {
 				bib = { "bibtex-tidy" },
 				--markdown = { "prettierd", "injected" },
 				markdown = { "prettierd" },
-				["markdown.mdx"] = { "prettierd", "injected" },
+				--["markdown.mdx"] = { "prettierd", "injected" },
 				lua = { "stylua" },
 				tex = { "latexindent" },
 			},
