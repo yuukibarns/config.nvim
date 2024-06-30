@@ -15,6 +15,7 @@ return {
 					"jdtls",
 					"ruff",
 					"pylyzer",
+					"rust_analyzer",
 					-- formatter
 					"bibtex-tidy",
 					"latexindent",
@@ -94,6 +95,7 @@ return {
 						smartCompletion = true,
 					},
 				},
+				rust_analyzer = {},
 			}
 
 			for _, server in pairs(vim.tbl_keys(settings)) do

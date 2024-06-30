@@ -25,6 +25,7 @@ return {
 					"python",
 					"query",
 					"vimdoc",
+					"rust",
 				},
 			})
 		end,
