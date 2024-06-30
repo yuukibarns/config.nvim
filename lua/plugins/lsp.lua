@@ -13,6 +13,8 @@ return {
 					"texlab",
 					"clangd",
 					"jdtls",
+					"ruff",
+					"pylyzer",
 					-- formatter
 					"bibtex-tidy",
 					"latexindent",
@@ -83,6 +85,15 @@ return {
 				},
 				clangd = {},
 				jdtls = {},
+				ruff = {},
+				pylyzer = {
+					python = {
+						checkOnType = false,
+						diagnostics = false,
+						inlayHints = true,
+						smartCompletion = true,
+					},
+				},
 			}
 
 			for _, server in pairs(vim.tbl_keys(settings)) do
@@ -116,29 +127,29 @@ return {
 	},
 
 	-- lsp enhancement
-	{
-		"nvimdev/lspsaga.nvim",
-		event = { "LspAttach" },
-			-- stylua: ignore
-			--keys = { { "<M-g>", function() require("lspsaga.floaterm"):open_float_terminal({ "lazygit" }) end, mode = { "n", "t" }, desc = "LazyGit" } },
-			keys = { { "<M-g>", function() require("lspsaga.floaterm"):open_float_terminal({ "gitui" }) end, mode = { "n", "t" }, desc = "GitUI" } },
-		config = function()
-			require("lspsaga").setup({
-				symbol_in_winbar = { enable = false },
-				lightbulb = { enable = false },
-				outline = { auto_preview = false },
-				floaterm = { height = 1, width = 1 },
-			})
-
-			vim.keymap.set("n", "gh", function()
-				require("lspsaga.finder"):new({})
-			end, { desc = "Lsp Finder" })
-
-			vim.keymap.set("n", "<M-o>", function()
-				require("lspsaga.symbol"):outline()
-			end, { desc = "Lspsaga Outline" })
-		end,
-	},
+	-- {
+	-- 	"nvimdev/lspsaga.nvim",
+	-- 	event = { "LspAttach" },
+	-- 		-- stylua: ignore
+	-- 		--keys = { { "<M-g>", function() require("lspsaga.floaterm"):open_float_terminal({ "lazygit" }) end, mode = { "n", "t" }, desc = "LazyGit" } },
+	-- 		keys = { { "<M-g>", function() require("lspsaga.floaterm"):open_float_terminal({ "gitui" }) end, mode = { "n", "t" }, desc = "GitUI" } },
+	-- 	config = function()
+	-- 		require("lspsaga").setup({
+	-- 			symbol_in_winbar = { enable = false },
+	-- 			lightbulb = { enable = false },
+	-- 			outline = { auto_preview = false },
+	-- 			floaterm = { height = 1, width = 1 },
+	-- 		})
+	--
+	-- 		vim.keymap.set("n", "gh", function()
+	-- 			require("lspsaga.finder"):new({})
+	-- 		end, { desc = "Lsp Finder" })
+	--
+	-- 		vim.keymap.set("n", "<M-o>", function()
+	-- 			require("lspsaga.symbol"):outline()
+	-- 		end, { desc = "Lspsaga Outline" })
+	-- 	end,
+	-- },
 
 	-- formatting
 	{
