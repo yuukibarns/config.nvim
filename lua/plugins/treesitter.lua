@@ -11,6 +11,7 @@ return {
 					"markdown",
 					"markdown_inline",
 					"regex",
+					"java",
 					"vim",
 					"lua",
 					"bash",

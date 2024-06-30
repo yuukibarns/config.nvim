@@ -44,27 +44,6 @@ return {
 							onSave = false,
 						},
 						forwardSearch = {
-							-- executable = "D:/sioyek-release-windows/sioyek.exe",
-							-- args = {
-							-- 	"--reuse-window",
-							-- 	"--execute-command",
-							-- 	"toggle_synctex",
-							-- 	"--inverse-search",
-							-- 	vim.fn.stdpath("data") .. "/mason/bin/texlab inverse-search -i %%1 -l %%2",
-							-- 	"--forward-search-file",
-							-- 	"%f",
-							-- 	"--forward-search-line",
-							-- 	"%l",
-							-- 	"%p",
-							-- },
-							-- executable = "zathura",
-							-- args = {
-							-- 	"--synctex-forward",
-							-- 	"%l:1:%f",
-							-- 	"%p",
-							-- },
-							-- executable = "/Applications/Skim.app/Contents/SharedSupport/displayline",
-							-- args = { "-r", "%l", "%p", "%f" },
 							executable = "D:/SumatraPDF/SumatraPDF.exe",
 							args = {
 								"-reuse-instance",
@@ -78,14 +57,8 @@ return {
 						diagnostics = { ignoredPatterns = { "^Overfull", "^Underfull" } },
 					},
 				},
-				clangd = {
-					clangd = {
-						-- on_attach = function()
-						-- 	require("clangd_extensions.inlay_hints").setup_autocmd()
-						-- 	require("clangd_extensions.inlay_hints").set_inlay_hints()
-						-- end,
-					},
-				},
+				clangd = {},
+				jdtls = {},
 			}
 
 			for _, server in pairs(vim.tbl_keys(settings)) do
@@ -109,6 +82,7 @@ return {
 					--"lua-language-server",
 					"texlab",
 					"clangd",
+					"jdtls",
 					-- formatter
 					"bibtex-tidy",
 					"latexindent",
