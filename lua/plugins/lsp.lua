@@ -24,16 +24,6 @@ return {
 		opts = { ui = { border = "rounded", height = 0.8 } },
 	},
 
-	--mason-lspconfig bridges mason.nvim with the lspconfig plugin
-	{
-		"williamboman/mason-lspconfig.nvim",
-		config = function()
-			require("mason-lspconfig").setup({
-				ensure_installed = { "jdtls" },
-			})
-		end,
-	},
-
 	-- lspconfig
 	{
 		"neovim/nvim-lspconfig",
@@ -130,7 +120,8 @@ return {
 		"nvimdev/lspsaga.nvim",
 		event = { "LspAttach" },
 			-- stylua: ignore
-			keys = { { "<M-g>", function() require("lspsaga.floaterm"):open_float_terminal({ "lazygit" }) end, mode = { "n", "t" }, desc = "LazyGit" } },
+			--keys = { { "<M-g>", function() require("lspsaga.floaterm"):open_float_terminal({ "lazygit" }) end, mode = { "n", "t" }, desc = "LazyGit" } },
+			keys = { { "<M-g>", function() require("lspsaga.floaterm"):open_float_terminal({ "gitui" }) end, mode = { "n", "t" }, desc = "GitUI" } },
 		config = function()
 			require("lspsaga").setup({
 				symbol_in_winbar = { enable = false },
