@@ -102,7 +102,7 @@ return {
 	-- },
 
 	-- code-runner
-	{ "CRAG666/code_runner.nvim", ft = { "c", "cpp", "python" }, config = true },
+	--{ "CRAG666/code_runner.nvim", ft = { "c", "cpp", "python", "java" }, config = true },
 
 	--markdown preview
 	{
