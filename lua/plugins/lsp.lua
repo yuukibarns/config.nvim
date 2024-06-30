@@ -15,7 +15,7 @@ return {
 					"jdtls",
 					"ruff",
 					"pylyzer",
-					"rust_analyzer",
+					"rust-analyzer",
 					-- formatter
 					"bibtex-tidy",
 					"latexindent",
