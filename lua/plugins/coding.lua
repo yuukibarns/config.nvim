@@ -4,7 +4,7 @@ return {
 	{
 		"yuukibarns/LuaSnip",
 		lazy = true,
-		build = "make install_jsregexp",
+		--build = "make install_jsregexp",
 		dependencies = {
 			"yuukibarns/mySnippets",
 			opts = { path = vim.fn.stdpath("data") .. "/lazy/mySnippets/snippets" },
