@@ -48,7 +48,7 @@ return {
 	},
 
 	-- better vim.ui
-	{ "stevearc/dressing.nvim", config = true },
+	--{ "stevearc/dressing.nvim", config = true },
 
 	-- winbar
 	{ "Bekaboo/dropbar.nvim", config = true },
