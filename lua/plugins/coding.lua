@@ -143,7 +143,7 @@ return {
 			local conds = require("nvim-autopairs.conds")
 			autopairs.setup()
 			autopairs.remove_rule("'")
-			autopairs.add_rule(rule("'", "'"):with_pair(conds.not_filetypes({ "tex", "latex", "markdown" })))
+			--autopairs.add_rule(rule("'", "'"):with_pair(conds.not_filetypes({ "tex", "latex", "markdown" })))
 		end,
 		-- use opts = {} for passing setup options
 		-- this is equalent to setup({}) function
