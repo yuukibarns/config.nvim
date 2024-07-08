@@ -105,7 +105,19 @@ return {
 						},
 					},
 				},
-				rust_analyzer = {},
+				rust_analyzer = {
+					["rust-analyzer"] = {
+						checkOnSave = false,
+						cargo = {
+							buildScripts = {
+								enable = false,
+							},
+						},
+						procMacro = {
+							enable = false,
+						},
+					},
+				},
 			}
 
 			for _, server in pairs(vim.tbl_keys(settings)) do
