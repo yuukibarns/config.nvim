@@ -13,8 +13,9 @@ return {
 					"texlab",
 					"clangd",
 					"jdtls",
-					"ruff",
-					"pylyzer",
+					--"ruff",
+					--"pylyzer",
+					"pyright",
 					"rust-analyzer",
 					-- formatter
 					"bibtex-tidy",
@@ -86,13 +87,22 @@ return {
 				},
 				clangd = {},
 				jdtls = {},
-				ruff = {},
-				pylyzer = {
+				-- ruff = {},
+				-- pylyzer = {
+				-- 	python = {
+				-- 		checkOnType = false,
+				-- 		diagnostics = false,
+				-- 		inlayHints = true,
+				-- 		smartCompletion = true,
+				-- 	},
+				-- },
+				pyright = {
 					python = {
-						checkOnType = false,
-						diagnostics = false,
-						inlayHints = true,
-						smartCompletion = true,
+						analysis = {
+							autoSearchPaths = true,
+							diagnosticMode = "openFilesOnly",
+							useLibraryCodeForTypes = true,
+						},
 					},
 				},
 				rust_analyzer = {},
@@ -127,6 +137,43 @@ return {
 		end,
 		ft = { "markdown" },
 	},
+
+	-- symbols outline
+	{
+		"hedyhli/outline.nvim",
+		lazy = true,
+		cmd = { "Outline", "OutlineOpen" },
+		keys = { -- Example mapping to toggle outline
+			{ "<leader>cs", "<cmd>Outline<CR>", desc = "Toggle outline" },
+		},
+		opts = {
+			-- Your setup opts here
+		},
+	},
+	-- {
+	-- 	"stevearc/aerial.nvim",
+	-- 	cmd = "AerialToggle",
+	-- 	opts = {
+	-- 		backends = { "lsp", "treesitter", "markdown", "man" },
+	-- 		layout = { resize_to_content = false },
+	-- 		attach_mode = "global",
+	-- 		icons = vim.tbl_extend("force", require("lspkind").presets.codicons, {
+	-- 			Array = "󰅨 ",
+	-- 			Boolean = " ",
+	-- 			Constant = " ",
+	-- 			Key = " ",
+	-- 			Number = "󰎠 ",
+	-- 			Null = "󰟢 ",
+	-- 			Object = " ",
+	-- 			Struct = " ",
+	-- 			String = "󰅳 ",
+	-- 		}),
+	-- 		filter_kind = false,
+	-- 		show_guides = true,
+	-- 	},
+	--     -- stylua: ignore
+	--     keys = { { "<leader>cs", function() require("aerial").toggle() end, desc = "Aerial (Symbols)" } },
+	-- },
 
 	-- lsp enhancement
 	-- {
