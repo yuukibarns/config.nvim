@@ -31,6 +31,7 @@ autocmd("LspAttach", {
 			{ "gd", vim.lsp.buf.definition, method = methods.textDocument_definition },
 			{ "gi", vim.lsp.buf.implementation, method = methods.textDocument_implementation },
 			{ "<C-k>", vim.lsp.buf.signature_help, method = methods.textDocument_signatureHelp },
+			{ "<C-h>", vim.lsp.buf.hover, method = methods.textDocument_hover },
 			{ "gt", vim.lsp.buf.type_definition, method = methods.textDocument_typeDefinition },
 		}
 
