@@ -55,14 +55,12 @@ return {
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 			local settings = {
-				-- lua_ls = {
-				-- 	Lua = {
-				-- 		workspace = { checkThirdParty = false },
-				-- 		hint = { enable = true },
-				-- 		completion = { callSnippet = "Replace" },
-				-- 		telemetry = { enable = false },
-				-- 	},
-				-- },
+				lua_ls = {
+					Lua = {
+						workspace = { checkThirdParty = false },
+						completion = { callSnippet = "Replace" },
+					},
+				},
 				texlab = {
 					texlab = {
 						build = {
@@ -116,6 +114,9 @@ return {
 						procMacro = {
 							enable = false,
 						},
+						cachePriming = {
+							enable = false,
+						},
 					},
 				},
 			}
@@ -128,66 +129,6 @@ return {
 			end
 		end,
 	},
-
-	--clangd_extensions
-	-- {
-	-- 	"p00f/clangd_extensions.nvim",
-	-- 	ft = { "c", "cpp" },
-	-- 	config = true,
-	-- },
-
-	-- code-runner
-	--{ "CRAG666/code_runner.nvim", ft = { "c", "cpp", "python", "java" }, config = true },
-
-	-- {
-	-- 	"stevearc/aerial.nvim",
-	-- 	cmd = "AerialToggle",
-	-- 	opts = {
-	-- 		backends = { "lsp", "treesitter", "markdown", "man" },
-	-- 		layout = { resize_to_content = false },
-	-- 		attach_mode = "global",
-	-- 		icons = vim.tbl_extend("force", require("lspkind").presets.codicons, {
-	-- 			Array = "󰅨 ",
-	-- 			Boolean = " ",
-	-- 			Constant = " ",
-	-- 			Key = " ",
-	-- 			Number = "󰎠 ",
-	-- 			Null = "󰟢 ",
-	-- 			Object = " ",
-	-- 			Struct = " ",
-	-- 			String = "󰅳 ",
-	-- 		}),
-	-- 		filter_kind = false,
-	-- 		show_guides = true,
-	-- 	},
-	--     -- stylua: ignore
-	--     keys = { { "<leader>cs", function() require("aerial").toggle() end, desc = "Aerial (Symbols)" } },
-	-- },
-
-	-- lsp enhancement
-	-- {
-	-- 	"nvimdev/lspsaga.nvim",
-	-- 	event = { "LspAttach" },
-	-- 		-- stylua: ignore
-	-- 		--keys = { { "<M-g>", function() require("lspsaga.floaterm"):open_float_terminal({ "lazygit" }) end, mode = { "n", "t" }, desc = "LazyGit" } },
-	-- 		keys = { { "<M-g>", function() require("lspsaga.floaterm"):open_float_terminal({ "gitui" }) end, mode = { "n", "t" }, desc = "GitUI" } },
-	-- 	config = function()
-	-- 		require("lspsaga").setup({
-	-- 			symbol_in_winbar = { enable = false },
-	-- 			lightbulb = { enable = false },
-	-- 			outline = { auto_preview = false },
-	-- 			floaterm = { height = 1, width = 1 },
-	-- 		})
-	--
-	-- 		vim.keymap.set("n", "gh", function()
-	-- 			require("lspsaga.finder"):new({})
-	-- 		end, { desc = "Lsp Finder" })
-	--
-	-- 		vim.keymap.set("n", "<M-o>", function()
-	-- 			require("lspsaga.symbol"):outline()
-	-- 		end, { desc = "Lspsaga Outline" })
-	-- 	end,
-	-- },
 
 	-- formatting
 	{

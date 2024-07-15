@@ -18,3 +18,6 @@ vim.keymap.set("n", "<leader>bD", function() api.nvim_buf_delete(0, { force = tr
 -- commenting
 vim.keymap.set("n", "gcO", "O<Esc>Vcx<Esc><Cmd>normal gcc<CR>fxa<BS>", { desc = "Add Comment Above" })
 vim.keymap.set("n", "gco", "o<Esc>Vcx<Esc><Cmd>normal gcc<CR>fxa<BS>", { desc = "Add Comment Below" })
+
+--terminal
+vim.keymap.set("n", "<M-t>", "<Cmd>new+terminal<CR>", { desc = "Open Terminal Below" })
