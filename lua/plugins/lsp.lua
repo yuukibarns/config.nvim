@@ -85,24 +85,7 @@ return {
 				},
 				clangd = {},
 				jdtls = {},
-				-- ruff = {},
-				-- pylyzer = {
-				-- 	python = {
-				-- 		checkOnType = false,
-				-- 		diagnostics = false,
-				-- 		inlayHints = true,
-				-- 		smartCompletion = true,
-				-- 	},
-				-- },
-				pyright = {
-					python = {
-						analysis = {
-							autoSearchPaths = true,
-							diagnosticMode = "openFilesOnly",
-							useLibraryCodeForTypes = true,
-						},
-					},
-				},
+				jedi_language_server = {},
 				rust_analyzer = {
 					["rust-analyzer"] = {
 						checkOnSave = false,

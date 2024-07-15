@@ -29,5 +29,6 @@ return {
 				},
 			})
 		end,
+		highlight = { enable = true },
 	},
 }
