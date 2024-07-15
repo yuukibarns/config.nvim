@@ -4,27 +4,27 @@ return {
 	{
 		"williamboman/mason.nvim",
 		cmd = "Mason",
-		dependencies = {
-			"WhoIsSethDaniel/mason-tool-installer.nvim",
-			opts = {
-				ensure_installed = {
-					-- lsp
-					--"lua-language-server",
-					"texlab",
-					"clangd",
-					"jdtls",
-					--"ruff",
-					--"pylyzer",
-					"pyright",
-					"rust-analyzer",
-					-- formatter
-					"bibtex-tidy",
-					"latexindent",
-					"prettierd",
-					"stylua",
-				},
-			},
-		},
+		-- dependencies = {
+		-- 	"WhoIsSethDaniel/mason-tool-installer.nvim",
+		-- 	opts = {
+		-- 		ensure_installed = {
+		-- 			-- lsp
+		-- 			--"lua-language-server",
+		-- 			"texlab",
+		-- 			"clangd",
+		-- 			"jdtls",
+		-- 			--"ruff",
+		-- 			--"pylyzer",
+		-- 			"pyright",
+		-- 			"rust-analyzer",
+		-- 			-- formatter
+		-- 			"bibtex-tidy",
+		-- 			"latexindent",
+		-- 			"prettierd",
+		-- 			"stylua",
+		-- 		},
+		-- 	},
+		-- },
 		opts = { ui = { border = "rounded", height = 0.8 } },
 	},
 
@@ -233,10 +233,11 @@ return {
 				--["markdown.mdx"] = { "prettierd", "injected" },
 				lua = { "stylua" },
 				tex = { "latexindent" },
+				python = { "black" },
 			},
 			format_on_save = function(bufnr)
 				-- Disable autoformat on certain filetypes
-				local ignore_filetypes = { "tex" }
+				local ignore_filetypes = { "tex", "python" }
 				if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
 					return
 				end
