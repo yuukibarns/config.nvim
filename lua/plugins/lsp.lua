@@ -139,17 +139,6 @@ return {
 	-- code-runner
 	--{ "CRAG666/code_runner.nvim", ft = { "c", "cpp", "python", "java" }, config = true },
 
-	--markdown preview
-	{
-		"iamcco/markdown-preview.nvim",
-		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-		build = "cd app && yarn install",
-		init = function()
-			vim.g.mkdp_filetypes = { "markdown" }
-		end,
-		ft = { "markdown" },
-	},
-
 	-- {
 	-- 	"stevearc/aerial.nvim",
 	-- 	cmd = "AerialToggle",
