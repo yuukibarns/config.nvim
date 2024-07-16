@@ -31,12 +31,12 @@ return {
 			require("neo-tree.command").execute({ action = "close" })
 		end,
 		opts = {
-			open_files_do_not_replace_types = { "aerial", "qf", "terminal" },
-			filesystem = {
-				bind_to_cwd = false,
-				follow_current_file = { enabled = true },
-				use_libuv_file_watcher = true,
-			},
+			-- open_files_do_not_replace_types = { "aerial", "qf", "terminal" },
+			-- filesystem = {
+			-- 	bind_to_cwd = false,
+			-- 	follow_current_file = { enabled = true },
+			-- 	use_libuv_file_watcher = true,
+			-- },
 			default_component_configs = {
 				indent = {
 					with_expanders = true,
