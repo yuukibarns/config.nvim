@@ -98,6 +98,19 @@ autocmd("FileType", {
 	desc = "Enable Treesitter",
 })
 
+-- -- auto mkview when leave
+-- autocmd("BufWinLeave", {
+-- 	group = augroup("SaveView", {}),
+-- 	pattern = { "cpp", "c", "rust", "python" },
+-- 	command = "<Cmd>mkview<CR>",
+-- })
+-- -- auto mkview when leave
+-- autocmd("BufWinEnter", {
+-- 	group = augroup("SaveView", {}),
+-- 	pattern = { "cpp", "c", "rust", "python" },
+-- 	command = "<Cmd>loadview<CR>",
+-- })
+
 -- No buflist for special files
 autocmd("FileType", {
 	group = augroup("NoBufList", {}),
