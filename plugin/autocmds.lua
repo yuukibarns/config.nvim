@@ -90,8 +90,8 @@ autocmd("FileType", {
 			return
 		end
 
-		vim.opt_local.foldmethod = "expr"
-		vim.opt_local.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+		-- vim.opt_local.foldmethod = "expr"
+		-- vim.opt_local.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
 		vim.api.nvim_exec_autocmds("User", { pattern = "ts_attach" })
 	end,
