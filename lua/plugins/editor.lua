@@ -38,11 +38,14 @@ return {
 		end,
 		opts = {
 			open_files_do_not_replace_types = { "outline", "qf", "terminal", "trouble" },
-			-- filesystem = {
-			-- 	bind_to_cwd = false,
-			-- 	follow_current_file = { enabled = true },
-			-- 	use_libuv_file_watcher = true,
-			-- },
+
+			-- FIX: this setting may cause problems. <17-07-24, yuukibarns>
+			filesystem = {
+				-- bind_to_cwd = false,
+				-- follow_current_file = { enabled = true },
+				use_libuv_file_watcher = true,
+			},
+
 			default_component_configs = {
 				indent = {
 					with_expanders = true,

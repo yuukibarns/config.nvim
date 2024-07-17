@@ -128,7 +128,7 @@ autocmd("FileType", {
 autocmd("FileType", {
 	group = augroup("ConcealSpell", {}),
 	pattern = { "tex", "markdown" },
-	callback = function(ev)
+	callback = function()
 		vim.opt_local.conceallevel = 2
 		vim.opt_local.spell = true
 		vim.opt_local.spelllang = "en_us,cjk"

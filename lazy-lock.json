@@ -18,7 +18,7 @@
   "markdown-preview.nvim": { "branch": "master", "commit": "a923f5fc5ba36a3b17e289dc35dc17f66d0548ee" },
   "markdown.nvim": { "branch": "master", "commit": "460551106c41600f38520e38c5fe252798cedb96" },
   "mason.nvim": { "branch": "main", "commit": "f96a31855fa8aea55599cea412fe611b85a874ed" },
-  "mySnippets": { "branch": "master", "commit": "38bd66f73cf8b03ace44140258f40e63fe3c6b62" },
+  "mySnippets": { "branch": "master", "commit": "f736b6b4ed6184239287eb2d0aa672f7c279ab70" },
   "neo-tree.nvim": { "branch": "main", "commit": "206241e451c12f78969ff5ae53af45616ffc9b72" },
   "noice.nvim": { "branch": "main", "commit": "3b5ea551448bd769976428458c11ae3f5849b7ba" },
   "nui.nvim": { "branch": "main", "commit": "61574ce6e60c815b0a0c4b5655b8486ba58089a1" },
