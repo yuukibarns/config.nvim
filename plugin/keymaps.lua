@@ -20,4 +20,4 @@ vim.keymap.set("n", "gcO", "O<Esc>Vcx<Esc><Cmd>normal gcc<CR>fxa<BS>", { desc = 
 vim.keymap.set("n", "gco", "o<Esc>Vcx<Esc><Cmd>normal gcc<CR>fxa<BS>", { desc = "Add Comment Below" })
 
 --terminal
-vim.keymap.set("n", "<M-t>", "<Cmd>new+terminal<CR>", { desc = "Open Terminal Below" })
+vim.keymap.set("n", "<M-t>", "<Cmd>10new+terminal<CR>", { desc = "Open Terminal Below(10 height)" })
