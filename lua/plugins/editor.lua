@@ -4,6 +4,12 @@ return {
 	{
 		"nvim-neo-tree/neo-tree.nvim",
 		cmd = "Neotree",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+			"MunifTanjim/nui.nvim",
+			-- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
+		},
 		-- stylua: ignore
 		keys = {
 			{ "<leader>fe", function() require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() }) end, desc = "Explorer NeoTree (cwd)" },
@@ -31,7 +37,7 @@ return {
 			require("neo-tree.command").execute({ action = "close" })
 		end,
 		opts = {
-			-- open_files_do_not_replace_types = { "aerial", "qf", "terminal" },
+			open_files_do_not_replace_types = { "outline", "qf", "terminal", "trouble" },
 			-- filesystem = {
 			-- 	bind_to_cwd = false,
 			-- 	follow_current_file = { enabled = true },
@@ -51,6 +57,7 @@ return {
 					},
 				},
 			},
+			window = { width = 30 },
 		},
 	},
 
