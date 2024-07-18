@@ -31,7 +31,7 @@ return {
 	{
 		"rcarriga/nvim-notify",
 		-- stylua: ignore
-		keys = { { "<leader>un", function() require("notify").dismiss({ silent = true, pending = true }) end, desc = "Delete All Notifications" } },
+		keys = { { "<M-u>", function() require("notify").dismiss({ silent = true, pending = true }) end, desc = "Delete All Notifications" } },
 		opts = {
 			-- background_colour = "#000000",
 			timeout = 3000,

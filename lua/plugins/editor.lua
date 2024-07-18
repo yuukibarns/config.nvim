@@ -132,7 +132,7 @@ return {
 			-- { "<leader>fo", function () require('telescope.builtin').oldfiles() end, desc = "Old Files" },
 			-- -- search
 			-- { "<leader>sb", function () require('telescope.builtin').current_buffer_fuzzy_find() end, desc = "Current Buf Fuzzy" },
-			{ "<leader>sg", function () require('telescope.builtin').live_grep() end, desc = "Live Grep" },
+			{ "<M-g>", function () require('telescope.builtin').live_grep() end, desc = "Live Grep" },
 			-- { "<leader>sh", function () require('telescope.builtin').help_tags() end, desc = "Help Tags" },
 			-- { "<leader>sw", function () require('telescope.builtin').grep_string({ word_match = "-w" }) end, desc = "Search Word" },
 			-- { "<leader>sw", function () require('telescope.builtin').grep_string() end, mode = "v", desc = "Search Selection" },
