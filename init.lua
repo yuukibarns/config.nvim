@@ -29,10 +29,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-	dev = {
-		path = "~/Plugins",
-		patterns = { "jzr" },
-	},
+	-- dev = {
+	-- 	path = "~/Plugins",
+	-- 	patterns = { "jzr" },
+	-- },
 	spec = {
 		{ import = "plugins" },
 	},

@@ -152,10 +152,11 @@ return {
 	-- start screen
 	{
 		"nvimdev/dashboard-nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = {
 			config = {
 				week_header = { enable = true },
-				disable_move = true,
+				disable_move = false,
 				shortcut = {
 					{ desc = "󰚰 Update", group = "Identifier", action = "Lazy update", key = "u" },
 					{ desc = "󰀶 Files", group = "Directory", action = "Telescope find_files", key = "f" },
@@ -168,7 +169,8 @@ return {
 						key = "q",
 					},
 				},
-				mru = { cwd_only = true },
+				project = { limit = 5 },
+				mru = { limit = 10, cwd_only = true },
 			},
 		},
 	},

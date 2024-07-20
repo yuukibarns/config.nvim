@@ -65,7 +65,7 @@ return {
 					texlab = {
 						build = {
 							forwardSearchAfter = false,
-							executable = "C:/texlive/2024/bin/windows/latexmk.exe",
+							executable = "D:/texlive/2024/bin/windows/latexmk.exe",
 							args = { "-interaction=nonstopmode", "-synctex=1", "%f" },
 							onSave = false,
 						},
