@@ -26,6 +26,9 @@ return {
 					"query",
 					"vimdoc",
 					"rust",
+					"gitcommit",
+					"git_rebase",
+					-- "git_config",
 				},
 			})
 		end,
