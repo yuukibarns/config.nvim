@@ -41,6 +41,9 @@ return {
 
 			-- FIX: this setting may cause problems. <17-07-24, yuukibarns>
 			filesystem = {
+				filtered_items = {
+					visible = true,
+				},
 				-- bind_to_cwd = false,
 				-- follow_current_file = { enabled = true },
 				use_libuv_file_watcher = true,
@@ -143,7 +146,10 @@ return {
 		dependencies = {
 			"nvim-telescope/telescope-bibtex.nvim",
 			"nvim-telescope/telescope-file-browser.nvim",
-			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+			{
+				"nvim-telescope/telescope-fzf-native.nvim",
+				build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+			},
 		},
 		config = function()
 			local telescope = require("telescope")

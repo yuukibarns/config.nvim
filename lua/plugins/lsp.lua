@@ -142,7 +142,7 @@ return {
 			formatters_by_ft = {
 				bib = { "bibtex-tidy" },
 				--markdown = { "prettierd", "injected" },
-				markdown = { "prettierd" },
+				markdown = { "prettier" },
 				--["markdown.mdx"] = { "prettierd", "injected" },
 				lua = { "stylua" },
 				tex = { "latexindent" },

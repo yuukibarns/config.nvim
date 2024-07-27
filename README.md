@@ -1,3 +1,3 @@
 # Installation
 
-You should install `rg` and `fd` for file searching.
+You should install `rg` for file searching.

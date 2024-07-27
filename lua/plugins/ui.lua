@@ -105,6 +105,7 @@ return {
 	-- noicer ui
 	{
 		"folke/noice.nvim",
+		version = "4.4.7", --the latest v4.5.0 has some problems
 		event = { "VeryLazy" },
 		dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
 		config = true,
@@ -143,10 +144,10 @@ return {
 			},
 		},
 		-- stylua: ignore
-		keys = {
-			{ "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = {"i", "n", "s"} },
-			{ "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = {"i", "n", "s"}},
-		},
+		-- keys = {
+		-- 	{ "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = {"i", "n", "s"} },
+		-- 	{ "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = {"i", "n", "s"}},
+		-- },
 	},
 
 	-- start screen

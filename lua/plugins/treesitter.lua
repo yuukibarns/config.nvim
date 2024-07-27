@@ -29,6 +29,7 @@ return {
 					"gitcommit",
 					"git_rebase",
 					-- "git_config",
+					"cmake",
 				},
 			})
 		end,
