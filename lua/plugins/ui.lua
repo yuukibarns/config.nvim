@@ -22,6 +22,7 @@ return {
 				},
 				on_highlights = function(highlights)
 					highlights.Conceal = { link = "Special" }
+					highlights["@none"] = { fg = "#c8d3f5" }
 				end,
 			})
 			vim.cmd([[colorscheme tokyonight]])

@@ -32,6 +32,7 @@ return {
 					"cmake",
 					"toml",
 					"html",
+					"powershell",
 				},
 			})
 		end,
