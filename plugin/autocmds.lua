@@ -155,3 +155,10 @@ autocmd("BufWritePost", {
 		vim.cmd.mkspell({ "%", bang = true, mods = { silent = true } })
 	end,
 })
+
+-- when leave neovim change cursorstyle back to default
+autocmd("VimLeavePre", {
+	group = augroup("Exit", { clear = true }),
+	command = "set guicursor=a:ver90,a:blinkwait700-blinkoff400-blinkon250",
+	desc = "Set cursor back to beam when leaving Neovim.",
+})

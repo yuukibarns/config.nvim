@@ -30,6 +30,8 @@ return {
 					"git_rebase",
 					-- "git_config",
 					"cmake",
+					"toml",
+					"html",
 				},
 			})
 		end,

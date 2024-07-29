@@ -19,6 +19,17 @@ local powershell_options = {
 for option, value in pairs(powershell_options) do
 	vim.opt[option] = value
 end
+-- Nushell
+-- local nushell_options = {
+-- 	shell = "nu",
+-- 	shellcmdflag = "-c",
+-- 	shellquote = "",
+-- 	shellxquote = "",
+-- }
+--
+-- for option, value in pairs(nushell_options) do
+-- 	vim.opt[option] = value
+-- end
 
 ---------- LAZYINIT ----------
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
