@@ -1,5 +1,6 @@
 local opt = vim.opt_local
 opt.shiftwidth = 2
+
 --opt.conceallevel = 2
 -- fixed in v0.10.1
 -- opt.smoothscroll = false
