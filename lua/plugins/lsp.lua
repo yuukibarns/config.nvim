@@ -84,9 +84,7 @@ return {
 					},
 				},
 				clangd = {},
-				jdtls = {},
 				jedi_language_server = {},
-				nushell = {},
 				rust_analyzer = {
 					["rust-analyzer"] = {
 						checkOnSave = false,

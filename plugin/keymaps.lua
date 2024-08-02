@@ -10,6 +10,7 @@ vim.keymap.set({ "n", "t" }, "<M-h>", function() vim.cmd.wincmd("h") end, { desc
 vim.keymap.set({ "n", "t" }, "<M-j>", function() vim.cmd.wincmd("j") end, { desc = "Bottom Window" })
 vim.keymap.set({ "n", "t" }, "<M-k>", function() vim.cmd.wincmd("k") end, { desc = "Upper Window" })
 vim.keymap.set({ "n", "t" }, "<M-l>", function() vim.cmd.wincmd("l") end, { desc = "Right Window" })
+-- stylua: ignore end
 
 -- buffer
 -- vim.keymap.set("n", "<leader>bd", function() api.nvim_buf_delete(0, {}) end, { desc = "Delete Buffer" })
