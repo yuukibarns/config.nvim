@@ -50,6 +50,21 @@ return {
 				},
 			})
 
+			vim.api.nvim_create_autocmd("LspAttach", {
+				group = vim.api.nvim_create_augroup("lsp_attach_disable_ruff_hover", { clear = true }),
+				callback = function(args)
+					local client = vim.lsp.get_client_by_id(args.data.client_id)
+					if client == nil then
+						return
+					end
+					if client.name == "ruff" then
+						-- Disable hover in favor of Pyright
+						client.server_capabilities.hoverProvider = false
+					end
+				end,
+				desc = "LSP: Disable hover capability from Ruff",
+			})
+
 			-- lspconfig
 
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -70,7 +85,7 @@ return {
 							onSave = false,
 						},
 						forwardSearch = {
-							executable = "D:/SumatraPDF/SumatraPDF.exe",
+							executable = "D:/sumatra/SumatraPDF-prerel-64.exe",
 							args = {
 								"-reuse-instance",
 								"%p",
@@ -84,13 +99,32 @@ return {
 					},
 				},
 				clangd = {},
-				jedi_language_server = {},
+				-- jedi_language_server = {},
+				pyright = {
+					pyright = {
+						-- Using Ruff's import organizer
+						disableOrganizeImports = false,
+					},
+					python = {
+						analysis = {
+							-- Ignore all files for analysis to exclusively use Ruff for linting
+							ignore = { "*" },
+						},
+					},
+				},
+				ruff = {
+					init_options = {
+						settings = {
+							-- Ruff language server settings go here
+						},
+					},
+				},
 				rust_analyzer = {
 					["rust-analyzer"] = {
 						checkOnSave = false,
 						cargo = {
 							buildScripts = {
-								enable = false,
+								enable = true,
 							},
 						},
 						procMacro = {
@@ -101,6 +135,14 @@ return {
 						},
 					},
 				},
+				-- matlab_ls = {
+				-- 	MATLAB = {
+				-- 		indexWorkspace = true,
+				-- 		installPath = "D:\\Program Files\\MATLAB\\R2024a",
+				-- 		telemetry = false,
+				-- 	},
+				-- },
+				tabby_ml = {},
 			}
 
 			for _, server in pairs(vim.tbl_keys(settings)) do
@@ -145,7 +187,7 @@ return {
 				--["markdown.mdx"] = { "prettierd", "injected" },
 				lua = { "stylua" },
 				tex = { "latexindent" },
-				python = { "black" },
+				python = { "ruff_format" },
 			},
 			format_on_save = function(bufnr)
 				-- Disable autoformat on certain filetypes
