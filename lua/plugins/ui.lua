@@ -63,8 +63,13 @@ return {
 				options = {
 					theme = "tokyonight",
 				},
-				sections = {
-					lualine_x = { "overseer" },
+				tabline = {
+					lualine_a = { "buffers" },
+					lualine_b = {},
+					lualine_c = {},
+					lualine_x = {},
+					lualine_y = {},
+					lualine_z = { "tabs" },
 				},
 			})
 		end,
@@ -194,4 +199,7 @@ return {
 
 	-- library used by other plugins
 	{ "nvim-lua/plenary.nvim", lazy = true },
+
+	-- smooth scrolling
+	-- { "declancm/cinnamon.nvim", version = "*", opts = {} },
 }

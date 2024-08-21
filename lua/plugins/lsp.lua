@@ -142,7 +142,7 @@ return {
 				-- 		telemetry = false,
 				-- 	},
 				-- },
-				tabby_ml = {},
+				-- tabby_ml = {},
 			}
 
 			for _, server in pairs(vim.tbl_keys(settings)) do

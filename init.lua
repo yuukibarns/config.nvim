@@ -31,6 +31,9 @@ end
 -- 	vim.opt[option] = value
 -- end
 
+-- vim-tabby
+vim.g.tabby_keybinding_accept = "<Tab>"
+
 ---------- LAZYINIT ----------
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
@@ -41,9 +44,9 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	dev = {
+		fallback = false,
 		path = "~/learn/git/",
 		patterns = { "jzr" },
-		fallback = false,
 	},
 	spec = {
 		{ import = "plugins" },
