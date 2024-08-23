@@ -114,7 +114,7 @@ autocmd("FileType", {
 -- No buflist for special files
 autocmd("FileType", {
 	group = augroup("NoBufList", {}),
-	pattern = { "checkhealth", "help", "qf", "grug-far" },
+	pattern = { "checkhealth", "help", "qf" },
 	callback = function(ev)
 		vim.b[ev.buf].buflisted = false
 		vim.keymap.set("n", "q", function()
@@ -132,6 +132,7 @@ autocmd("FileType", {
 		vim.opt_local.conceallevel = 2
 		vim.opt_local.spell = true
 		vim.opt_local.spelllang = "en_us,cjk"
+		vim.opt_local.colorcolumn = "70"
 		--vim.keymap.set("i", "<C-h>", "<C-g>u<Esc>[s1z=`]a<C-g>u", { buffer = ev.buf, desc = "Crect Last Spelling" })
 	end,
 	desc = "Special Files",

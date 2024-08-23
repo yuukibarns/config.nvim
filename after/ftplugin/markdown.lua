@@ -1,4 +1,4 @@
-local opt = vim.opt_local
+-- local opt = vim.opt_local
 -- opt.shiftwidth = 2
 
 --opt.conceallevel = 2
