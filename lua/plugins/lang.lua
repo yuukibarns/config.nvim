@@ -45,22 +45,22 @@ return {
 	},
 
 	--markdown preview
-	{
-		"iamcco/markdown-preview.nvim",
-		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-		build = "cd app && yarn install",
-		ft = "markdown",
-	},
-	{
-		"ellisonleao/glow.nvim",
-		config = function()
-			require("glow").setup({
-				border = "rounded",
-			})
-		end,
-		cmd = "Glow",
-		ft = "markdown",
-	},
+	-- {
+	-- 	"iamcco/markdown-preview.nvim",
+	-- 	cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+	-- 	build = "cd app && yarn install",
+	-- 	ft = "markdown",
+	-- },
+	-- {
+	-- 	"ellisonleao/glow.nvim",
+	-- 	config = function()
+	-- 		require("glow").setup({
+	-- 			border = "rounded",
+	-- 		})
+	-- 	end,
+	-- 	cmd = "Glow",
+	-- 	ft = "markdown",
+	-- },
 
 	-- Faster LuaLS setup for Neovim
 	{ "folke/lazydev.nvim", ft = "lua", config = true },

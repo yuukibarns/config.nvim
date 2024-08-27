@@ -135,14 +135,6 @@ return {
 						},
 					},
 				},
-				-- matlab_ls = {
-				-- 	MATLAB = {
-				-- 		indexWorkspace = true,
-				-- 		installPath = "D:\\Program Files\\MATLAB\\R2024a",
-				-- 		telemetry = false,
-				-- 	},
-				-- },
-				-- tabby_ml = {},
 			}
 
 			for _, server in pairs(vim.tbl_keys(settings)) do
