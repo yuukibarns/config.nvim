@@ -12,9 +12,9 @@ return {
 		},
 		-- stylua: ignore
 		keys = {
-			{ "<leader>fe", function() require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() }) end, desc = "Explorer NeoTree (cwd)" },
+			{ "<leader>fe", function() require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() }) end,    desc = "Explorer NeoTree (cwd)" },
 			{ "<leader>ge", function() require("neo-tree.command").execute({ source = "git_status", toggle = true }) end, desc = "Git explorer" },
-			{ "<leader>be", function() require("neo-tree.command").execute({ source = "buffers", toggle = true }) end, desc = "Buffer explorer" },
+			{ "<leader>be", function() require("neo-tree.command").execute({ source = "buffers", toggle = true }) end,    desc = "Buffer explorer" },
 		},
 		init = function()
 			vim.api.nvim_create_autocmd("BufEnter", {
@@ -124,20 +124,20 @@ return {
 			-- { "<leader>fo", function () require('telescope.builtin').oldfiles() end, desc = "Old Files" },
 			-- -- search
 			-- { "<leader>sb", function () require('telescope.builtin').current_buffer_fuzzy_find() end, desc = "Current Buf Fuzzy" },
-			{ "<leader>sg", function () require('telescope.builtin').live_grep() end, desc = "Live Grep" },
+			{ "<leader>sg", function() require('telescope.builtin').live_grep() end,                                      desc = "Live Grep" },
 			-- { "<leader>sh", function () require('telescope.builtin').help_tags() end, desc = "Help Tags" },
 			-- { "<leader>sw", function () require('telescope.builtin').grep_string({ word_match = "-w" }) end, desc = "Search Word" },
 			-- { "<leader>sw", function () require('telescope.builtin').grep_string() end, mode = "v", desc = "Search Selection" },
 			-- extensions
 			{ "<leader>fd", function() require("telescope").extensions.file_browser.file_browser({ path = "%:p:h" }) end, desc = "File Browser (current)" },
-			{ "<leader>fD", function() require("telescope").extensions.file_browser.file_browser() end, desc = "File Browser (cwd)" },
+			{ "<leader>fD", function() require("telescope").extensions.file_browser.file_browser() end,                   desc = "File Browser (cwd)" },
 		},
 		dependencies = {
 			"nvim-telescope/telescope-bibtex.nvim",
 			"nvim-telescope/telescope-file-browser.nvim",
 			{
 				"nvim-telescope/telescope-fzf-native.nvim",
-				build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+				build = "make",
 			},
 		},
 		config = function()

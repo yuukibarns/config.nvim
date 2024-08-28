@@ -52,7 +52,7 @@ return {
 	--{ "stevearc/dressing.nvim", config = true },
 
 	-- winbar
-	{ "Bekaboo/dropbar.nvim", config = true },
+	{ "Bekaboo/dropbar.nvim",        config = true },
 
 	--statusline
 	{
@@ -195,10 +195,10 @@ return {
 	{ "nvim-tree/nvim-web-devicons", lazy = true },
 
 	-- ui components
-	{ "MunifTanjim/nui.nvim", lazy = true },
+	{ "MunifTanjim/nui.nvim",        lazy = true },
 
 	-- library used by other plugins
-	{ "nvim-lua/plenary.nvim", lazy = true },
+	{ "nvim-lua/plenary.nvim",       lazy = true },
 
 	-- smooth scrolling
 	-- { "declancm/cinnamon.nvim", version = "*", opts = {} },

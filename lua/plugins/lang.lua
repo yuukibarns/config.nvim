@@ -1,7 +1,7 @@
 return {
 	-- filesype plugin for `MarkDown`
 	{
-		"jzr/markdown.nvim",
+		"yuukibarns/markdown.nvim",
 		ft = { "markdown", "tex" },
 		config = function()
 			require("markdown").setup({
@@ -34,11 +34,11 @@ return {
 			workspaces = {
 				{
 					name = "personal",
-					path = "~/learn/vaults/personal",
+					path = "~/Learn/vaults/personal",
 				},
 				{
 					name = "work",
-					path = "~/learn/vaults/work",
+					path = "~/Learn/vaults/work",
 				},
 			},
 		},

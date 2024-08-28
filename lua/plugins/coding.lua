@@ -6,10 +6,10 @@ return {
 		lazy = true,
 		--build = "make install_jsregexp",
 		dependencies = {
-			-- "yuukibarns/mySnippets",
-			-- opts = { path = vim.fn.stdpath("data") .. "/lazy/mySnippets/snippets" },
-			"jzr/mySnippets",
-			opts = { path = "~/learn/git/mySnippets/snippets" },
+			"yuukibarns/mySnippets",
+			opts = { path = vim.fn.stdpath("data") .. "/lazy/mySnippets/snippets" },
+			-- "jzr/mySnippets",
+			-- opts = { path = "~/learn/git/mySnippets/snippets" },
 		},
 		config = function()
 			local ls = require("luasnip")

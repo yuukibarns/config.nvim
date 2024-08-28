@@ -6,10 +6,11 @@ vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, si
 
 -- stylua: ignore start
 -- Move to window using the <meta> movement keys
-vim.keymap.set({ "n", "t" }, "<M-h>", function() vim.cmd.wincmd("h") end, { desc = "Left Window" })
-vim.keymap.set({ "n", "t" }, "<M-j>", function() vim.cmd.wincmd("j") end, { desc = "Bottom Window" })
-vim.keymap.set({ "n", "t" }, "<M-k>", function() vim.cmd.wincmd("k") end, { desc = "Upper Window" })
-vim.keymap.set({ "n", "t" }, "<M-l>", function() vim.cmd.wincmd("l") end, { desc = "Right Window" })
+-- I find <C-w>hjkl are already exiting
+-- vim.keymap.set({ "n", "t" }, "<M-h>", function() vim.cmd.wincmd("h") end, { desc = "Left Window" })
+-- vim.keymap.set({ "n", "t" }, "<M-j>", function() vim.cmd.wincmd("j") end, { desc = "Bottom Window" })
+-- vim.keymap.set({ "n", "t" }, "<M-k>", function() vim.cmd.wincmd("k") end, { desc = "Upper Window" })
+-- vim.keymap.set({ "n", "t" }, "<M-l>", function() vim.cmd.wincmd("l") end, { desc = "Right Window" })
 -- stylua: ignore end
 
 -- buffer
@@ -21,4 +22,4 @@ vim.keymap.set({ "n", "t" }, "<M-l>", function() vim.cmd.wincmd("l") end, { desc
 -- vim.keymap.set("n", "gco", "o<Esc>Vcx<Esc><Cmd>normal gcc<CR>fxa<BS>", { desc = "Add Comment Below" })
 
 --terminal
-vim.keymap.set("n", "<M-t>", "<Cmd>new+terminal<CR>", { desc = "Open Terminal Below(half height)" })
+vim.keymap.set("n", "<Esc>t", "<Cmd>new+terminal<CR>", { desc = "Open Terminal Below(half height)" })
