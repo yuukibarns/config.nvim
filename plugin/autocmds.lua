@@ -27,12 +27,12 @@ autocmd("LspAttach", {
 		local methods = vim.lsp.protocol.Methods
 
 		local keymaps = {
-			{ "gD", vim.lsp.buf.declaration, method = methods.textDocument_declaration },
-			{ "gd", vim.lsp.buf.definition, method = methods.textDocument_definition },
-			{ "gi", vim.lsp.buf.implementation, method = methods.textDocument_implementation },
-			{ "<C-k>", vim.lsp.buf.signature_help, method = methods.textDocument_signatureHelp },
-			{ "<C-h>", vim.lsp.buf.hover, method = methods.textDocument_hover },
-			{ "gt", vim.lsp.buf.type_definition, method = methods.textDocument_typeDefinition },
+			{ "gD",    vim.lsp.buf.declaration,     method = methods.textDocument_declaration },
+			{ "gd",    vim.lsp.buf.definition,      method = methods.textDocument_definition },
+			{ "gi",    vim.lsp.buf.implementation,  method = methods.textDocument_implementation },
+			{ "<C-k>", vim.lsp.buf.signature_help,  method = methods.textDocument_signatureHelp },
+			{ "<C-h>", vim.lsp.buf.hover,           method = methods.textDocument_hover },
+			{ "gt",    vim.lsp.buf.type_definition, method = methods.textDocument_typeDefinition },
 		}
 
 		for _, keys in ipairs(keymaps) do
@@ -160,6 +160,7 @@ autocmd("BufWritePost", {
 -- when leave neovim change cursorstyle back to default
 autocmd("VimLeavePre", {
 	group = augroup("Exit", { clear = true }),
-	command = "set guicursor=a:ver90,a:blinkwait700-blinkoff400-blinkon250",
+	-- command = "set guicursor=a:ver90,a:blinkwait700-blinkoff400-blinkon250",
+	command = "set guicursor=a:ver90",
 	desc = "Set cursor back to beam when leaving Neovim.",
 })
