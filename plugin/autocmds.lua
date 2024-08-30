@@ -158,9 +158,9 @@ autocmd("BufWritePost", {
 })
 
 -- when leave neovim change cursorstyle back to default
-autocmd("VimLeavePre", {
-	group = augroup("Exit", { clear = true }),
-	-- command = "set guicursor=a:ver90,a:blinkwait700-blinkoff400-blinkon250",
-	command = "set guicursor=a:ver90",
-	desc = "Set cursor back to beam when leaving Neovim.",
-})
+-- autocmd("VimLeavePre", {
+-- 	group = augroup("Exit", { clear = true }),
+-- 	-- command = "set guicursor=a:ver90,a:blinkwait700-blinkoff400-blinkon250",
+-- 	command = "set guicursor=a:ver90",
+-- 	desc = "Set cursor back to beam when leaving Neovim.",
+-- })
