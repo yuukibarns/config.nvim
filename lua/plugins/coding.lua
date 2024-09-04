@@ -26,6 +26,7 @@ return {
 				--store_selection_keys = "<Tab>",
 			})
 
+
 			-- require("luasnip.loaders.from_lua").lazy_load()
 
 			vim.keymap.set("i", "<C-k>", function()
@@ -145,6 +146,7 @@ return {
 			-- local conds = require("nvim-autopairs.conds")
 			autopairs.setup()
 			autopairs.remove_rule("'")
+			autopairs.remove_rule("\"")
 			--autopairs.add_rule(rule("'", "'"):with_pair(conds.not_filetypes({ "tex", "latex", "markdown" })))
 		end,
 		-- use opts = {} for passing setup options

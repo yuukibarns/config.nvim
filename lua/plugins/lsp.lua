@@ -80,18 +80,22 @@ return {
 					texlab = {
 						build = {
 							forwardSearchAfter = false,
-							executable = "D:/texlive/2024/bin/windows/latexmk.exe",
+							executable = "/usr/bin/latexmk",
 							args = { "-interaction=nonstopmode", "-synctex=1", "%f" },
 							onSave = false,
 						},
 						forwardSearch = {
-							executable = "D:/sumatra/SumatraPDF-prerel-64.exe",
+							executable = "/bin/sioyek",
 							args = {
-								"-reuse-instance",
-								"%p",
-								"-forward-search",
+								"--execute-command",
+								"toggle_synctex",
+								"--inverse-search",
+								"texlab inverse-search -i \"%%1\" -l %%2",
+								"--forward-search-file",
 								"%f",
+								"--forward-search-line",
 								"%l",
+								"%p",
 							},
 						},
 						chktex = { onOpenAndSave = false },
