@@ -43,11 +43,11 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-	-- dev = {
-	-- 	fallback = false,
-	-- 	path = "~/learn/git/",
-	-- 	patterns = { "jzr" },
-	-- },
+	dev = {
+		fallback = false,
+		path = "~/Learn/git",
+		patterns = { "jzr" },
+	},
 	spec = {
 		{ import = "plugins" },
 	},

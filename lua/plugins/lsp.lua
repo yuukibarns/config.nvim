@@ -103,7 +103,6 @@ return {
 					},
 				},
 				clangd = {},
-				-- jedi_language_server = {},
 				pyright = {
 					pyright = {
 						-- Using Ruff's import organizer
@@ -138,6 +137,9 @@ return {
 							enable = true,
 						},
 					},
+				},
+				biome = {
+					single_filea_support = true,
 				},
 			}
 
@@ -187,7 +189,7 @@ return {
 			},
 			format_on_save = function(bufnr)
 				-- Disable autoformat on certain filetypes
-				local ignore_filetypes = { "tex", "python", "rust" }
+				local ignore_filetypes = { "tex", "rust" }
 				if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
 					return
 				end

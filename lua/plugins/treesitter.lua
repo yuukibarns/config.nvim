@@ -12,6 +12,7 @@ return {
 					"markdown_inline",
 					"regex",
 					"java",
+					"javascript",
 					"vim",
 					"lua",
 					"bash",

@@ -1,7 +1,7 @@
 return {
 	-- filesype plugin for `MarkDown`
 	{
-		"yuukibarns/markdown.nvim",
+		"jzr/markdown.nvim",
 		ft = { "markdown", "tex" },
 		config = function()
 			require("markdown").setup({
