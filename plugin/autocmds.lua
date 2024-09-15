@@ -27,12 +27,12 @@ autocmd("LspAttach", {
 		local methods = vim.lsp.protocol.Methods
 
 		local keymaps = {
-			{ "gD",    vim.lsp.buf.declaration,     method = methods.textDocument_declaration },
-			{ "gd",    vim.lsp.buf.definition,      method = methods.textDocument_definition },
-			{ "gi",    vim.lsp.buf.implementation,  method = methods.textDocument_implementation },
-			{ "<C-k>", vim.lsp.buf.signature_help,  method = methods.textDocument_signatureHelp },
-			{ "<C-h>", vim.lsp.buf.hover,           method = methods.textDocument_hover },
-			{ "gt",    vim.lsp.buf.type_definition, method = methods.textDocument_typeDefinition },
+			{ "gD", vim.lsp.buf.declaration, method = methods.textDocument_declaration },
+			{ "gd", vim.lsp.buf.definition, method = methods.textDocument_definition },
+			{ "gi", vim.lsp.buf.implementation, method = methods.textDocument_implementation },
+			{ "<C-k>", vim.lsp.buf.signature_help, method = methods.textDocument_signatureHelp },
+			{ "<C-h>", vim.lsp.buf.hover, method = methods.textDocument_hover },
+			{ "gt", vim.lsp.buf.type_definition, method = methods.textDocument_typeDefinition },
 		}
 
 		for _, keys in ipairs(keymaps) do
@@ -132,7 +132,7 @@ autocmd("FileType", {
 		vim.opt_local.conceallevel = 2
 		vim.opt_local.spell = true
 		vim.opt_local.spelllang = "en_us,cjk"
-		vim.opt_local.colorcolumn = "70"
+		vim.opt_local.colorcolumn = "80"
 		--vim.keymap.set("i", "<C-h>", "<C-g>u<Esc>[s1z=`]a<C-g>u", { buffer = ev.buf, desc = "Crect Last Spelling" })
 	end,
 	desc = "Special Files",

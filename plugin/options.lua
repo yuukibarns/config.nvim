@@ -21,10 +21,11 @@ opt.number = true
 opt.relativenumber = true
 
 -- 5 syntax, highlighting and spelling
-opt.colorcolumn = "70"
+-- opt.colorcolumn = "80"
 -- opt.textwidth = 70
 opt.cursorline = true
 opt.spelllang = "en_gb"
+-- opt.spellfile = "~/.config/nvim/spell/en.utf-8.add"
 
 -- 6 multiple windows
 opt.laststatus = 3

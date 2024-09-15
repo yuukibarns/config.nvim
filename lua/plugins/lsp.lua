@@ -90,7 +90,7 @@ return {
 								"--execute-command",
 								"toggle_synctex",
 								"--inverse-search",
-								"texlab inverse-search -i \"%%1\" -l %%2",
+								'texlab inverse-search -i "%%1" -l %%2',
 								"--forward-search-file",
 								"%f",
 								"--forward-search-line",
@@ -211,4 +211,15 @@ return {
 			-- },
 		},
 	},
+
+	-- lightbulb
+	-- {
+	-- 	"kosayoda/nvim-lightbulb",
+	--
+	-- 	config = function()
+	-- 		require("nvim-lightbulb").setup({
+	-- 			autocmd = { enable = true },
+	-- 		})
+	-- 	end,
+	-- },
 }

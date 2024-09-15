@@ -26,7 +26,6 @@ return {
 				--store_selection_keys = "<Tab>",
 			})
 
-
 			-- require("luasnip.loaders.from_lua").lazy_load()
 
 			vim.keymap.set("i", "<C-k>", function()
@@ -136,22 +135,40 @@ return {
 	},
 
 	-- auto pairs
-	--{ "altermo/ultimate-autopair.nvim", event = { "InsertEnter", "CmdlineEnter" }, config = true },
 	{
-		"windwp/nvim-autopairs",
-		event = "InsertEnter",
+		"jzr/autoclose.nvim",
+		event = { "InsertEnter", "CmdlineEnter" },
 		config = function()
-			local autopairs = require("nvim-autopairs")
-			-- local rule = require("nvim-autopairs.rule")
-			-- local conds = require("nvim-autopairs.conds")
-			autopairs.setup()
-			autopairs.remove_rule("'")
-			autopairs.remove_rule("\"")
-			--autopairs.add_rule(rule("'", "'"):with_pair(conds.not_filetypes({ "tex", "latex", "markdown" })))
+			require("autoclose").setup({
+				keys = {
+					['"'] = { escape = true, close = true, pair = '""', disabled_filetypes = { "markdown" } },
+					["'"] = { escape = true, close = true, pair = "''", disabled_filetypes = { "markdown" } },
+					["`"] = { escape = true, close = true, pair = "``", disabled_filetypes = { "markdown" } },
+				},
+				options = {
+					disable_when_touch = true,
+					disable_command_mode = true,
+				},
+			})
 		end,
-		-- use opts = {} for passing setup options
-		-- this is equalent to setup({}) function
 	},
+
+	--{ "altermo/ultimate-autopair.nvim", event = { "InsertEnter", "CmdlineEnter" }, config = true },
+	-- {
+	-- 	"windwp/nvim-autopairs",
+	-- 	event = "InsertEnter",
+	-- 	config = function()
+	-- 		local autopairs = require("nvim-autopairs")
+	-- 		-- local rule = require("nvim-autopairs.rule")
+	-- 		-- local conds = require("nvim-autopairs.conds")
+	-- 		autopairs.setup()
+	-- 		autopairs.remove_rule("'")
+	-- 		autopairs.remove_rule("\"")
+	-- 		--autopairs.add_rule(rule("'", "'"):with_pair(conds.not_filetypes({ "tex", "latex", "markdown" })))
+	-- 	end,
+	-- 	-- use opts = {} for passing setup options
+	-- 	-- this is equalent to setup({}) function
+	-- },
 
 	-- surround
 	-- {
