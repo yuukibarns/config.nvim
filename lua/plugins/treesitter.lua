@@ -6,6 +6,10 @@ return {
 		build = ":TSUpdate",
 		config = function()
 			require("nvim-treesitter.configs").setup({
+				modules = {},
+				sync_install = false,
+				ignore_install = {},
+				auto_install = true,
 				ensure_installed = {
 					"latex",
 					"markdown",
@@ -38,5 +42,10 @@ return {
 			})
 		end,
 		highlight = { enable = true },
+	},
+
+	{
+		"nvim-treesitter/nvim-treesitter-context",
+		config = true,
 	},
 }
