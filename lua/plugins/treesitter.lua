@@ -46,6 +46,10 @@ return {
 
 	{
 		"nvim-treesitter/nvim-treesitter-context",
-		config = true,
+		config = function()
+			require("treesitter-context").setup({
+				mode = "topline",
+			})
+		end,
 	},
 }
