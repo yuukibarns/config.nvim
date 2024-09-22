@@ -131,7 +131,7 @@ autocmd("FileType", {
 	callback = function()
 		vim.opt_local.conceallevel = 2
 		vim.opt_local.spell = true
-		vim.opt_local.spelllang = "en_us,cjk"
+		vim.opt_local.spelllang = "en_us,en_gb,cjk"
 		vim.opt_local.colorcolumn = "80"
 		--vim.keymap.set("i", "<C-h>", "<C-g>u<Esc>[s1z=`]a<C-g>u", { buffer = ev.buf, desc = "Crect Last Spelling" })
 	end,

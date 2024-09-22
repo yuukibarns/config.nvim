@@ -25,7 +25,6 @@ return {
 	{
 		"epwalsh/obsidian.nvim",
 		version = "*",
-		-- lazy = true,
 		ft = "markdown",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
@@ -41,26 +40,35 @@ return {
 					path = "~/Learn/vaults/work",
 				},
 			},
+			mappings = {
+				["gf"] = {
+					action = function()
+						return require("obsidian").util.gf_passthrough()
+					end,
+					opts = { noremap = false, expr = true, buffer = true },
+				},
+			},
+			ui = {
+				enable = false,
+			},
 		},
 	},
 
 	--markdown preview
-	-- {
-	-- 	"iamcco/markdown-preview.nvim",
-	-- 	cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-	-- 	build = "cd app && yarn install",
-	-- 	ft = "markdown",
-	-- },
-	-- {
-	-- 	"ellisonleao/glow.nvim",
-	-- 	config = function()
-	-- 		require("glow").setup({
-	-- 			border = "rounded",
-	-- 		})
-	-- 	end,
-	-- 	cmd = "Glow",
-	-- 	ft = "markdown",
-	-- },
+	{
+		"iamcco/markdown-preview.nvim",
+
+		ft = { "markdown" },
+		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+		build = "cd app && yarn install",
+
+		init = function()
+			vim.g.mkdp_filetypes = { "markdown" }
+			vim.g.mkdp_preview_options = {
+				disable_sync_scroll = 1,
+			}
+		end,
+	},
 
 	-- Faster LuaLS setup for Neovim
 	{ "folke/lazydev.nvim", ft = "lua", config = true },

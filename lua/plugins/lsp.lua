@@ -138,9 +138,10 @@ return {
 						},
 					},
 				},
-				biome = {
-					single_filea_support = true,
-				},
+				-- biome = {
+				-- 	single_filea_support = true,
+				-- },
+				-- marksman = {},
 			}
 
 			for _, server in pairs(vim.tbl_keys(settings)) do
@@ -211,15 +212,4 @@ return {
 			-- },
 		},
 	},
-
-	-- lightbulb
-	-- {
-	-- 	"kosayoda/nvim-lightbulb",
-	--
-	-- 	config = function()
-	-- 		require("nvim-lightbulb").setup({
-	-- 			autocmd = { enable = true },
-	-- 		})
-	-- 	end,
-	-- },
 }

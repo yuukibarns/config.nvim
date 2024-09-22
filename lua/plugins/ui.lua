@@ -71,6 +71,7 @@ return {
 					lualine_y = {},
 					lualine_z = { "tabs" },
 				},
+				extensions = { "oil" },
 			})
 		end,
 	},
@@ -111,7 +112,7 @@ return {
 	-- noicer ui
 	{
 		"folke/noice.nvim",
-		version = "4.4.7", --the latest v4.5.0 has some problems
+		-- version = "4.4.7", --the latest v4.5.0 has some problems
 		event = { "VeryLazy" },
 		dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
 		config = true,
@@ -149,11 +150,6 @@ return {
 				},
 			},
 		},
-		-- stylua: ignore
-		-- keys = {
-		-- 	{ "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = {"i", "n", "s"} },
-		-- 	{ "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = {"i", "n", "s"}},
-		-- },
 	},
 
 	-- start screen
@@ -190,16 +186,4 @@ return {
 			vim.g.rainbow_delimiters = { query = { latex = "rainbow-delimiters" } }
 		end,
 	},
-
-	-- icons
-	{ "nvim-tree/nvim-web-devicons", lazy = true },
-
-	-- ui components
-	{ "MunifTanjim/nui.nvim", lazy = true },
-
-	-- library used by other plugins
-	{ "nvim-lua/plenary.nvim", lazy = true },
-
-	-- smooth scrolling
-	-- { "declancm/cinnamon.nvim", version = "*", opts = {} },
 }

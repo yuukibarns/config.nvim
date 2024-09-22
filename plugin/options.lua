@@ -24,7 +24,7 @@ opt.relativenumber = true
 -- opt.colorcolumn = "80"
 -- opt.textwidth = 70
 opt.cursorline = true
-opt.spelllang = "en_gb"
+opt.spelllang = "en_gb,en_us"
 -- opt.spellfile = "~/.config/nvim/spell/en.utf-8.add"
 
 -- 6 multiple windows

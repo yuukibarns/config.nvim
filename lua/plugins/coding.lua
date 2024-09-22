@@ -136,7 +136,7 @@ return {
 
 	-- auto pairs
 	{
-		"jzr/autoclose.nvim",
+		"yuukibarns/autoclose.nvim",
 		event = { "InsertEnter", "CmdlineEnter" },
 		config = function()
 			require("autoclose").setup({

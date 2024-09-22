@@ -21,4 +21,4 @@ vim.keymap.set({ "n", "t" }, "<M-l>", function() vim.cmd.wincmd("l") end, { desc
 -- vim.keymap.set("n", "gco", "o<Esc>Vcx<Esc><Cmd>normal gcc<CR>fxa<BS>", { desc = "Add Comment Below" })
 
 --terminal
-vim.keymap.set("n", "<M-t>", "<Cmd>new+terminal<CR>", { desc = "Open Terminal Below(half height)" })
+vim.keymap.set("n", "<M-t>", "<Cmd>new term://%:p:h//fish<CR>", { desc = "Open Terminal Below(half height)" })
