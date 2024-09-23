@@ -23,29 +23,13 @@ return {
 					[types.choiceNode] = { active = { virt_text = { { "○", "Special" } } } },
 				},
 				enable_autosnippets = true,
-				--store_selection_keys = "<Tab>",
 			})
-
-			-- require("luasnip.loaders.from_lua").lazy_load()
 
 			vim.keymap.set("i", "<C-k>", function()
 				if ls.expandable() then
 					ls.expand()
 				end
 			end, { desc = "LuaSnip Expand" })
-
-			vim.keymap.set({ "i", "s" }, "<C-l>", function()
-				if ls.locally_jumpable(1) then
-					ls.jump(1)
-				end
-			end, { desc = "LuaSnip Forward Jump" })
-
-			vim.keymap.set({ "i", "s" }, "<C-j>", function()
-				if ls.locally_jumpable(-1) then
-					ls.jump(-1)
-				end
-			end, { desc = "LuaSnip Backward Jump" })
-
 			vim.keymap.set({ "i", "s" }, "<C-e>", function()
 				if ls.choice_active() then
 					ls.change_choice(1)
@@ -70,17 +54,43 @@ return {
 		config = function()
 			local cmp = require("cmp")
 			local lspkind = require("lspkind")
+			local luasnip = require("luasnip")
 
 			cmp.setup({
-				mapping = cmp.mapping.preset.insert({
-					["<C-d>"] = cmp.mapping.scroll_docs(-4),
-					["<C-f>"] = cmp.mapping.scroll_docs(4),
-					["<C-Space>"] = cmp.mapping.complete(),
-					["<C-y>"] = cmp.mapping.confirm({ select = true }),
-				}),
+				mapping = {
+					["<CR>"] = cmp.mapping({
+						i = function(fallback)
+							if cmp.visible() and cmp.get_active_entry() then
+								cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+							else
+								fallback()
+							end
+						end,
+					}),
+					["<C-n>"] = cmp.mapping.select_next_item(),
+					["<C-p>"] = cmp.mapping.select_prev_item(),
+					["<Tab>"] = cmp.mapping(function(fallback)
+						if luasnip.locally_jumpable(1) then
+							luasnip.jump(1)
+						elseif cmp.visible() then
+							cmp.select_next_item()
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+					["<S-Tab>"] = cmp.mapping(function(fallback)
+						if luasnip.locally_jumpable(-1) then
+							luasnip.jump(-1)
+						elseif cmp.visible() then
+							cmp.select_prev_item()
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+				},
 				snippet = {
 					expand = function(args)
-						require("luasnip").lsp_expand(args.body)
+						luasnip.lsp_expand(args.body)
 					end,
 				},
 				formatting = {
@@ -101,13 +111,9 @@ return {
 						},
 					}),
 				},
-				-- window = {
-				-- 	completion = cmp.config.window.bordered({ border = "single" }),
-				-- 	documentation = cmp.config.window.bordered({ border = "double" }),
-				-- },
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
-					{ name = "luasnip", option = { show_autosnippets = true } },
+					{ name = "luasnip", option = { show_autosnippets = false } },
 					{ name = "path" },
 				}, {
 					{ name = "buffer" },

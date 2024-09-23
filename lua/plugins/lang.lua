@@ -23,7 +23,7 @@ return {
 
 	-- obsidian
 	{
-		"epwalsh/obsidian.nvim",
+		"yuukibarns/obsidian.nvim",
 		version = "*",
 		ft = "markdown",
 		dependencies = {
