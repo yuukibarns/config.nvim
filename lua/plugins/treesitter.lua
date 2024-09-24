@@ -51,6 +51,7 @@ return {
 				max_lines = 6,
 				mode = "topline",
 				trim_scope = "inner",
+				separator = "-",
 			})
 		end,
 	},
