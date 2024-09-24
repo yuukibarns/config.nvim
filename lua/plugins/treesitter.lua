@@ -33,7 +33,6 @@ return {
 					"rust",
 					"gitcommit",
 					"git_rebase",
-					-- "git_config",
 					"cmake",
 					"toml",
 					"html",
@@ -46,9 +45,12 @@ return {
 
 	{
 		"nvim-treesitter/nvim-treesitter-context",
+		command = { "TSContextEnable", "TSContextDisable", "TSContextToggle" },
 		config = function()
 			require("treesitter-context").setup({
+				max_lines = 6,
 				mode = "topline",
+				trim_scope = "inner",
 			})
 		end,
 	},
