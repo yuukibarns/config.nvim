@@ -2,33 +2,39 @@ return {
 
 	-- colorschemes
 	{
-		"folke/tokyonight.nvim",
+		"yuukibarns/onedarkpro.nvim",
 		lazy = false,
 		priority = 1000,
 		config = function()
-			require("tokyonight").setup({
-				style = "moon",
-				transparent = true,
-				styles = {
-					-- Style to be applied to different syntax groups
-					-- Value is any valid attr-list value for `:help nvim_set_hl`
-					comments = { italic = true },
-					keywords = { italic = true },
-					functions = {},
-					variables = {},
-					-- Background styles. Can be "dark", "transparent" or "normal"
-					sidebars = "transparent", -- style for sidebars, see below
-					floats = "dark", -- style for floating windows
+			require("onedarkpro").setup({
+				highlights = {
+					-- \sin
+					Conceal = { link = "Special" },
+					-- \text{abc}
+					["@none.latex"] = { fg = "${fg}" },
+					-- TreesitterContext
+					TreesitterContext = { bg = "${bg}" },
+					TreesitterContextSeparator = { bg = "${bg}" },
+					--Spell
+					SpellBad = { underline = true },
+					SpellCap = { underline = true },
+					SpellRare = { underline = true },
+					SpellLocal = { underline = true },
+					-- Dashboard Hyper theme
+					-- DashboardHeader = { fg = "${blue}" },
+					-- DashboardProjectTitle = { fg = "${cyan}" },
+					-- DashboardProjectTitleIcon = { fg = "${orange}" },
+					-- DashboardProjectIcon = { fg = "${yellow}" },
+					-- DashboardFiles = { fg = "${blue}" },
+					-- DashboardShortCut = { fg = "${cyan}" },
+					-- DashboardMruTitle = { fg = "${cyan}" },
+					-- DashboardMruIcon = { fg = "${purple}" },
 				},
-				on_highlights = function(highlights, colors)
-					highlights.Conceal = { link = "Special" }
-					highlights["@none"] = { fg = "#c8d3f5" }
-					highlights.TreesitterContext = { bg = colors.bg }
-					highlights.TreesitterContextSeparator = { fg = "#589ed7", bg = colors.bg }
-					-- highlights.TreesitterContextBottom = { underline = true }
-				end,
+				options = {
+					cursorline = true,
+				},
 			})
-			vim.cmd([[colorscheme tokyonight]])
+			vim.cmd([[colorscheme onedark]])
 		end,
 	},
 
@@ -61,7 +67,8 @@ return {
 		config = function()
 			require("lualine").setup({
 				options = {
-					theme = "tokyonight",
+					-- theme = "tokyonight",
+					theme = "onedark",
 				},
 				tabline = {
 					lualine_a = { "buffers" },
@@ -153,6 +160,37 @@ return {
 			vim.g.rainbow_delimiters = { query = { latex = "rainbow-delimiters" } }
 		end,
 	},
+
+	-- {
+	-- 	"folke/tokyonight.nvim",
+	-- 	lazy = false,
+	-- 	priority = 1000,
+	-- 	config = function()
+	-- 		require("tokyonight").setup({
+	-- 			style = "moon",
+	-- 			transparent = true,
+	-- 			styles = {
+	-- 				-- Style to be applied to different syntax groups
+	-- 				-- Value is any valid attr-list value for `:help nvim_set_hl`
+	-- 				comments = { italic = true },
+	-- 				keywords = { italic = true },
+	-- 				functions = {},
+	-- 				variables = {},
+	-- 				-- Background styles. Can be "dark", "transparent" or "normal"
+	-- 				sidebars = "transparent", -- style for sidebars, see below
+	-- 				floats = "dark", -- style for floating windows
+	-- 			},
+	-- 			on_highlights = function(highlights, colors)
+	-- 				highlights.Conceal = { link = "Special" }
+	-- 				highlights["@none"] = { fg = "#c8d3f5" }
+	-- 				highlights.TreesitterContext = { bg = colors.bg }
+	-- 				highlights.TreesitterContextSeparator = { fg = "#589ed7", bg = colors.bg }
+	-- 				-- highlights.TreesitterContextBottom = { underline = true }
+	-- 			end,
+	-- 		})
+	-- 		vim.cmd([[colorscheme tokyonight]])
+	-- 	end,
+	-- },
 
 	-- indent guides for Neovim
 	-- {

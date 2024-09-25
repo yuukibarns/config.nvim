@@ -94,6 +94,15 @@ return {
 			vim.keymap.set("n", "f", sj.run)
 		end,
 	},
+
+	-- git signs
+	{
+		"lewis6991/gitsigns.nvim",
+		opts = {
+			preview_config = { border = "rounded" },
+		},
+	},
+
 	-- file explorer
 	-- {
 	-- 	"nvim-neo-tree/neo-tree.nvim",
