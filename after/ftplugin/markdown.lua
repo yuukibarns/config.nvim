@@ -28,23 +28,23 @@
 -- 	"<cmd>%s/\\\\\\[/$$/g<cr><cmd>%s/\\\\\\]/$$/g<cr>",
 -- 	{ buffer = true, desc = "replace latex math with native markdown" }
 -- )
---
--- vim.api.nvim_buf_create_user_command(0, "FixInlineMath", function()
--- 	vim.cmd("%s/\\\\(\\s*/$/g")
--- 	vim.cmd("%s/\\s*\\\\)/$/g")
--- end, {})
---
--- vim.api.nvim_buf_create_user_command(0, "FixDisplayMath", function()
--- 	vim.cmd("%s/\\\\\\[/$$/g")
--- 	vim.cmd("%s/\\\\\\]/$$/g")
--- end, {})
---
-vim.api.nvim_buf_create_user_command(0, "FixMath", function()
-	vim.cmd("%s/\\\\\\[/$$/g")
-	vim.cmd("%s/\\\\\\]/$$/g")
+
+vim.api.nvim_buf_create_user_command(0, "FixInlineMath", function()
 	vim.cmd("%s/\\\\(\\s*/$/g")
 	vim.cmd("%s/\\s*\\\\)/$/g")
 end, {})
+
+vim.api.nvim_buf_create_user_command(0, "FixDisplayMath", function()
+	vim.cmd("%s/\\\\\\[/$$/g")
+	vim.cmd("%s/\\\\\\]/$$/g")
+end, {})
+
+-- vim.api.nvim_buf_create_user_command(0, "FixMath", function()
+-- 	vim.cmd("%s/\\\\\\[/$$/g")
+-- 	vim.cmd("%s/\\\\\\]/$$/g")
+-- 	vim.cmd("%s/\\\\(\\s*/$/g")
+-- 	vim.cmd("%s/\\s*\\\\)/$/g")
+-- end, {})
 
 -- Define a custom command to open the current markdown file with viv
 -- vim.api.nvim_buf_create_user_command(0, "Vivfy", function()

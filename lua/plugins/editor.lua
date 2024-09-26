@@ -88,10 +88,11 @@ return {
 		config = function()
 			local sj = require("sj")
 			sj.setup({
-				separator = " ",
+				separator = ";",
 				stop_on_fail = false,
+				relative_labels = true,
 			})
-			vim.keymap.set("n", "f", sj.run)
+			vim.keymap.set({ "n", "v" }, "f", sj.run)
 		end,
 	},
 

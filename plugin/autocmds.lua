@@ -89,27 +89,10 @@ autocmd("FileType", {
 		if not pcall(vim.treesitter.start, ev.buf) then
 			return
 		end
-
-		-- vim.opt_local.foldmethod = "expr"
-		-- vim.opt_local.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-
 		vim.api.nvim_exec_autocmds("User", { pattern = "ts_attach" })
 	end,
 	desc = "Enable Treesitter",
 })
-
--- -- auto mkview when leave
--- autocmd("BufWinLeave", {
--- 	group = augroup("SaveView", {}),
--- 	pattern = { "cpp", "c", "rust", "python" },
--- 	command = "<Cmd>mkview<CR>",
--- })
--- -- auto mkview when leave
--- autocmd("BufWinEnter", {
--- 	group = augroup("SaveView", {}),
--- 	pattern = { "cpp", "c", "rust", "python" },
--- 	command = "<Cmd>loadview<CR>",
--- })
 
 -- No buflist for special files
 autocmd("FileType", {
