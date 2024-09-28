@@ -83,6 +83,7 @@ return {
 	},
 
 	-- simple jump
+	-- TODO: labels above the cursor should be reverse <27-09-24, yuukibarns>
 	{
 		"yuukibarns/sj.nvim",
 		config = function()

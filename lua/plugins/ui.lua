@@ -20,7 +20,10 @@ return {
 					SpellCap = { underline = true },
 					SpellRare = { underline = true },
 					SpellLocal = { underline = true },
-					MatchParen = { fg = "#56b6c2", bold = true },
+					MatchParen = { bg = "#414858", bold = true },
+					-- variables
+					["@variable"] = { fg = "${fg}" },
+					["@variable.parameter"] = { link = "@variable" },
 				},
 				options = {
 					cursorline = true,
@@ -62,8 +65,8 @@ return {
 	-- better vim.notify
 	{
 		"rcarriga/nvim-notify",
-		-- stylua: ignore
-		keys = { { "<M-u>", function() require("notify").dismiss({ silent = true, pending = true }) end, desc = "Delete All Notifications" } },
+	     -- stylua: ignore
+	    keys = { { "<M-u>", function() require("notify").dismiss({ silent = true, pending = true }) end, desc = "Delete All Notifications" } },
 		opts = {
 			timeout = 3000,
 			max_height = function()
@@ -182,37 +185,55 @@ return {
 		end,
 	},
 
-	-- indent guides for Neovim
+	-- indent guide
 	{
-		"lukas-reineke/indent-blankline.nvim",
+		"nvimdev/indentmini.nvim",
 		config = function()
-			local highlight = {
-				"RainbowRed",
-				"RainbowYellow",
-				"RainbowBlue",
-				"RainbowOrange",
-				"RainbowGreen",
-				"RainbowViolet",
-				"RainbowCyan",
-			}
-			local hooks = require("ibl.hooks")
-			hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-				vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#E06C75" })
-				vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#E5C07B" })
-				vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#61AFEF" })
-				vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#D19A66" })
-				vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#98C379" })
-				vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#C678DD" })
-				vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#56B6C2" })
-			end)
-
-			vim.g.rainbow_delimiters = { highlight = highlight }
-			require("ibl").setup({
-				scope = { highlight = highlight },
-				exclude = { filetypes = { "conf", "dashboard", "markdown" } },
+			require("indentmini").setup({
+				exclude = { "markdown", "tex" },
 			})
-
-			hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
 		end,
 	},
+
+	-- scrollbar decorations
+	-- {
+	-- 	"lewis6991/satellite.nvim",
+	-- 	config = function()
+	-- 		require("satellite").setup({})
+	-- 	end,
+	-- },
+
+	-- indent guides for Neovim
+	-- {
+	-- 	"lukas-reineke/indent-blankline.nvim",
+	-- 	config = function()
+	-- 		local highlight = {
+	-- 			"RainbowRed",
+	-- 			"RainbowYellow",
+	-- 			"RainbowBlue",
+	-- 			"RainbowOrange",
+	-- 			"RainbowGreen",
+	-- 			"RainbowViolet",
+	-- 			"RainbowCyan",
+	-- 		}
+	-- 		local hooks = require("ibl.hooks")
+	-- 		hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+	-- 			vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#E06C75" })
+	-- 			vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#E5C07B" })
+	-- 			vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#61AFEF" })
+	-- 			vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#D19A66" })
+	-- 			vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#98C379" })
+	-- 			vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#C678DD" })
+	-- 			vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#56B6C2" })
+	-- 		end)
+	--
+	-- 		vim.g.rainbow_delimiters = { highlight = highlight }
+	-- 		require("ibl").setup({
+	-- 			scope = { highlight = highlight },
+	-- 			exclude = { filetypes = { "conf", "dashboard", "markdown" } },
+	-- 		})
+	--
+	-- 		hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
+	-- 	end,
+	-- },
 }

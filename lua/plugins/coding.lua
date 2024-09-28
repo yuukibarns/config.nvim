@@ -159,6 +159,17 @@ return {
 		end,
 	},
 
+	-- surround
+	{
+		"echasnovski/mini.surround",
+		version = false,
+		config = function()
+			require("mini.surround").setup({
+				silent = true,
+			})
+		end,
+	},
+
 	--{ "altermo/ultimate-autopair.nvim", event = { "InsertEnter", "CmdlineEnter" }, config = true },
 	-- {
 	-- 	"windwp/nvim-autopairs",

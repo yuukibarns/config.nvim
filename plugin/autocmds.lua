@@ -84,15 +84,16 @@ autocmd("BufReadPost", {
 })
 
 -- treesitter
-autocmd("FileType", {
-	callback = function(ev)
-		if not pcall(vim.treesitter.start, ev.buf) then
-			return
-		end
-		vim.api.nvim_exec_autocmds("User", { pattern = "ts_attach" })
-	end,
-	desc = "Enable Treesitter",
-})
+-- autocmd("FileType", {
+-- 	callback = function(ev)
+-- 		if not pcall(vim.treesitter.start, ev.buf) then
+-- 			return
+-- 		end
+--
+-- 		vim.api.nvim_exec_autocmds("User", { pattern = "ts_attach" })
+-- 	end,
+-- 	desc = "Enable Treesitter",
+-- })
 
 -- No buflist for special files
 autocmd("FileType", {
