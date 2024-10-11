@@ -3,6 +3,7 @@ return {
 	{
 		"jzr/markdown.nvim",
 		ft = { "markdown", "tex" },
+
 		config = function()
 			require("markdown").setup({
 				conceals = {
@@ -23,7 +24,7 @@ return {
 
 	-- obsidian
 	{
-		"yuukibarns/obsidian.nvim",
+		"jzr/obsidian.nvim",
 		version = "*",
 		ft = "markdown",
 		dependencies = {
@@ -57,7 +58,6 @@ return {
 	--markdown preview
 	{
 		"iamcco/markdown-preview.nvim",
-
 		ft = { "markdown" },
 		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
 		build = "cd app && yarn install",

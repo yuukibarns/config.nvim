@@ -84,16 +84,16 @@ autocmd("BufReadPost", {
 })
 
 -- treesitter
--- autocmd("FileType", {
--- 	callback = function(ev)
--- 		if not pcall(vim.treesitter.start, ev.buf) then
--- 			return
--- 		end
---
--- 		vim.api.nvim_exec_autocmds("User", { pattern = "ts_attach" })
--- 	end,
--- 	desc = "Enable Treesitter",
--- })
+autocmd("FileType", {
+	callback = function(ev)
+		if not pcall(vim.treesitter.start, ev.buf) then
+			return
+		end
+
+		-- vim.api.nvim_exec_autocmds("User", { pattern = "ts_attach" })
+	end,
+	desc = "Enable Treesitter",
+})
 
 -- No buflist for special files
 autocmd("FileType", {
@@ -116,7 +116,8 @@ autocmd("FileType", {
 		vim.opt_local.conceallevel = 2
 		vim.opt_local.spell = true
 		vim.opt_local.spelllang = "en_us,en_gb,cjk"
-		vim.opt_local.colorcolumn = "80"
+		vim.opt_local.spellsuggest = "best,5"
+		vim.opt_local.colorcolumn = "100"
 		--vim.keymap.set("i", "<C-h>", "<C-g>u<Esc>[s1z=`]a<C-g>u", { buffer = ev.buf, desc = "Crect Last Spelling" })
 	end,
 	desc = "Special Files",

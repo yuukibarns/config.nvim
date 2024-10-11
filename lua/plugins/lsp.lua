@@ -4,27 +4,6 @@ return {
 	{
 		"williamboman/mason.nvim",
 		cmd = "Mason",
-		-- dependencies = {
-		-- 	"WhoIsSethDaniel/mason-tool-installer.nvim",
-		-- 	opts = {
-		-- 		ensure_installed = {
-		-- 			-- lsp
-		-- 			--"lua-language-server",
-		-- 			"texlab",
-		-- 			"clangd",
-		-- 			"jdtls",
-		-- 			--"ruff",
-		-- 			--"pylyzer",
-		-- 			"pyright",
-		-- 			"rust-analyzer",
-		-- 			-- formatter
-		-- 			"bibtex-tidy",
-		-- 			"latexindent",
-		-- 			"prettierd",
-		-- 			"stylua",
-		-- 		},
-		-- 	},
-		-- },
 		opts = { ui = { border = "rounded", height = 0.8 } },
 	},
 
@@ -66,7 +45,6 @@ return {
 			})
 
 			-- lspconfig
-
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 			local settings = {
@@ -138,10 +116,6 @@ return {
 						},
 					},
 				},
-				-- biome = {
-				-- 	single_filea_support = true,
-				-- },
-				-- marksman = {},
 			}
 
 			for _, server in pairs(vim.tbl_keys(settings)) do
@@ -171,23 +145,19 @@ return {
 		opts = {
 			formatters_by_ft = {
 				bib = { "bibtex-tidy" },
-				markdown = { "prettier" },
+				-- markdown = { "prettier" },
 				lua = { "stylua" },
 				tex = { "latexindent" },
 				python = { "ruff_format" },
 			},
 			format_on_save = function(bufnr)
 				-- Disable autoformat on certain filetypes
-				local ignore_filetypes = { "tex", "rust" }
+				local ignore_filetypes = { "tex", "rust", "lua" }
 				if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
 					return
 				end
 				return { timeout_ms = 1000, lsp_fallback = true }
 			end,
-			-- format_on_save = {
-			-- 	timeout_ms = 3000,
-			-- 	lsp_fallback = true,
-			-- },
 		},
 	},
 }

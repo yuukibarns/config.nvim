@@ -15,9 +15,10 @@ opt.scrolloff = 12
 opt.linebreak = true
 opt.breakindent = true
 opt.showbreak = "> "
-opt.fillchars = { diff = "╱", eob = " ", fold = " " }
-opt.cmdheight = 0
+opt.fillchars = { diff = "╱", eob = " ", fold = "." }
+-- opt.cmdheight = 0
 opt.number = true
+opt.numberwidth = 4
 opt.relativenumber = true
 
 -- 5 syntax, highlighting and spelling
@@ -58,8 +59,9 @@ opt.softtabstop = 4
 
 -- 14 folding
 opt.foldlevel = 99
-opt.foldtext = " "
-opt.foldmethod = "indent"
+opt.foldtext = ""
+opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
 -- 15 diff mode
 opt.diffopt:append({ linematch = 60 })

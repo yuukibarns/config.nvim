@@ -3,20 +3,20 @@ return {
 	-- treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
+		branch = "master",
 		build = ":TSUpdate",
+		lazy = false,
 		config = function()
 			require("nvim-treesitter.configs").setup({
 				modules = {},
 				sync_install = false,
-				ignore_install = {},
 				auto_install = true,
+				ignore_install = {},
+				highlight = {
+					enable = true,
+				},
 				ensure_installed = {
 					"latex",
-					"markdown",
-					"markdown_inline",
-					"regex",
-					"java",
-					"javascript",
 					"vim",
 					"lua",
 					"bash",
@@ -24,9 +24,6 @@ return {
 					"cpp",
 					"bibtex",
 					"comment",
-					"diff",
-					"luadoc",
-					"luap",
 					"python",
 					"query",
 					"vimdoc",
@@ -36,13 +33,12 @@ return {
 					"cmake",
 					"toml",
 					"html",
-					"powershell",
 				},
 			})
 		end,
-		highlight = { enable = true },
 	},
 
+	-- context 
 	{
 		"nvim-treesitter/nvim-treesitter-context",
 		command = { "TSContextEnable", "TSContextDisable", "TSContextToggle" },

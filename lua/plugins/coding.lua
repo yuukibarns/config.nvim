@@ -49,11 +49,10 @@ return {
 			"hrsh7th/cmp-path",
 			"lukas-reineke/cmp-rg",
 			"saadparwaiz1/cmp_luasnip",
-			"onsails/lspkind.nvim",
+			"echasnovski/mini.icons",
 		},
 		config = function()
 			local cmp = require("cmp")
-			local lspkind = require("lspkind")
 			local luasnip = require("luasnip")
 
 			cmp.setup({
@@ -62,31 +61,50 @@ return {
 						i = function(fallback)
 							if cmp.visible() and cmp.get_active_entry() then
 								cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+							elseif luasnip.locally_jumpable(1) then
+								luasnip.jump(1)
+							else
+								fallback()
+							end
+						end,
+						s = function(fallback)
+							if luasnip.locally_jumpable(1) then
+								luasnip.jump(1)
 							else
 								fallback()
 							end
 						end,
 					}),
-					["<C-n>"] = cmp.mapping.select_next_item(),
-					["<C-p>"] = cmp.mapping.select_prev_item(),
+					["<S-CR>"] = cmp.mapping({
+						i = function(fallback)
+							if luasnip.locally_jumpable(-1) then
+								luasnip.jump(-1)
+							else
+								fallback()
+							end
+						end,
+						s = function(fallback)
+							if luasnip.locally_jumpable(-1) then
+								luasnip.jump(-1)
+							else
+								fallback()
+							end
+						end,
+					}),
 					["<Tab>"] = cmp.mapping(function(fallback)
-						if luasnip.locally_jumpable(1) then
-							luasnip.jump(1)
-						elseif cmp.visible() then
+						if cmp.visible() then
 							cmp.select_next_item()
 						else
 							fallback()
 						end
-					end, { "i", "s" }),
+					end, { "i" }),
 					["<S-Tab>"] = cmp.mapping(function(fallback)
-						if luasnip.locally_jumpable(-1) then
-							luasnip.jump(-1)
-						elseif cmp.visible() then
+						if cmp.visible() then
 							cmp.select_prev_item()
 						else
 							fallback()
 						end
-					end, { "i", "s" }),
+					end, { "i" }),
 				},
 				snippet = {
 					expand = function(args)
@@ -96,24 +114,28 @@ return {
 				formatting = {
 					expandable_indicator = true,
 					fields = { "abbr", "kind", "menu" },
-					format = lspkind.cmp_format({
-						mode = "symbol_text",
-						preset = "codicons",
-						maxwidth = 50,
-						ellipsis_char = "…",
-						menu = {
-							buffer = "Buffer",
+					format = function(entry, item)
+						local maxwidth = 30
+						local icon = require("mini.icons").get("lsp", item.kind)
+
+						if vim.fn.strchars(item.abbr) > maxwidth then
+							item.abbr = vim.fn.strcharpart(item.abbr, 0, maxwidth) .. "…"
+						end
+						item.menu = ({
+							buffer = "Buf",
 							cmdline = "Cmd",
 							nvim_lsp = "Lsp",
-							luasnip = "Snippet",
+							luasnip = "Snip",
 							path = "Path",
 							rg = "RG",
-						},
-					}),
+						})[entry.source.name]
+						item.kind = icon .. " " .. item.kind
+						return item
+					end,
 				},
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
-					{ name = "luasnip", option = { show_autosnippets = false } },
+					{ name = "luasnip", option = { show_autosnippets = true } },
 					{ name = "path" },
 				}, {
 					{ name = "buffer" },
@@ -147,13 +169,14 @@ return {
 		config = function()
 			require("autoclose").setup({
 				keys = {
-					['"'] = { escape = true, close = true, pair = '""', disabled_filetypes = { "markdown" } },
-					["'"] = { escape = true, close = true, pair = "''", disabled_filetypes = { "markdown" } },
-					["`"] = { escape = true, close = true, pair = "``", disabled_filetypes = { "markdown" } },
+					['"'] = { escape = true, close = true, pair = '""' },
+					["'"] = { escape = true, close = true, pair = "''" },
+					["`"] = { escape = true, close = true, pair = "``" },
 				},
 				options = {
 					disable_when_touch = true,
 					disable_command_mode = true,
+					disabled_filetypes = { "tex", "markdown" },
 				},
 			})
 		end,
@@ -164,37 +187,7 @@ return {
 		"echasnovski/mini.surround",
 		version = false,
 		config = function()
-			require("mini.surround").setup({
-				silent = true,
-			})
+			require("mini.surround").setup({})
 		end,
 	},
-
-	--{ "altermo/ultimate-autopair.nvim", event = { "InsertEnter", "CmdlineEnter" }, config = true },
-	-- {
-	-- 	"windwp/nvim-autopairs",
-	-- 	event = "InsertEnter",
-	-- 	config = function()
-	-- 		local autopairs = require("nvim-autopairs")
-	-- 		-- local rule = require("nvim-autopairs.rule")
-	-- 		-- local conds = require("nvim-autopairs.conds")
-	-- 		autopairs.setup()
-	-- 		autopairs.remove_rule("'")
-	-- 		autopairs.remove_rule("\"")
-	-- 		--autopairs.add_rule(rule("'", "'"):with_pair(conds.not_filetypes({ "tex", "latex", "markdown" })))
-	-- 	end,
-	-- 	-- use opts = {} for passing setup options
-	-- 	-- this is equalent to setup({}) function
-	-- },
-
-	-- surround
-	-- {
-	-- 	"kylechui/nvim-surround",
-	-- 	config = true,
-	-- 	keys = {
-	-- 		{ "cs", desc = "Change Surrounding" },
-	-- 		{ "ds", desc = "Delete Surrounding" },
-	-- 		{ "ys", desc = "Add Surrounding" },
-	-- 	},
-	-- },
 }
