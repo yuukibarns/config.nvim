@@ -17,9 +17,9 @@ opt.breakindent = true
 opt.showbreak = "> "
 opt.fillchars = { diff = "╱", eob = " ", fold = "." }
 -- opt.cmdheight = 0
-opt.number = true
+opt.number = false
+opt.relativenumber = false
 opt.numberwidth = 4
-opt.relativenumber = true
 
 -- 5 syntax, highlighting and spelling
 -- opt.colorcolumn = "80"

@@ -91,4 +91,23 @@ return {
 			preview_config = { border = "rounded" },
 		},
 	},
+
+	-- search and jump
+	{
+		"yuukibarns/sj.nvim",
+		config = function()
+			local sj = require("sj")
+
+			sj.setup({
+				separator = ";",
+				stop_on_fail = false,
+				keymaps = {
+					cancel = "<Esc>",
+					delete_prev_char = "<C-H>",
+				},
+			})
+			vim.keymap.set({ "n", "v" }, "f", sj.search_forward)
+			vim.keymap.set({ "n", "v" }, "F", sj.search_backward)
+		end,
+	},
 }

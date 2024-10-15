@@ -30,6 +30,16 @@ return {
 					ls.expand()
 				end
 			end, { desc = "LuaSnip Expand" })
+			vim.keymap.set({ "i", "s" }, "<C-l>", function()
+				if ls.locally_jumpable(1) then
+					ls.jump(1)
+				end
+			end, { desc = "LuaSnip Forward Jump" })
+			vim.keymap.set({ "i", "s" }, "<C-j>", function()
+				if ls.locally_jumpable(-1) then
+					ls.jump(-1)
+				end
+			end, { desc = "LuaSnip Backward Jump" })
 			vim.keymap.set({ "i", "s" }, "<C-e>", function()
 				if ls.choice_active() then
 					ls.change_choice(1)
@@ -57,48 +67,21 @@ return {
 
 			cmp.setup({
 				mapping = {
-					["<CR>"] = cmp.mapping({
-						i = function(fallback)
-							if cmp.visible() and cmp.get_active_entry() then
-								cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-							elseif luasnip.locally_jumpable(1) then
-								luasnip.jump(1)
-							else
-								fallback()
-							end
-						end,
-						s = function(fallback)
-							if luasnip.locally_jumpable(1) then
-								luasnip.jump(1)
-							else
-								fallback()
-							end
-						end,
-					}),
-					["<S-CR>"] = cmp.mapping({
-						i = function(fallback)
-							if luasnip.locally_jumpable(-1) then
-								luasnip.jump(-1)
-							else
-								fallback()
-							end
-						end,
-						s = function(fallback)
-							if luasnip.locally_jumpable(-1) then
-								luasnip.jump(-1)
-							else
-								fallback()
-							end
-						end,
-					}),
-					["<Tab>"] = cmp.mapping(function(fallback)
+					["<C-y>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.confirm()
+						else
+							fallback()
+						end
+					end, {"i"}),
+					["<C-n>"] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_next_item()
 						else
 							fallback()
 						end
 					end, { "i" }),
-					["<S-Tab>"] = cmp.mapping(function(fallback)
+					["<C-p>"] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_prev_item()
 						else
@@ -162,10 +145,19 @@ return {
 		end,
 	},
 
+	-- surround
+	{
+		"echasnovski/mini.surround",
+		version = false,
+		config = function()
+			require("mini.surround").setup({})
+		end,
+	},
+
 	-- auto pairs
 	{
-		"yuukibarns/autoclose.nvim",
-		event = { "InsertEnter", "CmdlineEnter" },
+		"m4xshen/autoclose.nvim",
+		event = { "InsertEnter" },
 		config = function()
 			require("autoclose").setup({
 				keys = {
@@ -179,15 +171,6 @@ return {
 					disabled_filetypes = { "tex", "markdown" },
 				},
 			})
-		end,
-	},
-
-	-- surround
-	{
-		"echasnovski/mini.surround",
-		version = false,
-		config = function()
-			require("mini.surround").setup({})
 		end,
 	},
 }

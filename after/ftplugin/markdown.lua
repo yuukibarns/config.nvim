@@ -1,6 +1,7 @@
 local opt = vim.opt_local
 
 opt.matchpairs = { "(:)", "[:]", "{:}" }
+opt.commentstring = "<!-- %s -->"
 
 vim.api.nvim_buf_create_user_command(0, "FixInlineMath", function()
 	vim.cmd("%s/\\\\(\\s*/$/g")

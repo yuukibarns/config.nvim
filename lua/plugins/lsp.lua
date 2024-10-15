@@ -145,14 +145,14 @@ return {
 		opts = {
 			formatters_by_ft = {
 				bib = { "bibtex-tidy" },
-				-- markdown = { "prettier" },
+				markdown = { "prettier" },
 				lua = { "stylua" },
 				tex = { "latexindent" },
 				python = { "ruff_format" },
 			},
 			format_on_save = function(bufnr)
 				-- Disable autoformat on certain filetypes
-				local ignore_filetypes = { "tex", "rust", "lua" }
+				local ignore_filetypes = { "tex", "rust", "lua", "markdown" }
 				if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
 					return
 				end
