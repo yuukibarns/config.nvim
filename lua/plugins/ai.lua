@@ -5,19 +5,19 @@ return {
 		lazy = true,
 		keys = {
 			{
-				"<C-g>c",
-				"<cmd>GpChatNew tabnew<cr>",
+				"<leader>gc",
+				"<cmd>GpChatNew<cr>",
 				mode = { "n" },
-				desc = "Open Chat In New Tab",
+				desc = "Start new Chat",
 			},
 			{
-				"<C-g>t",
-				"<cmd>GpChatToggle tabnew<cr>",
+				"<leader>gt",
+				"<cmd>GpChatToggle<cr>",
 				mode = { "n" },
-				desc = "Resume Last Chat In New Tab",
+				desc = "Resume Last Chat",
 			},
 			{
-				"<C-g>f",
+				"<leader>gf",
 				"<cmd>GpChatFinder<cr>",
 				mode = { "n" },
 				desc = "Chat Finder",
@@ -25,6 +25,10 @@ return {
 		},
 		config = function()
 			local conf = {
+				chat_shortcut_respond = { modes = { "n" }, shortcut = "<leader>gg" },
+				chat_shortcut_delete = { modes = { "n" }, shortcut = "<leader>gd" },
+				chat_shortcut_stop = { modes = { "n" }, shortcut = "<leader>gs" },
+				chat_shortcut_new = { modes = { "n" }, shortcut = "<leader>gc" },
 				providers = {
 					["glm-4"] = {
 						disable = false,

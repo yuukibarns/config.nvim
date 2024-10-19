@@ -5,6 +5,10 @@ end
 local function load_custom()
 	-- StatusLine
 	shl("StatusLine", { fg = "fg", bg = "bg" })
+	-- Term
+	shl("TermCursor", { fg = "bg", bg = "fg" })
+	-- Fold
+	shl("Folded", { fg = "fg", bg = "bg" })
 	-- Lsp
 	shl("@variable.parameter", { italic = true, fg = "NvimLightGray2" })
 	shl("@type", { fg = "NvimLightYellow" })
@@ -22,7 +26,7 @@ local function load_custom()
 	shl("TreesitterContext", { bg = "bg" })
 	-- Markup
 	shl("@markup.heading", { bold = true, fg = "NvimLightGreen" })
-	shl("@markup.link.label.markdown_inline", { underline = true, fg = "NvimLightCyan" })
+	shl("@markup.link.label.markdown_inline", { fg = "NvimLightCyan" })
 	shl("@conceal.latex", { link = "@markup.math" })
 	shl("@markup.math", { link = "Identifier" })
 	shl("@punctuation.bracket.latex", { fg = "NvimLightRed" })

@@ -25,11 +25,6 @@ return {
 				enable_autosnippets = true,
 			})
 
-			vim.keymap.set("i", "<C-k>", function()
-				if ls.expandable() then
-					ls.expand()
-				end
-			end, { desc = "LuaSnip Expand" })
 			vim.keymap.set({ "i", "s" }, "<C-l>", function()
 				if ls.locally_jumpable(1) then
 					ls.jump(1)
@@ -67,27 +62,29 @@ return {
 
 			cmp.setup({
 				mapping = {
-					["<C-y>"] = cmp.mapping(function(fallback)
-						if cmp.visible() then
-							cmp.confirm()
+					["<C-k>"] = cmp.mapping(function(fallback)
+						if luasnip.expandable() then
+							luasnip.expand()
+						elseif cmp.visible() then
+							cmp.confirm({ select = true })
 						else
 							fallback()
 						end
-					end, {"i"}),
+					end, { "i" }),
 					["<C-n>"] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_next_item()
 						else
 							fallback()
 						end
-					end, { "i" }),
+					end, { "i", "c" }),
 					["<C-p>"] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_prev_item()
 						else
 							fallback()
 						end
-					end, { "i" }),
+					end, { "i", "c" }),
 				},
 				snippet = {
 					expand = function(args)
@@ -128,14 +125,12 @@ return {
 			})
 
 			cmp.setup.cmdline({ "/", "?" }, {
-				mapping = cmp.mapping.preset.cmdline(),
 				sources = {
 					{ name = "buffer" },
 				},
 			})
 
 			cmp.setup.cmdline(":", {
-				mapping = cmp.mapping.preset.cmdline(),
 				sources = cmp.config.sources({
 					{ name = "path" },
 				}, {

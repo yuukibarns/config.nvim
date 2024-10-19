@@ -17,8 +17,8 @@ opt.breakindent = true
 opt.showbreak = "> "
 opt.fillchars = { diff = "╱", eob = " ", fold = "." }
 -- opt.cmdheight = 0
-opt.number = false
-opt.relativenumber = false
+opt.number = true
+opt.relativenumber = true
 opt.numberwidth = 4
 
 -- 5 syntax, highlighting and spelling
@@ -39,6 +39,7 @@ opt.splitright = true
 -- 8 terminal
 
 -- 9 using the mouse
+opt.mouse = ""
 
 -- 10 messages and info
 opt.shortmess:append({ W = true, I = true, c = true })
