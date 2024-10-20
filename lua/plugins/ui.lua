@@ -20,6 +20,19 @@ return {
 		end,
 	},
 
+	-- icons
+	{
+		"echasnovski/mini.icons",
+		lazy = true,
+		opts = {
+			lsp = {
+				["function"] = { glyph = "" },
+				object = { glyph = "" },
+				value = { glyph = "" },
+			},
+		},
+	},
+
 	-- colorschemes
 	-- {
 	-- 	"AlexvZyl/nordic.nvim",

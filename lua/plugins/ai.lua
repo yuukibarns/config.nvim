@@ -8,7 +8,7 @@ return {
 				"<leader>gc",
 				"<cmd>GpChatNew<cr>",
 				mode = { "n" },
-				desc = "Start new Chat",
+				desc = "Open Chat",
 			},
 			{
 				"<leader>gt",

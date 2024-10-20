@@ -5,8 +5,6 @@ end
 local function load_custom()
 	-- StatusLine
 	shl("StatusLine", { fg = "fg", bg = "bg" })
-	-- Term
-	shl("TermCursor", { fg = "bg", bg = "fg" })
 	-- Fold
 	shl("Folded", { fg = "fg", bg = "bg" })
 	-- Lsp

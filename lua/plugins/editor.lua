@@ -4,7 +4,6 @@ return {
 		"stevearc/oil.nvim",
 		lazy = false,
 		cmd = "Oil",
-		-- sytlua: ignore
 		keys = { { "<leader>o", "<Cmd>Oil<CR>", desc = "Open Oil" } },
 		opts = {
 			default_file_explorer = true,
@@ -17,72 +16,80 @@ return {
 				["<C-[>"] = "actions.close",
 			},
 		},
-		dependencies = {
-			{
-				"echasnovski/mini.icons",
-				lazy = true,
-				opts = {
-					lsp = {
-						["function"] = { glyph = "" },
-						object = { glyph = "" },
-						value = { glyph = "" },
-					},
-				},
+		dependencies = { "echasnovski/mini.icons" },
+	},
+
+	{
+		"ibhagwan/fzf-lua",
+		cmd = "FzfLua",
+		dependencies = { "echasnovski/mini.icons" },
+		-- stylua: ignore
+		keys = {
+			{ "<leader>fb", function () require("fzf-lua").buffers() end, desc = "Buffers" },
+			{ "<leader>fd", function () require("fzf-lua").files() end, desc = "Find Files (cwd)" },
+			{ "<leader>fo", function () require("fzf-lua").oldfiles() end, desc = "Old Files" },
+			{ "<leader>fg", function () require("fzf-lua").live_grep() end, desc = "Live Grep" },
+			{ "<leader>fh", function () require("fzf-lua").helptags() end, desc = "Help Tags" },
+		},
+		opts = {
+			defaults = {
+				file_icons = "mini",
+				formatter = "path.dirname_first",
 			},
 		},
 	},
 
 	-- fuzzy finder
-	{
-		"nvim-telescope/telescope.nvim",
-		cmd = "Telescope",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		keys = {
-			{
-				"<leader>rg",
-				function()
-					require("telescope.builtin").live_grep()
-				end,
-				desc = "Live Grep",
-			},
-			{
-				"<leader>fd",
-				function()
-					require("telescope.builtin").find_files()
-				end,
-				desc = "Find Files in CWD",
-			},
-			{
-				"<leader>fb",
-				function()
-					require("telescope.builtin").buffers()
-				end,
-				desc = "Find Buffers",
-			},
-		},
-		config = function()
-			local telescope = require("telescope")
-
-			telescope.setup({
-				defaults = {
-					sorting_strategy = "ascending",
-					layout_config = { prompt_position = "top" },
-					prompt_prefix = "   ",
-					selection_caret = " ",
-					file_ignore_patterns = { "%.jpeg$", "%.jpg$", "%.png$", ".DS_Store" },
-				},
-				pickers = {
-					buffers = {
-						sort_lastused = true,
-						previewer = true,
-					},
-					find_files = { follow = true },
-					grep_string = { path_display = { "shorten" } },
-					live_grep = { path_display = { "shorten" } },
-				},
-			})
-		end,
-	},
+	-- {
+	-- 	"nvim-telescope/telescope.nvim",
+	-- 	cmd = "Telescope",
+	-- 	dependencies = { "nvim-lua/plenary.nvim" },
+	-- 	keys = {
+	-- 		{
+	-- 			"<leader>rg",
+	-- 			function()
+	-- 				require("telescope.builtin").live_grep()
+	-- 			end,
+	-- 			desc = "Live Grep",
+	-- 		},
+	-- 		{
+	-- 			"<leader>fd",
+	-- 			function()
+	-- 				require("telescope.builtin").find_files()
+	-- 			end,
+	-- 			desc = "Find Files in CWD",
+	-- 		},
+	-- 		{
+	-- 			"<leader>fb",
+	-- 			function()
+	-- 				require("telescope.builtin").buffers()
+	-- 			end,
+	-- 			desc = "Find Buffers",
+	-- 		},
+	-- 	},
+	-- 	config = function()
+	-- 		local telescope = require("telescope")
+	--
+	-- 		telescope.setup({
+	-- 			defaults = {
+	-- 				sorting_strategy = "ascending",
+	-- 				layout_config = { prompt_position = "top" },
+	-- 				prompt_prefix = "   ",
+	-- 				selection_caret = " ",
+	-- 				file_ignore_patterns = { "%.jpeg$", "%.jpg$", "%.png$", ".DS_Store" },
+	-- 			},
+	-- 			pickers = {
+	-- 				buffers = {
+	-- 					sort_lastused = true,
+	-- 					previewer = true,
+	-- 				},
+	-- 				find_files = { follow = true },
+	-- 				grep_string = { path_display = { "shorten" } },
+	-- 				live_grep = { path_display = { "shorten" } },
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- },
 
 	-- git signs
 	{

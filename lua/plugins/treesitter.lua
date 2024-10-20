@@ -16,6 +16,8 @@ return {
 					enable = true,
 				},
 				ensure_installed = {
+					"markdown",
+					"markdown_inline",
 					"latex",
 					"vim",
 					"lua",
@@ -28,9 +30,6 @@ return {
 					"query",
 					"vimdoc",
 					"rust",
-					"gitcommit",
-					"git_rebase",
-					"cmake",
 					"toml",
 					"html",
 				},
