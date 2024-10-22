@@ -1,7 +1,7 @@
 return {
 	-- filesype plugin for `MarkDown`
 	{
-		"jzr/markdown.nvim",
+		"yuukibarns/markdown.nvim",
 		ft = { "markdown", "tex" },
 
 		config = function()
@@ -24,7 +24,7 @@ return {
 
 	-- obsidian
 	{
-		"jzr/obsidian.nvim",
+		"yuukibarns/obsidian.nvim",
 		version = "*",
 		ft = "markdown",
 		dependencies = {
@@ -54,22 +54,4 @@ return {
 			},
 		},
 	},
-
-	--markdown preview
-	{
-		"iamcco/markdown-preview.nvim",
-		ft = { "markdown" },
-		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-		build = "cd app && yarn install",
-
-		init = function()
-			vim.g.mkdp_filetypes = { "markdown" }
-			vim.g.mkdp_preview_options = {
-				disable_sync_scroll = 0,
-			}
-		end,
-	},
-
-	-- Faster LuaLS setup for Neovim
-	{ "folke/lazydev.nvim", ft = "lua", config = true },
 }

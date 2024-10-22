@@ -38,59 +38,6 @@ return {
 			},
 		},
 	},
-
-	-- fuzzy finder
-	-- {
-	-- 	"nvim-telescope/telescope.nvim",
-	-- 	cmd = "Telescope",
-	-- 	dependencies = { "nvim-lua/plenary.nvim" },
-	-- 	keys = {
-	-- 		{
-	-- 			"<leader>rg",
-	-- 			function()
-	-- 				require("telescope.builtin").live_grep()
-	-- 			end,
-	-- 			desc = "Live Grep",
-	-- 		},
-	-- 		{
-	-- 			"<leader>fd",
-	-- 			function()
-	-- 				require("telescope.builtin").find_files()
-	-- 			end,
-	-- 			desc = "Find Files in CWD",
-	-- 		},
-	-- 		{
-	-- 			"<leader>fb",
-	-- 			function()
-	-- 				require("telescope.builtin").buffers()
-	-- 			end,
-	-- 			desc = "Find Buffers",
-	-- 		},
-	-- 	},
-	-- 	config = function()
-	-- 		local telescope = require("telescope")
-	--
-	-- 		telescope.setup({
-	-- 			defaults = {
-	-- 				sorting_strategy = "ascending",
-	-- 				layout_config = { prompt_position = "top" },
-	-- 				prompt_prefix = "   ",
-	-- 				selection_caret = " ",
-	-- 				file_ignore_patterns = { "%.jpeg$", "%.jpg$", "%.png$", ".DS_Store" },
-	-- 			},
-	-- 			pickers = {
-	-- 				buffers = {
-	-- 					sort_lastused = true,
-	-- 					previewer = true,
-	-- 				},
-	-- 				find_files = { follow = true },
-	-- 				grep_string = { path_display = { "shorten" } },
-	-- 				live_grep = { path_display = { "shorten" } },
-	-- 			},
-	-- 		})
-	-- 	end,
-	-- },
-
 	-- git signs
 	{
 		"lewis6991/gitsigns.nvim",
@@ -98,23 +45,4 @@ return {
 			preview_config = { border = "rounded" },
 		},
 	},
-
-	-- search and jump
-	-- {
-	-- 	"yuukibarns/sj.nvim",
-	-- 	config = function()
-	-- 		local sj = require("sj")
-	--
-	-- 		sj.setup({
-	-- 			separator = ";",
-	-- 			stop_on_fail = false,
-	-- 			keymaps = {
-	-- 				cancel = "<Esc>",
-	-- 				delete_prev_char = "<C-H>",
-	-- 			},
-	-- 		})
-	-- 		vim.keymap.set({ "n", "v" }, "f", sj.search_forward)
-	-- 		vim.keymap.set({ "n", "v" }, "F", sj.search_backward)
-	-- 	end,
-	-- },
 }
