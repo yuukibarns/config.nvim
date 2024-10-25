@@ -48,38 +48,38 @@ return {
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 			local settings = {
-				lua_ls = {
-					Lua = {
-						workspace = { checkThirdParty = false },
-						completion = { callSnippet = "Replace" },
-					},
-				},
-				texlab = {
-					texlab = {
-						build = {
-							forwardSearchAfter = false,
-							executable = "/usr/bin/latexmk",
-							args = { "-interaction=nonstopmode", "-synctex=1", "%f" },
-							onSave = false,
-						},
-						forwardSearch = {
-							executable = "/bin/sioyek",
-							args = {
-								"--execute-command",
-								"toggle_synctex",
-								"--inverse-search",
-								'texlab inverse-search -i "%%1" -l %%2',
-								"--forward-search-file",
-								"%f",
-								"--forward-search-line",
-								"%l",
-								"%p",
-							},
-						},
-						chktex = { onOpenAndSave = false },
-						diagnostics = { ignoredPatterns = { "^Overfull", "^Underfull" } },
-					},
-				},
+				-- lua_ls = {
+				-- 	Lua = {
+				-- 		workspace = { checkThirdParty = false },
+				-- 		completion = { callSnippet = "Replace" },
+				-- 	},
+				-- },
+				-- texlab = {
+				-- 	texlab = {
+				-- 		build = {
+				-- 			forwardSearchAfter = false,
+				-- 			executable = "/usr/bin/latexmk",
+				-- 			args = { "-interaction=nonstopmode", "-synctex=1", "%f" },
+				-- 			onSave = false,
+				-- 		},
+				-- 		forwardSearch = {
+				-- 			executable = "/bin/sioyek",
+				-- 			args = {
+				-- 				"--execute-command",
+				-- 				"toggle_synctex",
+				-- 				"--inverse-search",
+				-- 				'texlab inverse-search -i "%%1" -l %%2',
+				-- 				"--forward-search-file",
+				-- 				"%f",
+				-- 				"--forward-search-line",
+				-- 				"%l",
+				-- 				"%p",
+				-- 			},
+				-- 		},
+				-- 		chktex = { onOpenAndSave = false },
+				-- 		diagnostics = { ignoredPatterns = { "^Overfull", "^Underfull" } },
+				-- 	},
+				-- },
 				clangd = {},
 				pyright = {
 					pyright = {

@@ -32,13 +32,13 @@ return {
 		},
 		opts = {
 			workspaces = {
-				{
-					name = "personal",
-					path = "~/Learn/vaults/personal",
-				},
+				-- {
+				-- 	name = "personal",
+				-- 	path = "~/storage/shared/ 我的文件/vaults/personal",
+				-- },
 				{
 					name = "work",
-					path = "~/Learn/vaults/work",
+					path = "~/storage/shared/ 我的文件/vaults/work",
 				},
 			},
 			mappings = {
