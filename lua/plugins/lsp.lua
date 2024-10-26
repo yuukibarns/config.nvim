@@ -1,11 +1,11 @@
 return {
 
 	-- cmdline tools and lsp servers
-	{
-		"williamboman/mason.nvim",
-		cmd = "Mason",
-		opts = { ui = { border = "rounded", height = 0.8 } },
-	},
+	-- {
+	-- 	"williamboman/mason.nvim",
+	-- 	cmd = "Mason",
+	-- 	opts = { ui = { border = "rounded", height = 0.8 } },
+	-- },
 
 	-- lspconfig
 	{
@@ -81,18 +81,18 @@ return {
 				-- 	},
 				-- },
 				clangd = {},
-				pyright = {
-					pyright = {
-						-- Using Ruff's import organizer
-						disableOrganizeImports = false,
-					},
-					python = {
-						analysis = {
-							-- Ignore all files for analysis to exclusively use Ruff for linting
-							ignore = { "*" },
-						},
-					},
-				},
+				-- pyright = {
+				-- 	pyright = {
+				-- 		-- Using Ruff's import organizer
+				-- 		disableOrganizeImports = false,
+				-- 	},
+				-- 	python = {
+				-- 		analysis = {
+				-- 			-- Ignore all files for analysis to exclusively use Ruff for linting
+				-- 			ignore = { "*" },
+				-- 		},
+				-- 	},
+				-- },
 				ruff = {
 					init_options = {
 						settings = {
@@ -100,22 +100,22 @@ return {
 						},
 					},
 				},
-				rust_analyzer = {
-					["rust-analyzer"] = {
-						checkOnSave = false,
-						cargo = {
-							buildScripts = {
-								enable = true,
-							},
-						},
-						procMacro = {
-							enable = true,
-						},
-						cachePriming = {
-							enable = true,
-						},
-					},
-				},
+				-- rust_analyzer = {
+				-- 	["rust-analyzer"] = {
+				-- 		checkOnSave = false,
+				-- 		cargo = {
+				-- 			buildScripts = {
+				-- 				enable = true,
+				-- 			},
+				-- 		},
+				-- 		procMacro = {
+				-- 			enable = true,
+				-- 		},
+				-- 		cachePriming = {
+				-- 			enable = true,
+				-- 		},
+				-- 	},
+				-- },
 			}
 
 			for _, server in pairs(vim.tbl_keys(settings)) do
@@ -144,10 +144,10 @@ return {
 		},
 		opts = {
 			formatters_by_ft = {
-				bib = { "bibtex-tidy" },
-				markdown = { "prettier" },
-				lua = { "stylua" },
-				tex = { "latexindent" },
+				-- bib = { "bibtex-tidy" },
+				markdown = { "prettierd" },
+				-- lua = { "stylua" },
+				-- tex = { "latexindent" },
 				python = { "ruff_format" },
 			},
 			format_on_save = function(bufnr)
