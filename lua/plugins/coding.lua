@@ -130,7 +130,14 @@ return {
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
 					{ name = "luasnip", option = { show_autosnippets = true } },
-					{ name = "path" },
+					{ 
+						name = "path",
+						option = {
+							get_cwd = function(params)
+								return vim.fn.getcwd(params.context.bufnr)
+							end,
+						},
+					},
 				}, {
 					{ name = "buffer" },
 				}, {

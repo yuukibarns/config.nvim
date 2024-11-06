@@ -145,7 +145,7 @@ return {
 		opts = {
 			formatters_by_ft = {
 				-- bib = { "bibtex-tidy" },
-				markdown = { "prettierd" },
+				-- markdown = { "prettierd" },
 				-- lua = { "stylua" },
 				-- tex = { "latexindent" },
 				python = { "ruff_format" },
