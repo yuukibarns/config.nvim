@@ -12,3 +12,5 @@ vim.api.nvim_buf_create_user_command(0, "FixDisplayMath", function()
 	vim.cmd("%s/\\\\\\[/$$/g")
 	vim.cmd("%s/\\\\\\]/$$/g")
 end, {})
+
+-- opt.textwidth = 53 

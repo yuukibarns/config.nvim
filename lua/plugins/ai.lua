@@ -12,7 +12,7 @@ return {
 			},
 			{
 				"<leader>gt",
-				"<cmd>GpChatToggle split<cr>",
+				"<cmd>GpChatToggle popup<cr>",
 				mode = { "n" },
 				desc = "Resume Last Chat",
 			},
@@ -29,6 +29,9 @@ return {
 				chat_shortcut_delete = { modes = { "n" }, shortcut = "<leader>gd" },
 				chat_shortcut_stop = { modes = { "n" }, shortcut = "<leader>gs" },
 				chat_shortcut_new = { modes = { "n" }, shortcut = "<leader>gc" },
+				chat_user_prefix = "`User:`",
+				chat_assistant_prefix = { "`Agent:`" },
+				style_popup_margin_bottom = 4,
 				providers = {
 					moonshot = {
 						disable = false,

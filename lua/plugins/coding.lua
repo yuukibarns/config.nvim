@@ -134,7 +134,7 @@ return {
 						name = "path",
 						option = {
 							get_cwd = function(params)
-								return vim.fn.getcwd(params.context.bufnr)
+								return vim.fn.getcwd(0)
 							end,
 						},
 					},

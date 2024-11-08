@@ -10,7 +10,7 @@ return {
 	-- lspconfig
 	{
 		"neovim/nvim-lspconfig",
-		dependencies = { "mason.nvim" },
+		-- dependencies = { "folke/lazydev.nvim" },
 		config = function()
 			-- diagnostic keymaps
 			vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Loclist Diagnostics" })
@@ -29,31 +29,31 @@ return {
 				},
 			})
 
-			vim.api.nvim_create_autocmd("LspAttach", {
-				group = vim.api.nvim_create_augroup("lsp_attach_disable_ruff_hover", { clear = true }),
-				callback = function(args)
-					local client = vim.lsp.get_client_by_id(args.data.client_id)
-					if client == nil then
-						return
-					end
-					if client.name == "ruff" then
-						-- Disable hover in favor of Pyright
-						client.server_capabilities.hoverProvider = false
-					end
-				end,
-				desc = "LSP: Disable hover capability from Ruff",
-			})
+			-- vim.api.nvim_create_autocmd("LspAttach", {
+			-- 	group = vim.api.nvim_create_augroup("lsp_attach_disable_ruff_hover", { clear = true }),
+			-- 	callback = function(args)
+			-- 		local client = vim.lsp.get_client_by_id(args.data.client_id)
+			-- 		if client == nil then
+			-- 			return
+			-- 		end
+			-- 		if client.name == "ruff" then
+			-- 			-- Disable hover in favor of Pyright
+			-- 			client.server_capabilities.hoverProvider = false
+			-- 		end
+			-- 	end,
+			-- 	desc = "LSP: Disable hover capability from Ruff",
+			-- })
 
 			-- lspconfig
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 			local settings = {
-				-- lua_ls = {
-				-- 	Lua = {
-				-- 		workspace = { checkThirdParty = false },
-				-- 		completion = { callSnippet = "Replace" },
-				-- 	},
-				-- },
+				lua_ls = {
+					Lua = {
+						workspace = { checkThirdParty = false },
+						completion = { callSnippet = "Replace" },
+					},
+				},
 				-- texlab = {
 				-- 	texlab = {
 				-- 		build = {
@@ -146,7 +146,7 @@ return {
 			formatters_by_ft = {
 				-- bib = { "bibtex-tidy" },
 				-- markdown = { "prettierd" },
-				-- lua = { "stylua" },
+				lua = { "stylua" },
 				-- tex = { "latexindent" },
 				python = { "ruff_format" },
 			},
