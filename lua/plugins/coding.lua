@@ -4,7 +4,8 @@ return {
 		"yuukibarns/LuaSnip",
 		lazy = true,
 		dependencies = {
-			"yuukibarns/mySnippets",
+			-- "yuukibarns/mySnippets",
+			url = "git@gitee.com:yuukibarns/mySnippets.git",
 			opts = { path = vim.fn.stdpath("data") .. "/lazy/mySnippets/snippets" },
 		},
 		config = function()

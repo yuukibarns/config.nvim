@@ -22,6 +22,17 @@ return {
 		end,
 	},
 
+	-- markdown preview
+	{
+		"iamcco/markdown-preview.nvim",
+		cmd = { "MarkdownPreviewToggle", "MarkdownPreviewStart", "MarkdownPreviewStop" },
+		ft = "markdown",
+		build = function()
+			vim.cmd([[Lazy load markdown-preview.nvim]])
+			vim.fn["mkdp#util#install"]()
+		end,
+	},
+
 	-- Faster lua-language-server set
 	{
 		"folke/lazydev.nvim",
