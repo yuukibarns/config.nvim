@@ -26,10 +26,10 @@ local function load_custom()
 	-- shl("@markup.heading", { bold = true, fg = "NvimLightGreen" })
 	-- shl("@markup.link.label.markdown_inline", { fg = "NvimLightCyan" })
 	shl("@conceal.latex", { link = "@markup.math" })
-	-- shl("@markup.math", { link = "Identifier" })
+	shl("@markup.math", { link = "Identifier" })
 	-- shl("@punctuation.bracket.latex", { fg = "NvimLightRed" })
 	-- shl("@module.latex", { fg = "NvimLightYellow" })
-	-- shl("@none", { fg = "fg" })
+	shl("@none", { fg = "fg" })
 	-- shl("@keyword.directive.markdown", { link = "Comment" })
 end
 

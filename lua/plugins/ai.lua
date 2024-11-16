@@ -2,7 +2,7 @@ return {
 	-- GPT
 	{
 		"robitx/gp.nvim",
-		lazy = true,
+		lazy = false,
 		keys = {
 			{
 				"<leader>gc",
@@ -12,7 +12,7 @@ return {
 			},
 			{
 				"<leader>gt",
-				"<cmd>GpChatToggle popup<cr>",
+				"<cmd>GpChatToggle tabnew<cr>",
 				mode = { "n" },
 				desc = "Resume Last Chat",
 			},
