@@ -16,22 +16,20 @@ return {
 					enable = true,
 				},
 				ensure_installed = {
+					-- markdown
 					"markdown",
 					"markdown_inline",
 					"latex",
+					-- vim
 					"vim",
+					"vimdoc",
+					-- languages
 					"lua",
-					"bash",
 					"c",
 					"cpp",
-					"bibtex",
-					"comment",
 					"python",
-					"query",
-					"vimdoc",
-					"rust",
-					"toml",
-					"html",
+					-- shell
+					"bash",
 				},
 			})
 		end,

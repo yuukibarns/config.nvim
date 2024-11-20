@@ -26,25 +26,25 @@ return {
 				enable_autosnippets = true,
 			})
 
-			require("luasnip.loaders.from_lua").lazy_load()
-
-			vim.keymap.set("i", "<C-k>", function()
-				if ls.expandable() then
-					ls.expand()
-				end
-			end, { desc = "LuaSnip Expand" })
-
-			vim.keymap.set({ "i", "s" }, "<C-l>", function()
-				if ls.locally_jumpable(1) then
-					ls.jump(1)
-				end
-			end, { desc = "LuaSnip Forward Jump" })
-
-			vim.keymap.set({ "i", "s" }, "<C-j>", function()
-				if ls.locally_jumpable(-1) then
-					ls.jump(-1)
-				end
-			end, { desc = "LuaSnip Backward Jump" })
+			-- require("luasnip.loaders.from_lua").lazy_load()
+			--
+			-- vim.keymap.set("i", "<C-k>", function()
+			-- 	if ls.expandable() then
+			-- 		ls.expand()
+			-- 	end
+			-- end, { desc = "LuaSnip Expand" })
+			--
+			-- vim.keymap.set({ "i", "s" }, "<C-l>", function()
+			-- 	if ls.locally_jumpable(1) then
+			-- 		ls.jump(1)
+			-- 	end
+			-- end, { desc = "LuaSnip Forward Jump" })
+			--
+			-- vim.keymap.set({ "i", "s" }, "<C-j>", function()
+			-- 	if ls.locally_jumpable(-1) then
+			-- 		ls.jump(-1)
+			-- 	end
+			-- end, { desc = "LuaSnip Backward Jump" })
 		end,
 	},
 
@@ -57,7 +57,7 @@ return {
 			"hrsh7th/cmp-cmdline",
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-path",
-			"lukas-reineke/cmp-rg",
+			-- "lukas-reineke/cmp-rg",
 			"saadparwaiz1/cmp_luasnip",
 			"echasnovski/mini.icons",
 		},
@@ -146,28 +146,32 @@ return {
 							nvim_lsp = "Lsp",
 							luasnip = "Snip",
 							path = "Path",
-							rg = "RG",
+							-- rg = "RG",
 						})[entry.source.name]
 						item.kind = icon .. " " .. item.kind
 						return item
 					end,
 				},
-				sources = cmp.config.sources({
-					{ name = "nvim_lsp" },
-					{ name = "luasnip", option = { show_autosnippets = true } },
+				sources = cmp.config.sources(
 					{
-						name = "path",
-						option = {
-							get_cwd = function(params)
-								return vim.fn.getcwd(0, 0)
-							end,
+						{ name = "nvim_lsp" },
+						{ name = "luasnip", option = { show_autosnippets = true } },
+						{
+							name = "path",
+							option = {
+								get_cwd = function(params)
+									return vim.fn.getcwd(0, 0)
+								end,
+							},
 						},
 					},
-				}, {
-					{ name = "buffer" },
-				}, {
-					{ name = "rg", keyword_length = 2 },
-				}),
+					{
+						{ name = "buffer" },
+					}
+					-- {
+					-- 	{ name = "rg", keyword_length = 3 },
+					-- }
+				),
 			})
 
 			cmp.setup.cmdline({ "/", "?" }, {
