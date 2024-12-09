@@ -25,26 +25,6 @@ return {
 				},
 				enable_autosnippets = true,
 			})
-
-			-- require("luasnip.loaders.from_lua").lazy_load()
-			--
-			-- vim.keymap.set("i", "<C-k>", function()
-			-- 	if ls.expandable() then
-			-- 		ls.expand()
-			-- 	end
-			-- end, { desc = "LuaSnip Expand" })
-			--
-			-- vim.keymap.set({ "i", "s" }, "<C-l>", function()
-			-- 	if ls.locally_jumpable(1) then
-			-- 		ls.jump(1)
-			-- 	end
-			-- end, { desc = "LuaSnip Forward Jump" })
-			--
-			-- vim.keymap.set({ "i", "s" }, "<C-j>", function()
-			-- 	if ls.locally_jumpable(-1) then
-			-- 		ls.jump(-1)
-			-- 	end
-			-- end, { desc = "LuaSnip Backward Jump" })
 		end,
 	},
 
@@ -159,9 +139,9 @@ return {
 						{
 							name = "path",
 							option = {
-								get_cwd = function(params)
-									return vim.fn.getcwd(0, 0)
-								end,
+								-- get_cwd = function(params)
+								-- 	return vim.fn.getcwd(0, 0)
+								-- end,
 							},
 						},
 					},

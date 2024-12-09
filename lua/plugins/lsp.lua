@@ -150,14 +150,14 @@ return {
 				tex = { "latexindent" },
 				python = { "ruff_format" },
 			},
-			format_on_save = function(bufnr)
-				-- Disable autoformat on certain filetypes
-				local ignore_filetypes = { "tex", "rust", "lua", "markdown" }
-				if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
-					return
-				end
-				return { timeout_ms = 1000, lsp_fallback = true }
-			end,
+			-- format_on_save = function(bufnr)
+			-- 	-- Disable autoformat on certain filetypes
+			-- 	local ignore_filetypes = { "tex", "rust", "lua", "markdown", "python" }
+			-- 	if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
+			-- 		return
+			-- 	end
+			-- 	return { timeout_ms = 1000, lsp_fallback = true }
+			-- end,
 		},
 	},
 }

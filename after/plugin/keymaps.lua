@@ -17,4 +17,4 @@ vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, si
 -- mini.surround
 -- vim.keymap.set({"n", "v"}, "s", "<nop>", { desc = "This key is deprecated" })
 -- terminal
-vim.keymap.set("n", "<leader>t", "<Cmd>new term://%:p:h//zsh<CR>", { desc = "Open Terminal Below(half height)" })
+vim.keymap.set("n", "<leader>t", "<Cmd>new term://%:p:h//fish<CR>", { desc = "Open Terminal Below(half height)" })

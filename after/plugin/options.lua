@@ -37,6 +37,7 @@ opt.splitright = true
 -- 7 multiple tab pages
 
 -- 8 terminal
+opt.termguicolors = false
 
 -- 9 using the mouse
 opt.mouse = ""

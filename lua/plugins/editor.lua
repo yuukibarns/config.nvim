@@ -19,6 +19,7 @@ return {
 		dependencies = { "echasnovski/mini.icons" },
 	},
 
+	-- fzf fuzzy finder
 	{
 		"ibhagwan/fzf-lua",
 		cmd = "FzfLua",
@@ -38,6 +39,22 @@ return {
 			},
 		},
 	},
+
+	-- git signs
+	{
+		"lewis6991/gitsigns.nvim",
+		opts = {
+			preview_config = { border = "rounded" },
+		},
+	},
+
+	-- Input method integration
+	-- {
+	-- 	"keaising/im-select.nvim",
+	-- 	config = function ()
+	-- 		require("im_select").setup({})
+	-- 	end,
+	-- },
 
 	-- fuzzy finder
 	-- {
@@ -88,33 +105,6 @@ return {
 	-- 				live_grep = { path_display = { "shorten" } },
 	-- 			},
 	-- 		})
-	-- 	end,
-	-- },
-
-	-- git signs
-	{
-		"lewis6991/gitsigns.nvim",
-		opts = {
-			preview_config = { border = "rounded" },
-		},
-	},
-
-	-- search and jump
-	-- {
-	-- 	"yuukibarns/sj.nvim",
-	-- 	config = function()
-	-- 		local sj = require("sj")
-	--
-	-- 		sj.setup({
-	-- 			separator = ";",
-	-- 			stop_on_fail = false,
-	-- 			keymaps = {
-	-- 				cancel = "<Esc>",
-	-- 				delete_prev_char = "<C-H>",
-	-- 			},
-	-- 		})
-	-- 		vim.keymap.set({ "n", "v" }, "f", sj.search_forward)
-	-- 		vim.keymap.set({ "n", "v" }, "F", sj.search_backward)
 	-- 	end,
 	-- },
 }

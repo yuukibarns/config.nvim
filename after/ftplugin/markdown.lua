@@ -2,6 +2,10 @@ local opt = vim.opt_local
 
 opt.matchpairs = { "(:)", "[:]", "{:}" }
 opt.commentstring = "<!-- %s -->"
+opt.formatoptions = "qnjl"
+opt.textwidth = 100
+
+vim.api.nvim_buf_set_keymap(0, "n", "<C-h>", "[s1z=", { desc = "Crect Last Spelling" })
 
 vim.api.nvim_buf_create_user_command(0, "FixInlineMath", function()
 	vim.cmd("%s/\\\\(\\s*/$/g")

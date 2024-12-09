@@ -41,9 +41,9 @@ return {
 		command = { "TSContextEnable", "TSContextDisable", "TSContextToggle" },
 		config = function()
 			require("treesitter-context").setup({
-				max_lines = 6,
+				max_lines = 3,
 				mode = "topline",
-				trim_scope = "inner",
+				trim_scope = "outer",
 				separator = "-",
 			})
 		end,
