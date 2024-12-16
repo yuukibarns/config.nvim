@@ -33,7 +33,7 @@ return {
 			"hrsh7th/cmp-cmdline",
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-path",
-			"lukas-reineke/cmp-rg",
+			-- "lukas-reineke/cmp-rg",
 			"saadparwaiz1/cmp_luasnip",
 			"echasnovski/mini.icons",
 		},
@@ -99,7 +99,7 @@ return {
 						else
 							fallback()
 						end
-					end, { "i", "c" })
+					end, { "i", "c" }),
 				},
 				snippet = {
 					expand = function(args)
@@ -108,7 +108,7 @@ return {
 				},
 				formatting = {
 					expandable_indicator = true,
-					fields = { "abbr", "kind", "menu" },
+					fields = { "kind", "abbr", "menu" },
 					format = function(entry, item)
 						local maxwidth = 30
 						local icon = require("mini.icons").get("lsp", item.kind)
@@ -117,33 +117,46 @@ return {
 							item.abbr = vim.fn.strcharpart(item.abbr, 0, maxwidth) .. "…"
 						end
 						item.menu = ({
-							buffer = "Buf",
-							cmdline = "Cmd",
-							nvim_lsp = "Lsp",
-							luasnip = "Snip",
-							path = "Path",
-							rg = "RG",
+							buffer = "[Buf]",
+							cmdline = "[Cmd]",
+							nvim_lsp = "[Lsp]",
+							luasnip = "[Snip]",
+							path = "[Path]",
+							-- rg = "RG",
 						})[entry.source.name]
-						item.kind = icon .. " " .. item.kind
+						item.menu_hl_group = "CmpItemKind" .. item.kind
+						item.kind = icon .. " "
 						return item
 					end,
 				},
-				sources = cmp.config.sources({
-					{ name = "nvim_lsp" },
-					{ name = "luasnip", option = { show_autosnippets = true } },
-					{ 
-						name = "path",
-						option = {
-							get_cwd = function(params)
-								return vim.fn.getcwd(0)
-							end,
+				window = {
+					completion = {
+						scrollbar = false,
+						side_padding = 1,
+						winhighlight = "Normal:CmpPmenu,CursorLine:CmpSel,Search:None,FloatBorder:CmpBorder",
+						border = "single",
+					},
+
+					documentation = {
+						border = "single",
+						winhighlight = "Normal:CmpDoc,FloatBorder:CmpDocBorder",
+					},
+				},
+				sources = cmp.config.sources(
+					{
+						{ name = "nvim_lsp" },
+						{ name = "luasnip", option = { show_autosnippets = true } },
+						{
+							name = "path",
 						},
 					},
-				}, {
-					{ name = "buffer" },
-				}, {
-					{ name = "rg", keyword_length = 2 },
-				}),
+					{
+						{ name = "buffer" },
+					}
+					-- {
+					-- 	{ name = "rg", keyword_length = 2 },
+					-- }
+				),
 			})
 
 			cmp.setup.cmdline({ "/", "?" }, {
@@ -164,12 +177,22 @@ return {
 
 	-- surround
 	{
-		"echasnovski/mini.surround",
-		version = false,
-		config = function()
-			require("mini.surround").setup({})
-		end,
+		"kylechui/nvim-surround",
+		version = "*",
+		event = "VeryLazy",
+		opts = {
+			keymaps = {
+				visual = "gs",
+			},
+		},
 	},
+	-- {
+	-- 	"echasnovski/mini.surround",
+	-- 	version = false,
+	-- 	config = function()
+	-- 		require("mini.surround").setup({})
+	-- 	end,
+	-- },
 
 	-- auto pairs
 	{

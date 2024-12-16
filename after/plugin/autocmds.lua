@@ -25,22 +25,6 @@ autocmd("LspAttach", {
 	callback = function(ev)
 		local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
 		local methods = vim.lsp.protocol.Methods
-
-		-- local keymaps = {
-		-- 	{ "gD", vim.lsp.buf.declaration, method = methods.textDocument_declaration },
-		-- 	{ "gd", vim.lsp.buf.definition, method = methods.textDocument_definition },
-		-- 	{ "gi", vim.lsp.buf.implementation, method = methods.textDocument_implementation },
-		-- 	{ "<C-k>", vim.lsp.buf.signature_help, method = methods.textDocument_signatureHelp },
-		-- 	{ "<C-h>", vim.lsp.buf.hover, method = methods.textDocument_hover },
-		-- 	{ "gt", vim.lsp.buf.type_definition, method = methods.textDocument_typeDefinition },
-		-- }
-		--
-		-- for _, keys in ipairs(keymaps) do
-		-- 	if client.supports_method(keys.method) then
-		-- 		vim.keymap.set(keys.mode or "n", keys[1], keys[2], { buffer = ev.buf, desc = keys.method })
-		-- 	end
-		-- end
-
 		if client.supports_method(methods.textDocument_documentHighlight) then
 			autocmd({ "CursorHold", "CursorHoldI" }, {
 				buffer = ev.buf,
@@ -82,18 +66,6 @@ autocmd("BufReadPost", {
 	end,
 	desc = "Last Position",
 })
-
--- treesitter
--- autocmd("FileType", {
--- 	callback = function(ev)
--- 		if not pcall(vim.treesitter.start, ev.buf) then
--- 			return
--- 		end
---
--- 		-- vim.api.nvim_exec_autocmds("User", { pattern = "ts_attach" })
--- 	end,
--- 	desc = "Enable Treesitter",
--- })
 
 -- No buflist for special files
 autocmd("FileType", {
@@ -140,11 +112,3 @@ autocmd("BufWritePost", {
 		vim.cmd.mkspell({ "%", bang = true, mods = { silent = true } })
 	end,
 })
-
--- when leave neovim change cursorstyle back to default
--- autocmd("VimLeavePre", {
--- 	group = augroup("Exit", { clear = true }),
--- 	-- command = "set guicursor=a:ver90,a:blinkwait700-blinkoff400-blinkon250",
--- 	command = "set guicursor=a:ver90",
--- 	desc = "Set cursor back to beam when leaving Neovim.",
--- })

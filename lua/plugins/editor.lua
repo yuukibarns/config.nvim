@@ -45,4 +45,8 @@ return {
 			preview_config = { border = "rounded" },
 		},
 	},
+	--vim-sneak
+	{
+		"justinmk/vim-sneak",
+	},
 }

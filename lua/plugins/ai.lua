@@ -1,18 +1,18 @@
 return {
 	-- GPT
 	{
-		"robitx/gp.nvim",
+		"yuukibarns/gp.nvim",
 		lazy = false,
 		keys = {
 			{
 				"<leader>gc",
-				"<cmd>GpChatNew<cr>",
+				"<cmd>GpChatNew enew<cr>",
 				mode = {"n"},
 				desc = "Open Chat",
 			},
 			{
 				"<leader>gt",
-				"<cmd>GpChatToggle popup<cr>",
+				"<cmd>GpChatToggle enew<cr>",
 				mode = { "n" },
 				desc = "Resume Last Chat",
 			},
@@ -29,9 +29,11 @@ return {
 				chat_shortcut_delete = { modes = { "n" }, shortcut = "<leader>gd" },
 				chat_shortcut_stop = { modes = { "n" }, shortcut = "<leader>gs" },
 				chat_shortcut_new = { modes = { "n" }, shortcut = "<leader>gc" },
-				chat_user_prefix = "`User:`",
-				chat_assistant_prefix = { "`Agent:`" },
+				-- chat_user_prefix = "`User:`",
+				-- chat_assistant_prefix = { "`Agent:`" },
 				style_popup_margin_bottom = 4,
+				toggle_target = "enew",
+				chat_free_cursor = true,
 				providers = {
 					moonshot = {
 						disable = false,
