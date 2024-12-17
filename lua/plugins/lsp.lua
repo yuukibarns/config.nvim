@@ -131,7 +131,7 @@ return {
 	{
 		"stevearc/conform.nvim",
 		event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-		dependencies = { "mason.nvim" },
+		-- dependencies = { "mason.nvim" },
 		keys = {
 			{
 				"<leader>a",

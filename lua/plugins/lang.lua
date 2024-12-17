@@ -23,15 +23,18 @@ return {
 	},
 
 	-- markdown preview
-	{
-		"iamcco/markdown-preview.nvim",
-		cmd = { "MarkdownPreviewToggle", "MarkdownPreviewStart", "MarkdownPreviewStop" },
-		ft = "markdown",
-		build = function()
-			vim.cmd([[Lazy load markdown-preview.nvim]])
-			vim.fn["mkdp#util#install"]()
-		end,
-	},
+	-- {
+	-- 	"toppair/peek.nvim",
+	-- 	ft = { "markdown" },
+	-- 	build = "deno task --quiet build:fast",
+	-- 	config = function()
+	-- 		require("peek").setup({
+	-- 			app = "browser",
+	-- 		})
+	-- 		vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+	-- 		vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+	-- 	end,
+	-- },
 
 	-- Faster lua-language-server set
 	{

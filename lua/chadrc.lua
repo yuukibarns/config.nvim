@@ -2,6 +2,10 @@ local options = {
 	base46 = {
 		theme = "gruvchad",
 		transparency = true,
+		hl_add = {
+			Conceal = { link = "@function.latex" },
+			["@none.latex"] = { link = "Normal" },
+		},
 		integrations = {},
 	},
 	ui = {
