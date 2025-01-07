@@ -25,22 +25,6 @@ autocmd("LspAttach", {
 	callback = function(ev)
 		local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
 		local methods = vim.lsp.protocol.Methods
-
-		-- local keymaps = {
-		-- 	{ "gD", vim.lsp.buf.declaration, method = methods.textDocument_declaration },
-		-- 	{ "gd", vim.lsp.buf.definition, method = methods.textDocument_definition },
-		-- 	{ "gi", vim.lsp.buf.implementation, method = methods.textDocument_implementation },
-		-- 	{ "<C-k>", vim.lsp.buf.signature_help, method = methods.textDocument_signatureHelp },
-		-- 	{ "<C-h>", vim.lsp.buf.hover, method = methods.textDocument_hover },
-		-- 	{ "gt", vim.lsp.buf.type_definition, method = methods.textDocument_typeDefinition },
-		-- }
-		--
-		-- for _, keys in ipairs(keymaps) do
-		-- 	if client.supports_method(keys.method) then
-		-- 		vim.keymap.set(keys.mode or "n", keys[1], keys[2], { buffer = ev.buf, desc = keys.method })
-		-- 	end
-		-- end
-
 		if client.supports_method(methods.textDocument_documentHighlight) then
 			autocmd({ "CursorHold", "CursorHoldI" }, {
 				buffer = ev.buf,

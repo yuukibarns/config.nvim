@@ -6,7 +6,7 @@ return {
 		keys = {
 			{
 				"<leader>gc",
-				"<cmd>GpChatNew enew<cr>",
+				"<cmd>GpChatNew<cr>",
 				mode = { "n" },
 				desc = "Open Chat",
 			},
@@ -31,7 +31,7 @@ return {
 				chat_shortcut_new = { modes = { "n" }, shortcut = "<leader>gc" },
 				-- chat_user_prefix = "`User:`",
 				-- chat_assistant_prefix = { "`Agent:`" },
-				toggle_target = "enew",
+				toggle_target = "popup",
 				chat_free_cursor = true,
 				providers = {
 					["glm-4"] = {

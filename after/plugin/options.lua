@@ -37,7 +37,9 @@ opt.splitright = true
 -- 7 multiple tab pages
 
 -- 8 terminal
-opt.termguicolors = false
+opt.termguicolors = true
+-- opt.pumblend = 30
+-- opt.winblend = 30
 
 -- 9 using the mouse
 opt.mouse = ""
@@ -50,20 +52,20 @@ opt.confirm = true
 opt.clipboard = "unnamedplus"
 
 -- 12 editing text
-opt.undofile = true
+opt.undofile = true-- {{{
 opt.formatoptions = "tcroqnlj"
-opt.pumheight = 10
+opt.pumheight = 10-- }}}
 
 -- 13 tabs and indenting
-opt.tabstop = 4
+opt.tabstop = 4-- {{{
 opt.shiftwidth = 4
-opt.softtabstop = 4
+opt.softtabstop = 4-- }}}
 
 -- 14 folding
 opt.foldlevel = 99
 opt.foldtext = ""
-opt.foldmethod = "expr"
-opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.foldmethod = "marker"
+-- opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
 -- 15 diff mode
 opt.diffopt:append({ linematch = 60 })

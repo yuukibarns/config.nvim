@@ -3,7 +3,7 @@ local opt = vim.opt_local
 opt.matchpairs = { "(:)", "[:]", "{:}" }
 opt.commentstring = "<!-- %s -->"
 opt.formatoptions = "qnjl"
-opt.textwidth = 100
+opt.textwidth = 80
 
 vim.api.nvim_buf_set_keymap(0, "n", "<C-h>", "[s1z=", { desc = "Crect Last Spelling" })
 

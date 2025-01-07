@@ -1,9 +1,9 @@
 set termguicolors
-set autochdir
+" set autochdir
 
 " Display
 " Line spacing
-set linespace=10
+set linespace=0
 " Scale
 " let g:neovide_scale_factor = 1.0
 " Padding
@@ -101,4 +101,4 @@ let g:neovide_confirm_quit = v:true
 " let g:neovide_cursor_animation_length = 0.13
 
 " Font Settings
-set guifont=JetBrainsMono\ Nerd\ Font\ Mono:h10
+set guifont=JetBrainsMono\ Nerd\ Font:h9

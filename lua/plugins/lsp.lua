@@ -8,7 +8,7 @@ return {
 	},
 
 	-- lspconfig
-	{
+	{-- {{{
 		"neovim/nvim-lspconfig",
 		dependencies = { "mason.nvim" },
 		config = function()
@@ -45,7 +45,8 @@ return {
 			})
 
 			-- lspconfig
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			-- local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			-- local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			local settings = {
 				lua_ls = {
@@ -81,6 +82,7 @@ return {
 					},
 				},
 				clangd = {},
+				denols = {},
 				pyright = {
 					pyright = {
 						-- Using Ruff's import organizer
@@ -125,7 +127,7 @@ return {
 				})
 			end
 		end,
-	},
+	},-- }}}
 
 	-- formatting
 	{
@@ -136,7 +138,7 @@ return {
 			{
 				"<leader>a",
 				function()
-					require("conform").format({ timeout_ms = 5000, lsp_fallback = true })
+					require("conform").format({ async = true, timeout_ms = 5000, lsp_fallback = true })
 				end,
 				mode = { "n", "v" },
 				desc = "Format buffer",
@@ -149,15 +151,8 @@ return {
 				lua = { "stylua" },
 				tex = { "latexindent" },
 				python = { "ruff_format" },
+				html = { "prettier" },
 			},
-			-- format_on_save = function(bufnr)
-			-- 	-- Disable autoformat on certain filetypes
-			-- 	local ignore_filetypes = { "tex", "rust", "lua", "markdown", "python" }
-			-- 	if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
-			-- 		return
-			-- 	end
-			-- 	return { timeout_ms = 1000, lsp_fallback = true }
-			-- end,
 		},
 	},
 }

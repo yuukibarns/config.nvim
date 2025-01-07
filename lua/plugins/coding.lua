@@ -10,7 +10,7 @@ return {
 			url = "git@gitee.com:yuukibarns/mySnippets.git",
 			opts = { path = vim.fn.stdpath("data") .. "/lazy/mySnippets/snippets" },
 			-- "jzr/mySnippets",
-			-- opts = { path = "~/mySnippets/snippets" },
+			-- opts = { path = "~/Learn/mySnippets/snippets" },
 		},
 		config = function()
 			local ls = require("luasnip")
@@ -29,7 +29,7 @@ return {
 	},
 
 	-- auto completion
-	{
+	{ -- {{{
 		"hrsh7th/nvim-cmp",
 		event = { "CmdlineEnter", "InsertEnter" },
 		dependencies = {
@@ -37,37 +37,34 @@ return {
 			"hrsh7th/cmp-cmdline",
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-path",
-			-- "lukas-reineke/cmp-rg",
+			"lukas-reineke/cmp-rg",
 			"saadparwaiz1/cmp_luasnip",
 			"echasnovski/mini.icons",
 		},
 		config = function()
 			local cmp = require("cmp")
 			local luasnip = require("luasnip")
+			local mini_icons = require("mini.icons")
 
 			cmp.setup({
-				mapping = {
-					["<CR>"] = cmp.mapping({
+				mapping = cmp.mapping.preset.insert({
+					["<Tab>"] = cmp.mapping({
 						i = function(fallback)
-							if cmp.visible() and cmp.get_active_entry() then
-								cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-							elseif luasnip.locally_jumpable() then
+							if luasnip.locally_jumpable() then
 								luasnip.jump(1)
 							else
 								fallback()
 							end
 						end,
 						s = function(fallback)
-							if cmp.visible() and cmp.get_active_entry() then
-								cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-							elseif luasnip.locally_jumpable() then
+							if luasnip.locally_jumpable() then
 								luasnip.jump(1)
 							else
 								fallback()
 							end
 						end,
 					}),
-					["<A-CR>"] = cmp.mapping({
+					["<S-Tab>"] = cmp.mapping({
 						i = function(fallback)
 							if luasnip.locally_jumpable() then
 								luasnip.jump(-1)
@@ -83,28 +80,67 @@ return {
 							end
 						end,
 					}),
-					["<C-k>"] = cmp.mapping(function(fallback)
-						if luasnip.expandable() then
-							luasnip.expand()
-						else
-							fallback()
-						end
-					end, { "i" }),
-					["<Tab>"] = cmp.mapping(function(fallback)
-						if cmp.visible() then
-							cmp.select_next_item()
-						else
-							fallback()
-						end
-					end, { "i", "c" }),
-					["<S-Tab>"] = cmp.mapping(function(fallback)
-						if cmp.visible() then
-							cmp.select_prev_item()
-						else
-							fallback()
-						end
-					end, { "i", "c" }),
-				},
+					["<C-y>"] = cmp.mapping.confirm({ select = true }),
+				}),
+				-- mapping = { -- {{{
+				-- 	["<CR>"] = cmp.mapping({
+				-- 		i = function(fallback)
+				-- 			if cmp.visible() and cmp.get_active_entry() then
+				-- 				cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+				-- 			elseif luasnip.locally_jumpable() then
+				-- 				luasnip.jump(1)
+				-- 			else
+				-- 				fallback()
+				-- 			end
+				-- 		end,
+				-- 		s = function(fallback)
+				-- 			if cmp.visible() and cmp.get_active_entry() then
+				-- 				cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+				-- 			elseif luasnip.locally_jumpable() then
+				-- 				luasnip.jump(1)
+				-- 			else
+				-- 				fallback()
+				-- 			end
+				-- 		end,
+				-- 	}),
+				-- 	["<A-CR>"] = cmp.mapping({
+				-- 		i = function(fallback)
+				-- 			if luasnip.locally_jumpable() then
+				-- 				luasnip.jump(-1)
+				-- 			else
+				-- 				fallback()
+				-- 			end
+				-- 		end,
+				-- 		s = function(fallback)
+				-- 			if luasnip.locally_jumpable() then
+				-- 				luasnip.jump(-1)
+				-- 			else
+				-- 				fallback()
+				-- 			end
+				-- 		end,
+				-- 	}),
+				-- 	["<C-k>"] = cmp.mapping(function(fallback)
+				-- 		if luasnip.expandable() then
+				-- 			luasnip.expand()
+				-- 		else
+				-- 			fallback()
+				-- 		end
+				-- 	end, { "i" }),
+				-- 	["<Tab>"] = cmp.mapping(function(fallback)
+				-- 		if cmp.visible() then
+				-- 			cmp.select_next_item()
+				-- 		else
+				-- 			fallback()
+				-- 		end
+				-- 	end, { "i", "c" }),
+				-- 	["<S-Tab>"] = cmp.mapping(function(fallback)
+				-- 		if cmp.visible() then
+				-- 			cmp.select_prev_item()
+				-- 		else
+				-- 			fallback()
+				-- 		end
+				-- 	end, { "i", "c" }),
+				-- }, -- }}}
 				snippet = {
 					expand = function(args)
 						luasnip.lsp_expand(args.body)
@@ -112,55 +148,66 @@ return {
 				},
 				formatting = {
 					expandable_indicator = true,
-					fields = { "abbr", "kind", "menu" },
+					fields = { "kind", "abbr", "menu" },
 					format = function(entry, item)
 						local maxwidth = 30
-						local icon = require("mini.icons").get("lsp", item.kind)
+						local icon = mini_icons.get("lsp", item.kind)
 
+						item.menu_hl_group = "CmpItemKind" .. item.kind
+						item.kind = icon .. " "
 						if vim.fn.strchars(item.abbr) > maxwidth then
 							item.abbr = vim.fn.strcharpart(item.abbr, 0, maxwidth) .. "…"
 						end
 						item.menu = ({
-							buffer = "Buf",
-							cmdline = "Cmd",
-							nvim_lsp = "Lsp",
-							luasnip = "Snip",
-							path = "Path",
-							-- rg = "RG",
+							buffer = "[Buf]",
+							cmdline = "[Cmd]",
+							nvim_lsp = "[Lsp]",
+							luasnip = "[Snip]",
+							path = "[Path]",
+							-- rg = "[RG]",
 						})[entry.source.name]
-						item.kind = icon .. " " .. item.kind
 						return item
 					end,
 				},
-				sources = cmp.config.sources(
+				window = {
+					completion = {
+						scrollbar = false,
+						side_padding = 1,
+						winhighlight = "Normal:CmpPmenu,CursorLine:CmpSel,Search:None,FloatBorder:CmpBorder",
+						border = "single",
+					},
+					documentation = {
+						border = "single",
+						winhighlight = "Normal:CmpDoc,FloatBorder:CmpDocBorder",
+					},
+				},
+				sources = cmp.config.sources({
+					{ name = "nvim_lsp" },
+					{ name = "luasnip", option = { show_autosnippets = true } },
 					{
-						{ name = "nvim_lsp" },
-						{ name = "luasnip", option = { show_autosnippets = true } },
-						{
-							name = "path",
-							option = {
-								-- get_cwd = function(params)
-								-- 	return vim.fn.getcwd(0, 0)
-								-- end,
-							},
+						name = "path",
+						option = {
+							-- get_cwd = function(params)
+							-- 	return vim.fn.getcwd(0, 0)
+							-- end,
 						},
 					},
-					{
-						{ name = "buffer" },
-					}
-					-- {
-					-- 	{ name = "rg", keyword_length = 3 },
-					-- }
-				),
+				}, {
+					{ name = "buffer" },
+				}, {
+					-- { name = "rg", keyword_length = 3 },
+				}),
 			})
 
 			cmp.setup.cmdline({ "/", "?" }, {
+				mapping = cmp.mapping.preset.cmdline(),
 				sources = {
 					{ name = "buffer" },
 				},
 			})
 
 			cmp.setup.cmdline(":", {
+				mapping = cmp.mapping.preset.cmdline(),
 				sources = cmp.config.sources({
 					{ name = "path" },
 				}, {
@@ -168,15 +215,91 @@ return {
 				}),
 			})
 		end,
-	},
+	}, -- }}}
+	-- { -- {{{
+	-- 	"saghen/blink.cmp",
+	-- 	version = "*",
+	-- 	dependencies = { "yuukibarns/LuaSnip" },
+	-- 	opts = {
+	-- 		snippets = {
+	-- 			expand = function(snippet)
+	-- 				require("luasnip").lsp_expand(snippet)
+	-- 			end,
+	-- 			active = function(filter)
+	-- 				if filter and filter.direction then
+	-- 					return require("luasnip").jumpable(filter.direction)
+	-- 				end
+	-- 				return require("luasnip").in_snippet()
+	-- 			end,
+	-- 			jump = function(direction)
+	-- 				require("luasnip").jump(direction)
+	-- 			end,
+	-- 		},
+	-- 		-- fuzzy = {
+	-- 		-- 	sorts = { "kind", "score" },
+	-- 		-- },
+	-- 		keymap = {
+	-- 			preset = "super-tab",
+	-- 			-- ["<Tab>"] = { "select_next", "fallback" },
+	-- 			-- ["<S-Tab>"] = { "select_prev", "fallback" },
+	-- 			-- ["<CR>"] = { "accept", "snippet_forward", "fallback" },
+	-- 			-- ["<A-CR>"] = { "snippet_backward", "fallback" },
+	-- 			-- cmdline = {
+	-- 			-- 	preset = "enter",
+	-- 			-- },
+	-- 		},
+	-- 		signature = { window = { border = "single" } },
+	-- 		completion = {
+	-- 			ghost_text = {
+	-- 				enabled = true,
+	-- 			},
+	-- 			documentation = { window = { border = "single" } },
+	-- 			menu = {
+	-- 				border = "single",
+	-- 				scrollbar = false,
+	--
+	-- 				-- Don't automatically show the completion menu
+	-- 				auto_show = true,
+	--
+	-- 				-- nvim-cmp style menu
+	-- 				draw = {
+	-- 					components = {
+	-- 						kind_icon = {
+	-- 							ellipsis = false,
+	-- 							text = function(ctx)
+	-- 								local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+	-- 								return kind_icon
+	-- 							end,
+	-- 							-- Optionally, you may also use the highlights from mini.icons
+	-- 							highlight = function(ctx)
+	-- 								local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+	-- 								return hl
+	-- 							end,
+	-- 						},
+	-- 					},
+	-- 				},
+	-- 			},
+	-- 		},
+	-- 		sources = {
+	-- 			min_keyword_length = function()
+	-- 				return vim.bo.filetype == "markdown" and 2 or 0
+	-- 			end,
+	-- 			default = { "lsp", "path", "luasnip", "buffer" },
+	-- 		},
+	-- 	},
+	-- }, -- }}}
 
 	-- surround
 	{
-		"echasnovski/mini.surround",
-		version = false,
-		config = function()
-			require("mini.surround").setup({})
-		end,
+		"kylechui/nvim-surround",
+		version = "*",
+		event = "VeryLazy",
+		opts = {
+			move_cursor = "sticky",
+			keymaps = {
+				visual = "gs",
+			},
+		},
 	},
 
 	-- auto pairs
@@ -198,4 +321,30 @@ return {
 			})
 		end,
 	},
+
+	-- try to move to blink.cmp
+	-- {-- {{{
+	-- 	"saghen/blink.cmp",
+	-- 	version = "*",
+	-- 	dependencies = { "yuukibarns/LuaSnip" },
+	-- 	opts = {
+	-- 		snippets = {
+	-- 			expand = function(snippet)
+	-- 				require("luasnip").lsp_expand(snippet)
+	-- 			end,
+	-- 			active = function(filter)
+	-- 				if filter and filter.direction then
+	-- 					return require("luasnip").jumpable(filter.direction)
+	-- 				end
+	-- 				return require("luasnip").in_snippet()
+	-- 			end,
+	-- 			jump = function(direction)
+	-- 				require("luasnip").jump(direction)
+	-- 			end,
+	-- 		},
+	-- 		sources = {
+	-- 			default = { "lsp", "path", "luasnip", "buffer" },
+	-- 		},
+	-- 	},
+	-- },-- }}}
 }

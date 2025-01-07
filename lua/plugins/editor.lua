@@ -48,16 +48,21 @@ return {
 		},
 	},
 
+	-- sneak
+	{
+		"justinmk/vim-sneak",
+	},
+
 	-- Input method integration
-	-- {
-	-- 	"keaising/im-select.nvim",
-	-- 	config = function ()
-	-- 		require("im_select").setup({})
-	-- 	end,
-	-- },
+	{
+		"keaising/im-select.nvim",
+		config = function ()
+			require("im_select").setup({})
+		end,
+	},
 
 	-- fuzzy finder
-	-- {
+	-- {{{{
 	-- 	"nvim-telescope/telescope.nvim",
 	-- 	cmd = "Telescope",
 	-- 	dependencies = { "nvim-lua/plenary.nvim" },
@@ -106,5 +111,5 @@ return {
 	-- 			},
 	-- 		})
 	-- 	end,
-	-- },
+	-- },}}}
 }
