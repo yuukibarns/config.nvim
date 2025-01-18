@@ -1,18 +1,50 @@
 return {
-	-- GPT
+	{
+		"yetone/avante.nvim",
+		event = "VeryLazy",
+		lazy = false,
+		version = false,
+		build = "make",
+		dependencies = {
+			"stevearc/dressing.nvim",
+			"nvim-lua/plenary.nvim",
+			"MunifTanjim/nui.nvim",
+		},
+		opts = {
+			provider = "deepseek",
+			vendors = {
+				deepseek = {
+					__inherited_from = "openai",
+					api_key_name = "DEEPSEEK_API_KEY",
+					endpoint = "https://api.deepseek.com",
+					model = "deepseek-chat",
+				},
+			},
+			-- provider = "qianwen",
+			-- vendors = {
+			-- 	qianwen = {
+			-- 		__inherited_from = "openai",
+			-- 		api_key_name = "DASHSCOPE_API_KEY",
+			-- 		endpoint = "https://dashscope.aliyuncs.com/compatible-mode/v1",
+			-- 		model = "qwen-coder-plus-latest",
+			-- 	},
+			-- },
+		},
+	},
+	-- GpChat
 	{
 		"yuukibarns/gp.nvim",
 		lazy = false,
 		keys = {
 			{
 				"<leader>gc",
-				"<cmd>GpChatNew<cr>",
+				"<cmd>GpChatNew tabnew<cr>",
 				mode = { "n" },
 				desc = "Open Chat",
 			},
 			{
 				"<leader>gt",
-				"<cmd>GpChatToggle<cr>",
+				"<cmd>GpChatToggle tabnew<cr>",
 				mode = { "n" },
 				desc = "Resume Last Chat",
 			},
@@ -31,7 +63,7 @@ return {
 				chat_shortcut_new = { modes = { "n" }, shortcut = "<leader>gc" },
 				-- chat_user_prefix = "`User:`",
 				-- chat_assistant_prefix = { "`Agent:`" },
-				toggle_target = "popup",
+				toggle_target = "tabnew",
 				chat_free_cursor = true,
 				providers = {
 					["glm-4"] = {

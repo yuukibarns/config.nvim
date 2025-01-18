@@ -6,11 +6,11 @@ return {
 		lazy = true,
 		--build = "make install_jsregexp",
 		dependencies = {
-			"yuukibarns/mySnippets",
-			url = "git@gitee.com:yuukibarns/mySnippets.git",
-			opts = { path = vim.fn.stdpath("data") .. "/lazy/mySnippets/snippets" },
-			-- "jzr/mySnippets",
-			-- opts = { path = "~/Learn/mySnippets/snippets" },
+			-- "yuukibarns/mySnippets",
+			-- url = "git@gitee.com:yuukibarns/mySnippets.git",
+			-- opts = { path = vim.fn.stdpath("data") .. "/lazy/mySnippets/snippets" },
+			"jzr/mySnippets",
+			opts = { path = "~/mySnippets/snippets" },
 		},
 		config = function()
 			local ls = require("luasnip")
@@ -48,39 +48,28 @@ return {
 
 			cmp.setup({
 				mapping = cmp.mapping.preset.insert({
-					["<Tab>"] = cmp.mapping({
-						i = function(fallback)
-							if luasnip.locally_jumpable() then
-								luasnip.jump(1)
-							else
-								fallback()
-							end
-						end,
-						s = function(fallback)
-							if luasnip.locally_jumpable() then
-								luasnip.jump(1)
-							else
-								fallback()
-							end
-						end,
-					}),
-					["<S-Tab>"] = cmp.mapping({
-						i = function(fallback)
-							if luasnip.locally_jumpable() then
-								luasnip.jump(-1)
-							else
-								fallback()
-							end
-						end,
-						s = function(fallback)
-							if luasnip.locally_jumpable() then
-								luasnip.jump(-1)
-							else
-								fallback()
-							end
-						end,
-					}),
+					["<Tab>"] = cmp.mapping(function(fallback)
+						if luasnip.locally_jumpable() then
+							luasnip.jump(1)
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+					["<S-Tab>"] = cmp.mapping(function(fallback)
+						if luasnip.locally_jumpable() then
+							luasnip.jump(-1)
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
 					["<C-y>"] = cmp.mapping.confirm({ select = true }),
+					["<C-l>"] = cmp.mapping(function(fallback)
+						if luasnip.expandable() then
+							luasnip.expand()
+						else
+							fallback()
+						end
+					end, { "i" }),
 				}),
 				-- mapping = { -- {{{
 				-- 	["<CR>"] = cmp.mapping({
@@ -216,78 +205,18 @@ return {
 			})
 		end,
 	}, -- }}}
-	-- { -- {{{
-	-- 	"saghen/blink.cmp",
-	-- 	version = "*",
-	-- 	dependencies = { "yuukibarns/LuaSnip" },
+
+	-- {-- {{{
+	-- 	'saghen/blink.cmp',
+	-- 	version = '*',
+	-- 	dependencies = { 'yuukibarns/LuaSnip' },
 	-- 	opts = {
-	-- 		snippets = {
-	-- 			expand = function(snippet)
-	-- 				require("luasnip").lsp_expand(snippet)
-	-- 			end,
-	-- 			active = function(filter)
-	-- 				if filter and filter.direction then
-	-- 					return require("luasnip").jumpable(filter.direction)
-	-- 				end
-	-- 				return require("luasnip").in_snippet()
-	-- 			end,
-	-- 			jump = function(direction)
-	-- 				require("luasnip").jump(direction)
-	-- 			end,
-	-- 		},
-	-- 		-- fuzzy = {
-	-- 		-- 	sorts = { "kind", "score" },
-	-- 		-- },
-	-- 		keymap = {
-	-- 			preset = "super-tab",
-	-- 			-- ["<Tab>"] = { "select_next", "fallback" },
-	-- 			-- ["<S-Tab>"] = { "select_prev", "fallback" },
-	-- 			-- ["<CR>"] = { "accept", "snippet_forward", "fallback" },
-	-- 			-- ["<A-CR>"] = { "snippet_backward", "fallback" },
-	-- 			-- cmdline = {
-	-- 			-- 	preset = "enter",
-	-- 			-- },
-	-- 		},
-	-- 		signature = { window = { border = "single" } },
-	-- 		completion = {
-	-- 			ghost_text = {
-	-- 				enabled = true,
-	-- 			},
-	-- 			documentation = { window = { border = "single" } },
-	-- 			menu = {
-	-- 				border = "single",
-	-- 				scrollbar = false,
-	--
-	-- 				-- Don't automatically show the completion menu
-	-- 				auto_show = true,
-	--
-	-- 				-- nvim-cmp style menu
-	-- 				draw = {
-	-- 					components = {
-	-- 						kind_icon = {
-	-- 							ellipsis = false,
-	-- 							text = function(ctx)
-	-- 								local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
-	-- 								return kind_icon
-	-- 							end,
-	-- 							-- Optionally, you may also use the highlights from mini.icons
-	-- 							highlight = function(ctx)
-	-- 								local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-	-- 								return hl
-	-- 							end,
-	-- 						},
-	-- 					},
-	-- 				},
-	-- 			},
-	-- 		},
+	-- 		snippets = { preset = 'luasnip' },
 	-- 		sources = {
-	-- 			min_keyword_length = function()
-	-- 				return vim.bo.filetype == "markdown" and 2 or 0
-	-- 			end,
-	-- 			default = { "lsp", "path", "luasnip", "buffer" },
+	-- 			default = { 'lsp', 'path', 'snippets', 'buffer' },
 	-- 		},
-	-- 	},
-	-- }, -- }}}
+	-- 	}
+	-- },-- }}}
 
 	-- surround
 	{
@@ -321,30 +250,4 @@ return {
 			})
 		end,
 	},
-
-	-- try to move to blink.cmp
-	-- {-- {{{
-	-- 	"saghen/blink.cmp",
-	-- 	version = "*",
-	-- 	dependencies = { "yuukibarns/LuaSnip" },
-	-- 	opts = {
-	-- 		snippets = {
-	-- 			expand = function(snippet)
-	-- 				require("luasnip").lsp_expand(snippet)
-	-- 			end,
-	-- 			active = function(filter)
-	-- 				if filter and filter.direction then
-	-- 					return require("luasnip").jumpable(filter.direction)
-	-- 				end
-	-- 				return require("luasnip").in_snippet()
-	-- 			end,
-	-- 			jump = function(direction)
-	-- 				require("luasnip").jump(direction)
-	-- 			end,
-	-- 		},
-	-- 		sources = {
-	-- 			default = { "lsp", "path", "luasnip", "buffer" },
-	-- 		},
-	-- 	},
-	-- },-- }}}
 }

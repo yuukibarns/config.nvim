@@ -1,5 +1,5 @@
 return {
-	-- filesype plugin for markdown 
+	-- filesype plugin for markdown
 	{
 		"yuukibarns/markdown.nvim",
 		ft = { "markdown", "tex" },
@@ -21,18 +21,23 @@ return {
 			})
 		end,
 	},
-
-	-- markdown preview
 	{
-		"toppair/peek.nvim",
-		ft = { "markdown" },
-		build = "deno task --quiet build:fast",
+		"iamcco/markdown-preview.nvim",
+		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+		build = function()
+			require("lazy").load({ plugins = { "markdown-preview.nvim" } })
+			vim.fn["mkdp#util#install"]()
+		end,
+		keys = {
+			{
+				"<leader>cp",
+				ft = "markdown",
+				"<cmd>MarkdownPreviewToggle<cr>",
+				desc = "Markdown Preview",
+			},
+		},
 		config = function()
-			require("peek").setup({
-				app = "browser",
-			})
-			vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
-			vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+			vim.cmd([[do FileType]])
 		end,
 	},
 
@@ -40,12 +45,25 @@ return {
 	{ "folke/lazydev.nvim", ft = "lua", config = true },
 
 	-- {
-	-- 	"iamcco/markdown-preview.nvim",
-	-- 	cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+	-- 	"OXY2DEV/markview.nvim",
+	-- 	-- lazy = false, -- Recommended
+	-- 	ft = "markdown", -- If you decide to lazy-load anyway
+	-- 	branch = "dev",
+	-- 	dependencies = {
+	-- 		"nvim-treesitter/nvim-treesitter",
+	-- 	}
+	-- },
+	-- markdown preview
+	-- {
+	-- 	"toppair/peek.nvim",
 	-- 	ft = { "markdown" },
-	-- 	build = function()
-	-- 		vim.cmd([[Lazy load markdown-preview.nvim]])
-	-- 		vim.fn["mkdp#util#install"]()
+	-- 	build = "deno task --quiet build:fast",
+	-- 	config = function()
+	-- 		require("peek").setup({
+	-- 			app = "browser",
+	-- 		})
+	-- 		vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+	-- 		vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
 	-- 	end,
 	-- },
 }

@@ -26,11 +26,11 @@ return {
 		dependencies = { "echasnovski/mini.icons" },
 		-- stylua: ignore
 		keys = {
-			{ "<leader>fb", function () require("fzf-lua").buffers() end, desc = "Buffers" },
-			{ "<leader>fd", function () require("fzf-lua").files() end, desc = "Find Files (cwd)" },
-			{ "<leader>fo", function () require("fzf-lua").oldfiles() end, desc = "Old Files" },
-			{ "<leader>fg", function () require("fzf-lua").live_grep() end, desc = "Live Grep" },
-			{ "<leader>fh", function () require("fzf-lua").helptags() end, desc = "Help Tags" },
+			{ "<leader>fb", function() require("fzf-lua").buffers() end,   desc = "Buffers" },
+			{ "<leader>fd", function() require("fzf-lua").files() end,     desc = "Find Files (cwd)" },
+			{ "<leader>fo", function() require("fzf-lua").oldfiles() end,  desc = "Old Files" },
+			{ "<leader>fg", function() require("fzf-lua").live_grep() end, desc = "Live Grep" },
+			{ "<leader>fh", function() require("fzf-lua").helptags() end,  desc = "Help Tags" },
 		},
 		opts = {
 			defaults = {
@@ -48,15 +48,38 @@ return {
 		},
 	},
 
-	-- sneak
+	-- which-key
 	{
-		"justinmk/vim-sneak",
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		opts = {
+			preset = "helix",
+		},
+		keys = {
+			{
+				"<leader>?",
+				function()
+					require("which-key").show({ global = false })
+				end,
+				desc = "Buffer Local Keymaps (which-key)",
+			},
+		},
+	},
+
+	-- leap
+	{
+		"ggandor/leap.nvim",
+		-- dependencies = { "tpope/vim-repeat" },
+		commit = '5ae080b646021bbb6e1d8715b155b1e633e28166',
+		config = function()
+			require("leap").create_default_mappings()
+		end,
 	},
 
 	-- Input method integration
 	{
 		"keaising/im-select.nvim",
-		config = function ()
+		config = function()
 			require("im_select").setup({})
 		end,
 	},

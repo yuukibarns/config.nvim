@@ -25,7 +25,9 @@ opt.numberwidth = 4
 -- opt.colorcolumn = "80"
 -- opt.textwidth = 70
 opt.cursorline = true
+-- opt.guicursor = "n-v-c-sm:block-blinkwait700-blinkon400-blinkoff250,i-ci-ve:ver25-blinkwait700-blinkon400-blinkoff250,r-cr-o:hor20-blinkwait700-blinkon400-blinkoff250"
 opt.spelllang = "en_gb,en_us"
+
 -- opt.spellfile = "~/.config/nvim/spell/en.utf-8.add"
 
 -- 6 multiple windows
@@ -52,20 +54,20 @@ opt.confirm = true
 opt.clipboard = "unnamedplus"
 
 -- 12 editing text
-opt.undofile = true-- {{{
+opt.undofile = true -- {{{
 opt.formatoptions = "tcroqnlj"
-opt.pumheight = 10-- }}}
+opt.pumheight = 10  -- }}}
 
 -- 13 tabs and indenting
-opt.tabstop = 4-- {{{
+opt.tabstop = 4     -- {{{
 opt.shiftwidth = 4
-opt.softtabstop = 4-- }}}
+opt.softtabstop = 4 -- }}}
 
 -- 14 folding
 opt.foldlevel = 99
 opt.foldtext = ""
-opt.foldmethod = "marker"
--- opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
 -- 15 diff mode
 opt.diffopt:append({ linematch = 60 })

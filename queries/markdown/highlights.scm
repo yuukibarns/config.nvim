@@ -42,7 +42,7 @@
 (pipe_table_delimiter_cell) @punctuation.special
 
 ; Code blocks (conceal backticks and language annotation)
-(indented_code_block) @markup.raw.block
+;(indented_code_block) @markup.raw.block
 
 ((fenced_code_block) @markup.raw.block
   (#set! priority 90))

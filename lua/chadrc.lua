@@ -37,7 +37,7 @@ local options = {
 		load_on_startup = false,
 	},
 	lsp = {
-		signature = false,
+		signature = true,
 	},
 }
 

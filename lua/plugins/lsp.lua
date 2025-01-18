@@ -8,7 +8,7 @@ return {
 	},
 
 	-- lspconfig
-	{-- {{{
+	{ -- {{{
 		"neovim/nvim-lspconfig",
 		dependencies = { "mason.nvim" },
 		config = function()
@@ -45,7 +45,11 @@ return {
 			})
 
 			-- lspconfig
-			-- local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			local handlers = {
+				["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "single" }),
+				["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "single" })
+			}
 			-- local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			local settings = {
@@ -59,22 +63,15 @@ return {
 					texlab = {
 						build = {
 							forwardSearchAfter = false,
-							executable = "/usr/bin/latexmk",
+							executable = "/usr/bin/pdflatex",
 							args = { "-interaction=nonstopmode", "-synctex=1", "%f" },
 							onSave = false,
 						},
 						forwardSearch = {
-							executable = "/bin/sioyek",
+							executable = "/bin/okular",
 							args = {
-								"--execute-command",
-								"toggle_synctex",
-								"--inverse-search",
-								'texlab inverse-search -i "%%1" -l %%2',
-								"--forward-search-file",
-								"%f",
-								"--forward-search-line",
-								"%l",
-								"%p",
+								"--unique",
+								"file:%p#src:%l%f",
 							},
 						},
 						chktex = { onOpenAndSave = false },
@@ -123,11 +120,12 @@ return {
 			for _, server in pairs(vim.tbl_keys(settings)) do
 				require("lspconfig")[server].setup({
 					capabilities = capabilities,
+					handlers = handlers,
 					settings = settings[server],
 				})
 			end
 		end,
-	},-- }}}
+	}, -- }}}
 
 	-- formatting
 	{
@@ -136,7 +134,7 @@ return {
 		dependencies = { "mason.nvim" },
 		keys = {
 			{
-				"<leader>a",
+				"<leader>bf",
 				function()
 					require("conform").format({ async = true, timeout_ms = 5000, lsp_fallback = true })
 				end,
