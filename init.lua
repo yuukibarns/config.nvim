@@ -11,11 +11,8 @@ vim.g.loaded_perl_provider = 0
 -- MAPLEADER
 vim.g.mapleader = " "
 
--- VIM-SNEAK
--- vim.cmd([[nnoremap s <Plug>Sneak_s]])
--- vim.cmd([[nnoremap S <Plug>Sneak_S]])
--- vim.cmd([[xnoremap s <Plug>Sneak_s]])
--- vim.cmd([[xnoremap S <Plug>Sneak_S]])
+-- PLAINTEX NEVER
+vim.g.tex_flavor = "latex"
 
 -- NANOLS
 vim.g.markdown_fenced_languages = {

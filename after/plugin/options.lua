@@ -44,7 +44,8 @@ opt.termguicolors = true
 -- opt.winblend = 30
 
 -- 9 using the mouse
-opt.mouse = ""
+opt.mouse = "nvi"
+-- opt.mousescroll = "ver:5,hor:6"
 
 -- 10 messages and info
 opt.shortmess:append({ W = true, I = true, c = true })

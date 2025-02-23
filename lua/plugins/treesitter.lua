@@ -55,6 +55,11 @@ return {
 							["io"] = "@block.inner",
 							["au"] = "@call.outer",
 							["iu"] = "@call.inner",
+							["id"] = "@number.inner",
+							["ak"] = "@frame.outer",
+							["ik"] = "@frame.inner",
+							-- ["aa"] = "@parameter.outer",
+							-- ["ia"] = "@parameter.inner"
 							-- You can also use captures from other query groups like `locals.scm`
 							-- ["as"] = { query = "@local.scope", query_group = "locals", desc = "Select language scope" },
 						},
@@ -69,7 +74,6 @@ return {
 							['@parameter.outer'] = 'v',
 							['@function.outer'] = 'V',
 							['@class.outer'] = 'V',
-							["@block.inner"] = "V",
 							["@block.outer"] = "V"
 							-- ['@class.outer'] = '<c-v>', -- blockwise
 						},

@@ -24,13 +24,38 @@ return {
 		"ibhagwan/fzf-lua",
 		cmd = "FzfLua",
 		dependencies = { "echasnovski/mini.icons" },
-		-- stylua: ignore
 		keys = {
-			{ "<leader>fb", function() require("fzf-lua").buffers() end,   desc = "Buffers" },
-			{ "<leader>fd", function() require("fzf-lua").files() end,     desc = "Find Files (cwd)" },
-			{ "<leader>fo", function() require("fzf-lua").oldfiles() end,  desc = "Old Files" },
-			{ "<leader>fg", function() require("fzf-lua").live_grep() end, desc = "Live Grep" },
-			{ "<leader>fh", function() require("fzf-lua").helptags() end,  desc = "Help Tags" },
+			{
+				"<leader>fb",
+				"<cmd>FzfLua buffers sort_mru=true sort_lastused=true<cr>",
+				desc = "Switch Buffer",
+			},
+			{
+				"<leader>fd",
+				"<cmd>FzfLua files<cr>",
+				desc = "Find Files (cwd)"
+			},
+			{
+				"<leader>fo",
+				"<cmd>FzfLua oldfiles<cr>",
+				desc = "Old Files"
+			},
+			{
+				"<leader>fg",
+				"<cmd>FzfLua live_grep<cr>",
+				desc = "Live Grep"
+			},
+			-- improve default mappings
+			{
+				"grr",
+				"<cmd>FzfLua lsp_references jump_to_single_result=true ignore_current_line=true<cr>",
+				desc = "References"
+			},
+			{
+				"gri",
+				"<cmd>FzfLua lsp_implementations jump_to_single_result=true ignore_current_line=true<cr>",
+				desc = "Goto Implementation"
+			},
 		},
 		opts = {
 			defaults = {

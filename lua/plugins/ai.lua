@@ -1,39 +1,7 @@
 return {
-	{
-		"yetone/avante.nvim",
-		event = "VeryLazy",
-		lazy = false,
-		version = false,
-		build = "make",
-		dependencies = {
-			"stevearc/dressing.nvim",
-			"nvim-lua/plenary.nvim",
-			"MunifTanjim/nui.nvim",
-		},
-		opts = {
-			provider = "deepseek",
-			vendors = {
-				deepseek = {
-					__inherited_from = "openai",
-					api_key_name = "DEEPSEEK_API_KEY",
-					endpoint = "https://api.deepseek.com",
-					model = "deepseek-chat",
-				},
-			},
-			-- provider = "qianwen",
-			-- vendors = {
-			-- 	qianwen = {
-			-- 		__inherited_from = "openai",
-			-- 		api_key_name = "DASHSCOPE_API_KEY",
-			-- 		endpoint = "https://dashscope.aliyuncs.com/compatible-mode/v1",
-			-- 		model = "qwen-coder-plus-latest",
-			-- 	},
-			-- },
-		},
-	},
 	-- GpChat
 	{
-		"yuukibarns/gp.nvim",
+		"jzr/gp.nvim",
 		lazy = false,
 		keys = {
 			{
@@ -66,50 +34,150 @@ return {
 				toggle_target = "tabnew",
 				chat_free_cursor = true,
 				providers = {
-					["glm-4"] = {
-						disable = false,
-						endpoint = "https://open.bigmodel.cn/api/paas/v4/chat/completions",
-						secret = os.getenv("GLM_4_KEY"),
-					},
 					deepseek = {
 						disable = false,
 						endpoint = "https://api.deepseek.com/chat/completions",
 						secret = os.getenv("DEEPSEEK_API_KEY"),
 					},
+					alibaba = {
+						disable = false,
+						endpoint = "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+						secret = os.getenv("DASHSCOPE_API_KEY")
+					},
+					siliconflow = {
+						disable = false,
+						endpoint = "https://api.siliconflow.cn/v1/chat/completions",
+						secret = os.getenv("SILICONFLOW_API_KEY")
+					},
+					volcengine = {
+						disable = false,
+						endpoint = "https://ark.cn-beijing.volces.com/api/v3/chat/completions",
+						secret = os.getenv("VOLCENGINE_API_KEY")
+					}
 				},
 				agents = {
 					{
-						name = "ChatGPT3-5",
-						disable = true,
-					},
-					{
-						name = "GhatGLM-4-plus",
-						provider = "glm-4",
+						name = "QwenMax",
+						provider = "alibaba",
 						chat = true,
 						command = false,
-						-- string with model name or table with model name and parameters
 						model = {
-							model = "glm-4-plus",
+							model = "qwen-max",
+							temperature = 0.6,
+							top_p = 1,
 						},
 						system_prompt = require("gp.defaults").chat_system_prompt,
 					},
 					{
-						name = "DeepSeekChat",
-						provider = "deepseek",
+						name = "DeepSeekChat(alibaba)",
+						provider = "alibaba",
 						chat = true,
 						command = false,
 						-- string with model name or table with model name and parameters
 						model = {
-							model = "deepseek-chat",
+							model = "deepseek-v3",
 							temperature = 0.6,
 							top_p = 1,
 							min_p = 0.05,
 						},
 						system_prompt = require("gp.defaults").chat_system_prompt,
 					},
+					{
+						name = "DeepSeekReasoner(alibaba)",
+						provider = "alibaba",
+						chat = true,
+						command = false,
+						model = {
+							model = "deepseek-r1",
+							temperature = 0.6,
+						},
+						system_prompt = "",
+					},
+					{
+						name = "DeepSeekChat(siliconflow)",
+						provider = "siliconflow",
+						chat = true,
+						command = false,
+						-- string with model name or table with model name and parameters
+						model = {
+							model = "deepseek-ai/DeepSeek-V3",
+							temperature = 0.6,
+							top_p = 1,
+							min_p = 0.05,
+						},
+						system_prompt = require("gp.defaults").chat_system_prompt,
+					},
+					{
+						name = "DeepSeekReasoner(siliconflow)",
+						provider = "siliconflow",
+						chat = true,
+						command = false,
+						model = {
+							model = "deepseek-ai/DeepSeek-R1",
+							temperature = 0.6,
+						},
+						system_prompt = "",
+					},
+					{
+						name = "DeepSeekChat(volcengine)",
+						provider = "volcengine",
+						chat = true,
+						command = false,
+						-- string with model name or table with model name and parameters
+						model = {
+							model = "ep-20250213162404-2qbq8",
+							temperature = 0.6,
+							top_p = 1,
+							min_p = 0.05,
+						},
+						system_prompt = require("gp.defaults").chat_system_prompt,
+					},
+					{
+						name = "DeepSeekReasoner(volcengine)",
+						provider = "volcengine",
+						chat = true,
+						command = false,
+						model = {
+							model = "ep-20250213162341-9w8vb",
+							temperature = 0.6,
+						},
+						system_prompt = "",
+					},
 				},
 			}
 			require("gp").setup(conf)
 		end,
 	},
+	-- {
+	-- 	"yetone/avante.nvim",
+	-- 	event = "VeryLazy",
+	-- 	lazy = false,
+	-- 	version = false,
+	-- 	build = "make",
+	-- 	dependencies = {
+	-- 		"stevearc/dressing.nvim",
+	-- 		"nvim-lua/plenary.nvim",
+	-- 		"MunifTanjim/nui.nvim",
+	-- 	},
+	-- 	opts = {
+	-- 		provider = "deepseek",
+	-- 		vendors = {
+	-- 			deepseek = {
+	-- 				__inherited_from = "openai",
+	-- 				api_key_name = "DEEPSEEK_API_KEY",
+	-- 				endpoint = "https://api.deepseek.com",
+	-- 				model = "deepseek-chat",
+	-- 			},
+	-- 		},
+	-- 		-- provider = "qianwen",
+	-- 		-- vendors = {
+	-- 		-- 	qianwen = {
+	-- 		-- 		__inherited_from = "openai",
+	-- 		-- 		api_key_name = "DASHSCOPE_API_KEY",
+	-- 		-- 		endpoint = "https://dashscope.aliyuncs.com/compatible-mode/v1",
+	-- 		-- 		model = "qwen-coder-plus-latest",
+	-- 		-- 	},
+	-- 		-- },
+	-- 	},
+	-- },
 }

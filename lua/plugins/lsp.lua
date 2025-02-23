@@ -78,7 +78,7 @@ return {
 						diagnostics = { ignoredPatterns = { "^Overfull", "^Underfull" } },
 					},
 				},
-				clangd = {},
+				-- clangd = {},
 				denols = {},
 				pyright = {
 					pyright = {
@@ -101,7 +101,7 @@ return {
 				},
 				rust_analyzer = {
 					["rust-analyzer"] = {
-						checkOnSave = false,
+						checkOnSave = true,
 						cargo = {
 							buildScripts = {
 								enable = true,
@@ -127,6 +127,11 @@ return {
 		end,
 	}, -- }}}
 
+	-- {
+	-- 	"cordx56/rustowl",
+	-- 	dependencies = { "neovim/nvim-lspconfig" },
+	-- },
+
 	-- formatting
 	{
 		"stevearc/conform.nvim",
@@ -146,10 +151,10 @@ return {
 			formatters_by_ft = {
 				bib = { "bibtex-tidy" },
 				markdown = { "prettier" },
+				html = { "prettier" },
 				lua = { "stylua" },
 				tex = { "latexindent" },
 				python = { "ruff_format" },
-				html = { "prettier" },
 			},
 		},
 	},

@@ -206,6 +206,7 @@ return {
 		end,
 	}, -- }}}
 
+	-- blink
 	-- {-- {{{
 	-- 	'saghen/blink.cmp',
 	-- 	version = '*',
