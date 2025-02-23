@@ -61,17 +61,4 @@ return {
 			},
 		},
 	},
-
-	-- smear cursor
-	-- {
-	-- 	"sphamba/smear-cursor.nvim",
-	-- 	version = "*",
-	-- 	cond = not vim.g.neovide,
-	-- 	opts = {
-	-- 		-- cursor_color = "#ffa460",
-	-- 		distance_stop_animating = 2,
-	-- 		legacy_computing_symbols_support = true,
-	-- 		-- smear_to_cmd = false,
-	-- 	},
-	-- },
 }

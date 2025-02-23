@@ -1,5 +1,4 @@
 return {
-
 	-- treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",

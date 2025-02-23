@@ -6,11 +6,11 @@ return {
 		lazy = true,
 		--build = "make install_jsregexp",
 		dependencies = {
-			-- "yuukibarns/mySnippets",
-			-- url = "git@gitee.com:yuukibarns/mySnippets.git",
-			-- opts = { path = vim.fn.stdpath("data") .. "/lazy/mySnippets/snippets" },
-			"jzr/mySnippets",
-			opts = { path = "~/mySnippets/snippets" },
+			"yuukibarns/mySnippets",
+			url = "git@gitee.com:yuukibarns/mySnippets.git",
+			opts = { path = vim.fn.stdpath("data") .. "/lazy/mySnippets/snippets" },
+			-- "jzr/mySnippets",
+			-- opts = { path = "~/mySnippets/snippets" },
 		},
 		config = function()
 			local ls = require("luasnip")
@@ -71,65 +71,6 @@ return {
 						end
 					end, { "i" }),
 				}),
-				-- mapping = { -- {{{
-				-- 	["<CR>"] = cmp.mapping({
-				-- 		i = function(fallback)
-				-- 			if cmp.visible() and cmp.get_active_entry() then
-				-- 				cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-				-- 			elseif luasnip.locally_jumpable() then
-				-- 				luasnip.jump(1)
-				-- 			else
-				-- 				fallback()
-				-- 			end
-				-- 		end,
-				-- 		s = function(fallback)
-				-- 			if cmp.visible() and cmp.get_active_entry() then
-				-- 				cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-				-- 			elseif luasnip.locally_jumpable() then
-				-- 				luasnip.jump(1)
-				-- 			else
-				-- 				fallback()
-				-- 			end
-				-- 		end,
-				-- 	}),
-				-- 	["<A-CR>"] = cmp.mapping({
-				-- 		i = function(fallback)
-				-- 			if luasnip.locally_jumpable() then
-				-- 				luasnip.jump(-1)
-				-- 			else
-				-- 				fallback()
-				-- 			end
-				-- 		end,
-				-- 		s = function(fallback)
-				-- 			if luasnip.locally_jumpable() then
-				-- 				luasnip.jump(-1)
-				-- 			else
-				-- 				fallback()
-				-- 			end
-				-- 		end,
-				-- 	}),
-				-- 	["<C-k>"] = cmp.mapping(function(fallback)
-				-- 		if luasnip.expandable() then
-				-- 			luasnip.expand()
-				-- 		else
-				-- 			fallback()
-				-- 		end
-				-- 	end, { "i" }),
-				-- 	["<Tab>"] = cmp.mapping(function(fallback)
-				-- 		if cmp.visible() then
-				-- 			cmp.select_next_item()
-				-- 		else
-				-- 			fallback()
-				-- 		end
-				-- 	end, { "i", "c" }),
-				-- 	["<S-Tab>"] = cmp.mapping(function(fallback)
-				-- 		if cmp.visible() then
-				-- 			cmp.select_prev_item()
-				-- 		else
-				-- 			fallback()
-				-- 		end
-				-- 	end, { "i", "c" }),
-				-- }, -- }}}
 				snippet = {
 					expand = function(args)
 						luasnip.lsp_expand(args.body)
@@ -205,19 +146,6 @@ return {
 			})
 		end,
 	}, -- }}}
-
-	-- blink
-	-- {-- {{{
-	-- 	'saghen/blink.cmp',
-	-- 	version = '*',
-	-- 	dependencies = { 'yuukibarns/LuaSnip' },
-	-- 	opts = {
-	-- 		snippets = { preset = 'luasnip' },
-	-- 		sources = {
-	-- 			default = { 'lsp', 'path', 'snippets', 'buffer' },
-	-- 		},
-	-- 	}
-	-- },-- }}}
 
 	-- surround
 	{

@@ -21,14 +21,6 @@ local options = {
 				cursor = "%#St_pos_sep#" .. "" .. "%#St_pos_icon# %#St_pos_text# %c%V %p%% ",
 			},
 		},
-		-- cmp = {
-		-- 	icons_left = false, -- only for non-atom styles!
-		-- 	style = "default", -- default/flat_light/flat_dark/atom/atom_colored
-		-- 	format_colors = {
-		-- 		tailwind = false, -- will work for css lsp too
-		-- 		icon = "󱓻",
-		-- 	},
-		-- },
 		tabufline = {
 			enabled = false,
 		},

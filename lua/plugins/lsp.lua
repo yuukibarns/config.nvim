@@ -127,11 +127,6 @@ return {
 		end,
 	}, -- }}}
 
-	-- {
-	-- 	"cordx56/rustowl",
-	-- 	dependencies = { "neovim/nvim-lspconfig" },
-	-- },
-
 	-- formatting
 	{
 		"stevearc/conform.nvim",
