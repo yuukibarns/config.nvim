@@ -6,9 +6,9 @@ return {
 		lazy = true,
 		--build = "make install_jsregexp",
 		dependencies = {
-			"yuukibarns/mySnippets",
-			url = "git@gitee.com:yuukibarns/mySnippets.git",
-			opts = { path = vim.fn.stdpath("data") .. "/lazy/mySnippets/snippets" },
+			-- "yuukibarns/mySnippets",
+			-- url = "git@gitee.com:yuukibarns/mySnippets.git",
+			-- opts = { path = vim.fn.stdpath("data") .. "/lazy/mySnippets/snippets" },
 			-- "jzr/mySnippets",
 			-- opts = { path = "~/mySnippets/snippets" },
 		},
