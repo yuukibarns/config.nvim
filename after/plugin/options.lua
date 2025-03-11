@@ -57,12 +57,14 @@ opt.clipboard = "unnamedplus"
 -- 12 editing text
 opt.undofile = true -- {{{
 opt.formatoptions = "tcroqnlj"
-opt.pumheight = 10  -- }}}
+-- opt.formatexpr = "v:lua.require'conform'.formatexpr()"
+opt.pumheight = 10 -- }}}
 
 -- 13 tabs and indenting
-opt.tabstop = 4     -- {{{
+opt.tabstop = 4
 opt.shiftwidth = 4
-opt.softtabstop = 4 -- }}}
+opt.softtabstop = 4
+opt.expandtab = true
 
 -- 14 folding
 opt.foldlevel = 99
