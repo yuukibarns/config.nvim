@@ -30,6 +30,7 @@ return {
         },
         ---@type snacks.Config
         opts = {
+            -- picker = { enabled = true },
             image = {
                 doc = {
                     -- enable image viewer for documents

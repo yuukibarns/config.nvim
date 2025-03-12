@@ -1,3 +1,4 @@
+local fzf = require("fzf-lua")
 local opt = vim.opt_local
 
 opt.matchpairs = { "(:)", "[:]", "{:}" }
@@ -7,25 +8,9 @@ opt.textwidth = 100
 
 vim.api.nvim_buf_set_keymap(0, "n", "<C-j>", "[s1z=", { desc = "Crect Last Spelling" })
 
-vim.api.nvim_buf_create_user_command(0, "FixInlineMath", function()
-    vim.cmd("%s/\\\\(\\s*/$/ge")
-    vim.cmd("%s/\\s*\\\\)/$/ge")
-    vim.cmd("nohlsearch") -- Clear search highlight
-end, {})
-
-vim.api.nvim_buf_create_user_command(0, "FixDisplayMath", function()
-    vim.cmd("%s/\\\\\\[/$$/ge")
-    vim.cmd("%s/\\\\\\]/$$/ge")
-    vim.cmd("nohlsearch") -- Clear search highlight
-end, {})
-
-vim.api.nvim_buf_create_user_command(0, "FixMathFormat", function()
-    vim.cmd([[%s/^\$\$\n\(\_.\{-}\)\n\$\$/\r$$\1$$\r/ge]])
-    vim.cmd([[%s/\v(\s*)\$\$(\n)\s*(\S.*)\n\s*\$\$/\1\2\1$$\3$$\r\1/ge]])
-    vim.cmd("nohlsearch") -- Clear search highlight
-end, {})
-
 vim.api.nvim_buf_create_user_command(0, "FixMath", function()
+    -- vim.cmd("%s/\\\\(\\s\\+/$/ge")
+    -- vim.cmd("%s/\\s\\+\\\\)/$/ge")
     vim.cmd("%s/\\\\(\\s*/$/ge")
     vim.cmd("%s/\\s*\\\\)/$/ge")
     vim.cmd("%s/\\\\\\[/$$/ge")
@@ -35,128 +20,132 @@ vim.api.nvim_buf_create_user_command(0, "FixMath", function()
     vim.cmd("nohlsearch") -- Clear search highlight
 end, {})
 
--- Yank URL-friendly format of the current line
-function YankURLFriendly()
-    local line = vim.api.nvim_get_current_line()
-    line = line:gsub("[^%w%s]", " ")       -- Replace special characters with spaces
-    line = line:gsub("^%s*(.-)%s*$", "%1") -- Remove leading/trailing whitespace
-    line = line:gsub("%s+", "-")           -- Replace spaces with hyphens
-    line = line:lower()                    -- Convert to lowercase
+local function GetLink()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local cursor_pos = vim.api.nvim_win_get_cursor(0)
+    local row, col = cursor_pos[1], cursor_pos[2] -- row (1-based), col (0-based)
 
-    vim.cmd('normal! yy')                  -- Manually trigger yank highlight
-    vim.fn.setreg('0', line)               -- Yank the result into the 0 register
-    vim.fn.setreg('"', line)               -- Yank the result into the " register
-    vim.fn.setreg('+', line)               -- Yank the result into the + register
-end
+    local pos_info = vim.inspect_pos(
+        bufnr,
+        row - 1,
+        col,
+        { treesitter = true, syntax = false, extmarks = false, semantic_tokens = false }
+    )
 
--- Map the function to 'yu' in normal mode with a description
-vim.api.nvim_buf_set_keymap(0, 'n', '<leader>yu', '', {
-    noremap = true, -- Disable recursive mapping
-    silent = true,  -- Suppress command feedback
-    desc = "Yank URL-friendly format of the current line",
-    callback = function()
-        YankURLFriendly()
-    end
-})
+    if not pos_info.treesitter then return false end
 
--- Custom gf with title search support
----@return string
----@param title string
-local function normalize_title(title)
-    -- Remove leading/trailing whitespace
-    title = title:gsub('^%s*(.-)%s*$', '%1')
-    -- Replace hyphens and spaces with nothing
-    title = title:gsub('[- ]', '')
-    -- Remove special characters (e.g., $, \, etc.)
-    title = title:gsub('[^%w]', '')
-    -- Convert to lowercase for case-insensitive matching
-    return title:lower()
-end
+    local is_strong = false
 
--- Fuzzy match implementation from scratch
----@param pattern string The pattern to match (e.g., normalized title)
----@param text string The text to search in (e.g., normalized header)
----@return boolean True if the pattern fuzzy matches the text, false otherwise
-local function fuzzy_match(pattern, text)
-    local pattern_len = #pattern
-    local pattern_idx = 1
-
-    for i = 1, #text do
-        if text:sub(i, i) == pattern:sub(pattern_idx, pattern_idx) then
-            pattern_idx = pattern_idx + 1
-            if pattern_idx > pattern_len then
-                return true
-            end
+    for _, node in ipairs(pos_info.treesitter) do
+        if node.capture == "markup.strong" then
+            is_strong = true
+            break
         end
     end
+
+    if not is_strong then return false end
+
+    -- Search backward for opening '**' (returns {lnum, col, 0})
+    local open_pos = vim.fn.searchpos('\\*\\*', 'bcnW')
+    if open_pos[1] == 0 then return false end -- No opening found
+
+    -- Extract line and column from the position tuple
+    local open_lnum, open_col = open_pos[1], open_pos[2]
+
+    local close_pos = vim.fn.searchpos('\\*\\*', 'cnW')
+    if close_pos[1] == 0 then return false end -- No closing found
+
+    local close_lnum, close_col = close_pos[1], close_pos[2] + 1
+
+    -- Check if the cursor is between the opening and closing '**'
+    local cursor_pos_1based = { row, col + 1 } -- Convert to 1-based column
+    local is_inside = (cursor_pos_1based[1] > open_lnum or (cursor_pos_1based[1] == open_lnum and cursor_pos_1based[2] > open_col + 1)) and
+        (cursor_pos_1based[1] < close_lnum or (cursor_pos_1based[1] == close_lnum and cursor_pos_1based[2] < close_col - 1))
+
+    if not is_inside then return false end
+
+    -- Extract text between the opening and closing '**'
+    local lines = vim.api.nvim_buf_get_lines(0, open_lnum - 1, close_lnum, false)
+    if #lines == 0 then return false end
+
+    -- Calculate start and end positions (1-based to Lua's 1-based strings)
+    local start_char = open_col + 2 -- Skip the opening '**'
+
+    local end_line_idx = #lines
+    local end_char = close_col - 2 -- Stop before the closing '**'
+
+    -- Adjust for single-line vs multi-line
+    local parts = {}
+    if open_lnum == close_lnum then
+        -- Single line: extract substring directly
+        parts[1] = lines[1]:sub(start_char, end_char)
+    else
+        -- Multi-line: handle first line, middle lines, and last line
+        parts[1] = lines[1]:sub(start_char)
+        for i = 2, end_line_idx - 1 do
+            parts[#parts + 1] = lines[i]
+        end
+        parts[#parts + 1] = lines[end_line_idx]:sub(1, end_char)
+    end
+
+    local bold_text = table.concat(parts, ' ')
+    return bold_text ~= '' and bold_text or false
+end
+
+local function GetPath()
+    -- Get the current line and cursor position
+    local line = vim.api.nvim_get_current_line()
+    local col = vim.api.nvim_win_get_cursor(0)[2] + 1 -- Lua is 1-indexed
+
+    -- Find all pairs of backticks in the line
+    local backtick_pairs = {}
+    for i = 1, #line do
+        if line:sub(i, i) == '`' then
+            table.insert(backtick_pairs, i)
+        end
+    end
+
+    -- Check if the cursor is inside a pair of backticks
+    for i = 1, #backtick_pairs - 1, 2 do
+        local start = backtick_pairs[i]
+        local finish = backtick_pairs[i + 1]
+        if col > start and col < finish then
+            -- Extract and return the text inside the backticks
+            return line:sub(start + 1, finish - 1)
+        end
+    end
+
+    -- If not inside backticks, return nil
     return false
 end
 
-local function expand_env_vars(path)
-    return path:gsub('%$([%w_]+)', function(env_var)
-        return os.getenv(env_var) or ''
-    end)
-end
-
-local function custom_gf()
-    local file_with_title = vim.fn.expand('<cfile>')
-    local parts = vim.split(file_with_title, '#')
-    local file = expand_env_vars(parts[1])
-    local title = parts[2] or ''
-
-    if vim.fn.filereadable(file) == 1 or file == "" then
-        local is_marked = false
-        if file ~= "" then
-            vim.cmd('edit ' .. file)
-            is_marked = true
+vim.api.nvim_buf_set_keymap(0, 'n', '<C-]>', '', {
+    desc = "Jump to definition",
+    callback = function()
+        local link = GetLink()
+        if link then
+            fzf.grep({
+                search = "^#+ " .. link,
+                no_esc = true,
+                rg_opts = "--column --line-number --no-heading --color=always --ignore-case --max-columns=4096 -e"
+                -- fzf_opts = {
+                --     ["--select-1"] = true
+                -- }
+            })
         end
-        if title ~= '' then
-            -- Normalize the URL-friendly title
-            local normalized_title = normalize_title(title)
-
-            -- Save the initial cursor position
-            local initial_line = vim.fn.line('.')
-            local initial_col = vim.fn.col('.')
-
-            if not is_marked then
-                -- Create a jump point before moving the cursor if have not been marked
-                vim.cmd('normal! m\'')
-            end
-
-            -- Search for the first header that fuzzy matches the normalized title
-            local found = false
-            -- Move the cursor to the start of the file
-            vim.fn.cursor(1, 1)
-
-            while vim.fn.search('^\\s*#\\+\\s*\\zs.*', 'W') ~= 0 do
-                local header = vim.fn.getline('.')
-                local normalized_header = normalize_title(header)
-
-                -- Use fuzzy matching to compare the title and header
-                if fuzzy_match(normalized_title, normalized_header) then
-                    found = true
-                    break
-                end
-            end
-
-            -- If no match is found, restore the cursor to the initial position
-            if not found then
-                vim.fn.cursor(initial_line, initial_col)
-                vim.api.nvim_echo({ { 'No match found for title: ' .. title, 'WarningMsg' } }, true, {})
-            end
-        end
-    else
-        vim.api.nvim_echo({ { "File not found: " .. file, "WarningMsg" } }, true, {})
-    end
-end
+    end,
+})
 
 vim.api.nvim_buf_set_keymap(0, 'n', 'gf', '', {
-    noremap = true,
-    silent = true,
-    desc = "Custom go to file under cursor",
+    desc = "Go to File",
     callback = function()
-        custom_gf()
-    end
+        local path = GetPath()
+        if path then
+            fzf.files({
+                query = path,
+            })
+        end
+    end,
 })
 
 -- Alias configuration: {target_char = {'alias1', 'alias2'}}
@@ -814,43 +803,33 @@ local ALIGN_ENVS = {
     flalign = true,
 }
 
----@param pos integer
-local function get_concealed_line_length(pos)
+---Calculate concealed length at position for a specific line
+---@param line_num_1based integer 1-based line number
+---@param pos integer 1-based column position
+local function get_concealed_line_length(line_num_1based, pos)
     local bufnr = vim.api.nvim_get_current_buf()
-    local line_num_1based = vim.fn.line('.')
     local line_num = line_num_1based - 1 -- Convert to 0-based
-
-    -- Explicit filter configuration
-    local filter = {
-        syntax = false,         -- Disable syntax highlighting inspection
-        treesitter = true,      -- Enable Tree-sitter nodes
-        extmarks = false,       -- Disable extmarks
-        semantic_tokens = false -- Disable LSP semantic tokens
-    }
+    -- Get the character under the cursor
+    local line = vim.api.nvim_buf_get_lines(0, line_num, line_num + 1, false)[1]
+    local filter = { syntax = false, treesitter = true, extmarks = false, semantic_tokens = false }
 
     local concealed_length = 0
-    local in_conceal_region = false
+    local in_conceal = false
     local col = 0
+    local metadata = ""
 
     while col < pos do
-        -- Get Tree-sitter nodes at the current position
         local nodes = vim.inspect_pos(bufnr, line_num, col, filter)
-
-        -- local nodes_str = vim.inspect(nodes)
-        -- vim.api.nvim_echo({ { nodes_str } }, false, {})
-
         local is_concealed = false
+        local char = line:sub(col + 1, col + 1)
 
         for _, node_info in ipairs(nodes.treesitter) do
-            local capture_name = node_info.capture or ''
-            if capture_name:match('conceal') then
+            if (node_info.capture or ''):match('conceal') then
                 is_concealed = true
-                if not in_conceal_region then
-                    in_conceal_region = true
-                    local metadata = node_info.metadata.conceal or ""
-                    if metadata ~= "" then
-                        concealed_length = concealed_length + 1
-                    end
+                if not in_conceal or node_info.metadata.conceal ~= metadata or char == "\\" then
+                    metadata = node_info.metadata.conceal
+                    in_conceal = true
+                    concealed_length = concealed_length + (metadata ~= "" and 1 or 0)
                 end
                 break
             end
@@ -858,9 +837,9 @@ local function get_concealed_line_length(pos)
 
         if not is_concealed then
             concealed_length = concealed_length + 1
-            in_conceal_region = false
+            metadata = ""
+            in_conceal = false
         end
-
         col = col + 1
     end
 
@@ -883,6 +862,76 @@ local function in_align()
         node = node:parent()
     end
     return false
+end
+
+local function get_align_node()
+    local node = vim.treesitter.get_node({ ignore_injections = false })
+    while node and node:type() ~= "math_environment" do node = node:parent() end
+    if not node then return end
+
+    -- Verify environment type
+    local begin = node:child(0)
+    local names = begin and begin:field("name")
+    if not (names and names[1] and ALIGN_ENVS[get_node_text(names[1], 0):gsub("{(%w+)%s*%*?}", "%1")]) then
+        return nil
+    end
+
+    return node
+end
+
+local function normalize_align_environment(s_row, e_row)
+    local lines = vim.api.nvim_buf_get_lines(0, s_row, e_row, false)
+
+    -- Normalization-only processing
+    local normalized_lines = {}
+    for i, line in ipairs(lines) do
+        local indent = line:match('^(%s*)') or ''
+        local content = line:sub(#indent + 1)
+
+        -- Collapse whitespace around ampersands and multiple spaces
+        local processed = content:gsub('%s*&%s*', ' & ') -- Ensure single spaces around &
+            :gsub('^%s+', '')                            -- Trim leading spaces
+            :gsub('%s+$', '')                            -- Trim trailing spaces
+            :gsub('%s+', ' ')                            -- Collapse multiple spaces into one
+
+        normalized_lines[i] = indent .. processed
+    end
+
+    vim.api.nvim_buf_set_lines(0, s_row, e_row, false, normalized_lines)
+end
+
+local function align_ampersands(s_row, e_row)
+    local lines = vim.api.nvim_buf_get_lines(0, s_row, e_row, false)
+
+    -- Find the maximum concealed length before the ampersand
+    local max_concealed_length = 0
+    for i, line in ipairs(lines) do
+        local buf_line = s_row + i
+        local and_pos = line:find('&')
+        if and_pos then
+            local cl = get_concealed_line_length(buf_line, and_pos)
+            max_concealed_length = math.max(max_concealed_length, cl)
+        end
+    end
+
+    -- Apply alignment by adding padding to the head of each line
+    local aligned_lines = {}
+    for i, line in ipairs(lines) do
+        local buf_line = s_row + i
+        local and_pos = line:find('&')
+        if and_pos then
+            local cl = get_concealed_line_length(buf_line, and_pos)
+            local padding = string.rep(' ', max_concealed_length - cl)
+            -- Insert padding before the ampersand
+            local aligned_line = padding .. line
+            aligned_lines[i] = aligned_line
+        else
+            -- If there's no ampersand, keep the line as is
+            aligned_lines[i] = line
+        end
+    end
+
+    vim.api.nvim_buf_set_lines(0, s_row, e_row, false, aligned_lines)
 end
 
 -- Inserts a new line with proper alignment characters when in math environment
@@ -909,13 +958,13 @@ vim.keymap.set('i', '<CR>', function()
 
     -- Schedule buffer modifications after exiting Insert mode
     vim.schedule(function()
-        local offset = and_pos - get_concealed_line_length(and_pos)
+        local offset = and_pos - get_concealed_line_length(cursor[1], and_pos)
         -- vim.api.nvim_echo({ { tostring(offset) } }, true, {})
         -- Calculate indent and create new line
         local indent = line:sub(1, and_pos - 1)
         indent = indent:gsub("[^ \t]", " ")
         indent = indent:sub(1, -(offset + 1))
-        local new_line = indent .. '&'
+        local new_line = indent .. '& \\\\'
 
         -- Insert the new line below the current line
         vim.api.nvim_buf_set_lines(0, row + 1, row + 1, true, { new_line })
@@ -926,6 +975,63 @@ vim.keymap.set('i', '<CR>', function()
     end)
 
     -- Return nothing to prevent default <CR> behavior
+    return ""
+end, {
+    expr = true,
+    buffer = 0,
+    noremap = true,
+    silent = true,
+    desc = "Insert new aligned line in LaTeX environment"
+})
+
+-- Keymap to trigger alignment
+vim.keymap.set('n', '<leader>la', function()
+    -- Get node and range first before any modifications
+    local node = get_align_node()
+    if not node then return end
+    local s_row, _, e_row, _ = node:range()
+
+    -- Wrap alignment in schedule to ensure buffer updates are processed
+    local align = vim.schedule_wrap(function()
+        align_ampersands(s_row, e_row)
+    end)
+
+    -- First normalization using captured range
+    normalize_align_environment(s_row, e_row)
+
+    align()
+end, {
+    buffer = 0,
+    desc = 'Align & symbols in LaTeX environment with conceal awareness'
+})
+
+-- Inserts a new line with proper alignment characters when in math environment
+vim.keymap.set('n', 'o', function()
+    if not in_align() then
+        return "o"
+    end
+
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    local row = cursor[1] - 1 -- Convert to 0-based index
+    local line = vim.api.nvim_buf_get_lines(0, row, row + 1, true)[1]
+    local indent = string.match(line, "^%s*")
+
+    -- Exit Insert mode first
+    local escape = vim.api.nvim_replace_termcodes('<Esc>', true, true, true)
+    vim.api.nvim_feedkeys(escape, 'n', true)
+
+    -- Schedule buffer modifications after exiting Insert mode
+    vim.schedule(function()
+        local new_line = indent .. ' \\\\'
+
+        -- Insert the new line below the current line
+        vim.api.nvim_buf_set_lines(0, row + 1, row + 1, true, { new_line })
+
+        -- Move cursor to the new line and position after '&'
+        vim.api.nvim_win_set_cursor(0, { row + 2, #indent })
+        vim.api.nvim_feedkeys('i', 'n', false) -- Enter Insert mode after '&'
+    end)
+
     return ""
 end, {
     expr = true,

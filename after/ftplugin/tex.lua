@@ -234,10 +234,53 @@ local ALIGN_ENVS = {
     flalign = true,
 }
 
+---Calculate concealed length at position for a specific line
+---@param line_num_1based integer 1-based line number
+---@param pos integer 1-based column position
+local function get_concealed_line_length(line_num_1based, pos)
+    local bufnr = vim.api.nvim_get_current_buf()
+    local line_num = line_num_1based - 1 -- Convert to 0-based
+    -- Get the character under the cursor
+    local line = vim.api.nvim_buf_get_lines(0, line_num, line_num + 1, false)[1]
+    local filter = { syntax = false, treesitter = true, extmarks = false, semantic_tokens = false }
+
+    local concealed_length = 0
+    local in_conceal = false
+    local col = 0
+    local metadata = ""
+
+    while col < pos do
+        local nodes = vim.inspect_pos(bufnr, line_num, col, filter)
+        local is_concealed = false
+        local char = line:sub(col + 1, col + 1)
+
+        for _, node_info in ipairs(nodes.treesitter) do
+            if (node_info.capture or ''):match('conceal') then
+                is_concealed = true
+                if not in_conceal or node_info.metadata.conceal ~= metadata or char == "\\" then
+                    metadata = node_info.metadata.conceal
+                    in_conceal = true
+                    concealed_length = concealed_length + (metadata ~= "" and 1 or 0)
+                end
+                break
+            end
+        end
+
+        if not is_concealed then
+            concealed_length = concealed_length + 1
+            metadata = ""
+            in_conceal = false
+        end
+        col = col + 1
+    end
+
+    return concealed_length
+end
+
 ---Check if cursor is in a LaTeX math alignment environment
 ---@return boolean true if in alignment environment, false otherwise
 local function in_align()
-    local node = vim.treesitter.get_node()
+    local node = vim.treesitter.get_node({ ignore_injections = false })
     while node do
         if node:type() == "math_environment" then
             local begin = node:child(0)
@@ -250,6 +293,76 @@ local function in_align()
         node = node:parent()
     end
     return false
+end
+
+local function get_align_node()
+    local node = vim.treesitter.get_node({ ignore_injections = false })
+    while node and node:type() ~= "math_environment" do node = node:parent() end
+    if not node then return end
+
+    -- Verify environment type
+    local begin = node:child(0)
+    local names = begin and begin:field("name")
+    if not (names and names[1] and ALIGN_ENVS[get_node_text(names[1], 0):gsub("{(%w+)%s*%*?}", "%1")]) then
+        return nil
+    end
+
+    return node
+end
+
+local function normalize_align_environment(s_row, e_row)
+    local lines = vim.api.nvim_buf_get_lines(0, s_row, e_row, false)
+
+    -- Normalization-only processing
+    local normalized_lines = {}
+    for i, line in ipairs(lines) do
+        local indent = line:match('^(%s*)') or ''
+        local content = line:sub(#indent + 1)
+
+        -- Collapse whitespace around ampersands and multiple spaces
+        local processed = content:gsub('%s*&%s*', ' & ') -- Ensure single spaces around &
+            :gsub('^%s+', '')                            -- Trim leading spaces
+            :gsub('%s+$', '')                            -- Trim trailing spaces
+            :gsub('%s+', ' ')                            -- Collapse multiple spaces into one
+
+        normalized_lines[i] = indent .. processed
+    end
+
+    vim.api.nvim_buf_set_lines(0, s_row, e_row, false, normalized_lines)
+end
+
+local function align_ampersands(s_row, e_row)
+    local lines = vim.api.nvim_buf_get_lines(0, s_row, e_row, false)
+
+    -- Find the maximum concealed length before the ampersand
+    local max_concealed_length = 0
+    for i, line in ipairs(lines) do
+        local buf_line = s_row + i
+        local and_pos = line:find('&')
+        if and_pos then
+            local cl = get_concealed_line_length(buf_line, and_pos)
+            max_concealed_length = math.max(max_concealed_length, cl)
+        end
+    end
+
+    -- Apply alignment by adding padding to the head of each line
+    local aligned_lines = {}
+    for i, line in ipairs(lines) do
+        local buf_line = s_row + i
+        local and_pos = line:find('&')
+        if and_pos then
+            local cl = get_concealed_line_length(buf_line, and_pos)
+            local padding = string.rep(' ', max_concealed_length - cl)
+            -- Insert padding before the ampersand
+            local aligned_line = padding .. line
+            aligned_lines[i] = aligned_line
+        else
+            -- If there's no ampersand, keep the line as is
+            aligned_lines[i] = line
+        end
+    end
+
+    vim.api.nvim_buf_set_lines(0, s_row, e_row, false, aligned_lines)
 end
 
 -- Inserts a new line with proper alignment characters when in math environment
@@ -276,9 +389,12 @@ vim.keymap.set('i', '<CR>', function()
 
     -- Schedule buffer modifications after exiting Insert mode
     vim.schedule(function()
+        local offset = and_pos - get_concealed_line_length(cursor[1], and_pos)
+        -- vim.api.nvim_echo({ { tostring(offset) } }, true, {})
         -- Calculate indent and create new line
         local indent = line:sub(1, and_pos - 1)
         indent = indent:gsub("[^ \t]", " ")
+        indent = indent:sub(1, -(offset + 1))
         local new_line = indent .. '&'
 
         -- Insert the new line below the current line
@@ -297,4 +413,25 @@ end, {
     noremap = true,
     silent = true,
     desc = "Insert new aligned line in LaTeX environment"
+})
+
+-- Keymap to trigger alignment
+vim.keymap.set('n', '<leader>la', function()
+    -- Get node and range first before any modifications
+    local node = get_align_node()
+    if not node then return end
+    local s_row, _, e_row, _ = node:range()
+
+    -- Wrap alignment in schedule to ensure buffer updates are processed
+    local align = vim.schedule_wrap(function()
+        align_ampersands(s_row, e_row)
+    end)
+
+    -- First normalization using captured range
+    normalize_align_environment(s_row, e_row)
+
+    align()
+end, {
+    buffer = 0,
+    desc = 'Align & symbols in LaTeX environment with conceal awareness'
 })

@@ -22,6 +22,7 @@ return {
     -- fzf fuzzy finder
     {
         "ibhagwan/fzf-lua",
+        lazy = false,
         cmd = "FzfLua",
         dependencies = { "echasnovski/mini.icons" },
         keys = {
@@ -41,6 +42,11 @@ return {
                 desc = "Old Files"
             },
             {
+                "<leader>fr",
+                "<cmd>FzfLua resume<cr>",
+                desc = "Fzf Resume"
+            },
+            {
                 "<leader>fg",
                 "<cmd>FzfLua live_grep<cr>",
                 desc = "Live Grep"
@@ -58,15 +64,23 @@ return {
             },
             {
                 "gri",
-                "<cmd>FzfLua lsp_implementations jump_to_single_result=true ignore_current_line=true<cr>",
+                "<cmd>FzfLua lsp_implementations jump1=true ignore_current_line=true<cr>",
                 desc = "Goto Implementation"
             },
         },
         opts = {
-            defaults = {
-                file_icons = "mini",
-                formatter = "path.dirname_first",
-            },
+            winopts = {
+                height = 0.95,
+                width = 0.90,
+                preview = {
+                    vertical = "down:60%",
+                    flip_columns = 120,
+                    scrollbar = false,
+                    winopts = {
+                        conceallevel = 2,
+                    }
+                }
+            }
         },
     },
 
