@@ -330,6 +330,10 @@
   (_) @markup.math
   (#set! "priority" 90))
 
+(math_environment
+  (_) @nospell
+  (#set! "priority" 100))
+
 ; Comments
 [
   (line_comment)

@@ -1,10 +1,14 @@
 local fzf = require("fzf-lua")
 local opt = vim.opt_local
 
+opt.tabstop = 2
+opt.shiftwidth = 2
+opt.softtabstop = 2
+
 opt.matchpairs = { "(:)", "[:]", "{:}" }
 opt.commentstring = "<!-- %s -->"
 opt.formatoptions = "qnjl"
-opt.textwidth = 100
+opt.textwidth = 80 
 
 vim.api.nvim_buf_set_keymap(0, "n", "<C-j>", "[s1z=", { desc = "Crect Last Spelling" })
 
@@ -125,7 +129,7 @@ vim.api.nvim_buf_set_keymap(0, 'n', '<C-]>', '', {
         local link = GetLink()
         if link then
             fzf.grep({
-                search = "^#+ " .. link,
+                search = "^(<!-- )?#+\\s+" .. link,
                 no_esc = true,
                 rg_opts = "--column --line-number --no-heading --color=always --ignore-case --max-columns=4096 -e"
                 -- fzf_opts = {
@@ -144,6 +148,8 @@ vim.api.nvim_buf_set_keymap(0, 'n', 'gf', '', {
             fzf.files({
                 query = path,
             })
+        else
+            vim.api.nvim_feedkeys("gf", "n", false)
         end
     end,
 })

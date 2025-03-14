@@ -101,7 +101,7 @@ autocmd("FileType", {
         vim.opt_local.spell = true
         vim.opt_local.spelllang = "en_us,cjk"
         vim.opt_local.spellsuggest = "best,5"
-        vim.opt_local.colorcolumn = "100"
+        vim.opt_local.colorcolumn = "80"
     end,
     desc = "Special Files",
 })

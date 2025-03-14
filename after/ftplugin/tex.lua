@@ -1,3 +1,11 @@
+local opt = vim.opt_local
+
+opt.tabstop = 2
+opt.shiftwidth = 2
+opt.softtabstop = 2
+
+opt.textwidth = 80
+
 vim.keymap.set(
     "n",
     "<M-b>",
@@ -22,7 +30,7 @@ vim.api.nvim_buf_set_keymap(0, "n", "<C-j>", "[s1z=", { desc = "Crect Last Spell
 
 local function find_latex_pair(around, opening_delims, closing_delims)
     local line = vim.api.nvim_get_current_line()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local _, col = unpack(vim.api.nvim_win_get_cursor(0))
 
     -- Search backward for opening delimiter
     local start_open = nil
@@ -395,7 +403,7 @@ vim.keymap.set('i', '<CR>', function()
         local indent = line:sub(1, and_pos - 1)
         indent = indent:gsub("[^ \t]", " ")
         indent = indent:sub(1, -(offset + 1))
-        local new_line = indent .. '&'
+        local new_line = indent .. '& \\\\'
 
         -- Insert the new line below the current line
         vim.api.nvim_buf_set_lines(0, row + 1, row + 1, true, { new_line })
@@ -435,3 +443,111 @@ end, {
     buffer = 0,
     desc = 'Align & symbols in LaTeX environment with conceal awareness'
 })
+
+-- Inserts a new line with proper alignment characters when in math environment
+vim.keymap.set('n', 'o', function()
+    if not in_align() then
+        return "o"
+    end
+
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    local row = cursor[1] - 1 -- Convert to 0-based index
+    local line = vim.api.nvim_buf_get_lines(0, row, row + 1, true)[1]
+    local indent = string.match(line, "^%s*")
+
+    -- Exit Insert mode first
+    local escape = vim.api.nvim_replace_termcodes('<Esc>', true, true, true)
+    vim.api.nvim_feedkeys(escape, 'n', true)
+
+    -- Schedule buffer modifications after exiting Insert mode
+    vim.schedule(function()
+        local new_line = indent .. ' \\\\'
+
+        -- Insert the new line below the current line
+        vim.api.nvim_buf_set_lines(0, row + 1, row + 1, true, { new_line })
+
+        -- Move cursor to the new line and position after '&'
+        vim.api.nvim_win_set_cursor(0, { row + 2, #indent })
+        vim.api.nvim_feedkeys('i', 'n', false) -- Enter Insert mode after '&'
+    end)
+
+    return ""
+end, {
+    expr = true,
+    buffer = 0,
+    noremap = true,
+    silent = true,
+    desc = "Insert new aligned line in LaTeX environment"
+})
+
+-- local function align_ampersands(s_row, e_row)
+--     local lines = vim.api.nvim_buf_get_lines(0, s_row, e_row, false)
+--     local lines_data = {} -- Stores segments, concealed lengths, and ampersand counts per line
+--     local max_columns = 0 -- Track the maximum number of ampersands in any line
+--
+--     -- First pass: collect ampersand positions and split lines into segments
+--     for i, line in ipairs(lines) do
+--         local buf_line = s_row + i - 1 -- Buffer line number (0-based)
+--         local and_positions = {}
+--
+--         -- Find all ampersand positions in the current line
+--         local current_pos = 1
+--         while true do
+--             local pos = line:find('&', current_pos)
+--             if not pos then break end
+--             table.insert(and_positions, pos)
+--             current_pos = pos + 1
+--         end
+--
+--         -- Split the line into segments around each ampersand
+--         local segments = {}
+--         local prev_pos = 1
+--         for _, pos in ipairs(and_positions) do
+--             table.insert(segments, line:sub(prev_pos, pos - 1))
+--             prev_pos = pos + 1
+--         end
+--         table.insert(segments, line:sub(prev_pos)) -- Add the remaining part after last &
+--
+--         -- Calculate concealed length before each ampersand
+--         local cls = {}
+--         for _, pos in ipairs(and_positions) do
+--             local cl = get_concealed_line_length(buf_line, pos)
+--             table.insert(cls, cl)
+--         end
+--
+--         -- Update lines_data and max_columns
+--         lines_data[i] = {
+--             segments = segments,
+--             cls = cls,
+--             num_amps = #and_positions,
+--         }
+--         max_columns = math.max(max_columns, #and_positions)
+--     end
+--
+--     -- Determine maximum concealed length for each column
+--     local max_cl_per_column = {}
+--     for col = 1, max_columns do
+--         max_cl_per_column[col] = 0
+--         for _, data in ipairs(lines_data) do
+--             if data.cls[col] and data.cls[col] > max_cl_per_column[col] then
+--                 max_cl_per_column[col] = data.cls[col]
+--             end
+--         end
+--     end
+--
+--     -- Build aligned lines by applying padding to each segment
+--     local aligned_lines = {}
+--     for _, data in ipairs(lines_data) do
+--         local aligned_line = ""
+--         for col = 1, data.num_amps do
+--             local segment = data.segments[col]
+--             local padding = max_cl_per_column[col] - data.cls[col]
+--             aligned_line = aligned_line .. string.rep(' ', padding) .. segment .. '&'
+--         end
+--         aligned_line = aligned_line .. data.segments[data.num_amps + 1] -- Add last segment
+--         table.insert(aligned_lines, aligned_line)
+--     end
+--
+--     -- Update the buffer with aligned lines
+--     vim.api.nvim_buf_set_lines(0, s_row, e_row, false, aligned_lines)
+-- end

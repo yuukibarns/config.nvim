@@ -161,80 +161,80 @@ return {
         },
         opts = {
             formatters = {
-                deno_fmt = {
-                    meta = {
-                        url = "https://deno.land/manual/tools/formatter",
-                        description =
-                        "use [deno](https://deno.land/) to format typescript, javascript/json and markdown.",
-                    },
-                    command = "deno",
-                    cond = function(self, ctx)
-                        local unstable_extensions = {
-                            astro = "astro",
-                            svelte = "svelte",
-                            vue = "vue",
-                        }
-                        local extensions = vim.tbl_extend("keep", {
-                            css = "css",
-                            html = "html",
-                            javascript = "js",
-                            javascriptreact = "jsx",
-                            json = "json",
-                            jsonc = "jsonc",
-                            less = "less",
-                            markdown = "md",
-                            sass = "sass",
-                            scss = "scss",
-                            typescript = "ts",
-                            typescriptreact = "tsx",
-                            yaml = "yml",
-                        }, unstable_extensions)
-                        return extensions[vim.bo[ctx.buf].filetype] ~= nil
-                    end,
-                    args = function(self, ctx)
-                        local log = require("conform.log")
-                        local unstable_extensions = {
-                            astro = "astro",
-                            svelte = "svelte",
-                            vue = "vue",
-                        }
-                        local extensions = vim.tbl_extend("keep", {
-                            css = "css",
-                            html = "html",
-                            javascript = "js",
-                            javascriptreact = "jsx",
-                            json = "json",
-                            jsonc = "jsonc",
-                            less = "less",
-                            markdown = "md",
-                            sass = "sass",
-                            scss = "scss",
-                            typescript = "ts",
-                            typescriptreact = "tsx",
-                            yaml = "yml",
-                        }, unstable_extensions)
-                        local extension = extensions[vim.bo[ctx.buf].filetype]
-                        local formatter_args = {
-                            "fmt",
-                            "-",
-                            "--ext",
-                            extension,
-                        }
-                        if extension == "md" then
-                            vim.list_extend(formatter_args, { "--line-width", "100" })
-                        end
-
-                        if unstable_extensions[extension] then
-                            log.info(
-                                "adding `--unstable-component` to enable formatting of .%s files. see the deno documentation for more information: https://docs.deno.com/runtime/reference/cli/formatter/#formatting-options-unstable-component",
-                                extension
-                            )
-                            formatter_args = vim.list_extend(formatter_args, { "--unstable-component" })
-                        end
-
-                        return formatter_args
-                    end,
-                },
+                -- deno_fmt = {
+                --     meta = {
+                --         url = "https://deno.land/manual/tools/formatter",
+                --         description =
+                --         "use [deno](https://deno.land/) to format typescript, javascript/json and markdown.",
+                --     },
+                --     command = "deno",
+                --     cond = function(self, ctx)
+                --         local unstable_extensions = {
+                --             astro = "astro",
+                --             svelte = "svelte",
+                --             vue = "vue",
+                --         }
+                --         local extensions = vim.tbl_extend("keep", {
+                --             css = "css",
+                --             html = "html",
+                --             javascript = "js",
+                --             javascriptreact = "jsx",
+                --             json = "json",
+                --             jsonc = "jsonc",
+                --             less = "less",
+                --             markdown = "md",
+                --             sass = "sass",
+                --             scss = "scss",
+                --             typescript = "ts",
+                --             typescriptreact = "tsx",
+                --             yaml = "yml",
+                --         }, unstable_extensions)
+                --         return extensions[vim.bo[ctx.buf].filetype] ~= nil
+                --     end,
+                --     args = function(self, ctx)
+                --         local log = require("conform.log")
+                --         local unstable_extensions = {
+                --             astro = "astro",
+                --             svelte = "svelte",
+                --             vue = "vue",
+                --         }
+                --         local extensions = vim.tbl_extend("keep", {
+                --             css = "css",
+                --             html = "html",
+                --             javascript = "js",
+                --             javascriptreact = "jsx",
+                --             json = "json",
+                --             jsonc = "jsonc",
+                --             less = "less",
+                --             markdown = "md",
+                --             sass = "sass",
+                --             scss = "scss",
+                --             typescript = "ts",
+                --             typescriptreact = "tsx",
+                --             yaml = "yml",
+                --         }, unstable_extensions)
+                --         local extension = extensions[vim.bo[ctx.buf].filetype]
+                --         local formatter_args = {
+                --             "fmt",
+                --             "-",
+                --             "--ext",
+                --             extension,
+                --         }
+                --         if extension == "md" then
+                --             vim.list_extend(formatter_args, { "--line-width", "100" })
+                --         end
+                --
+                --         if unstable_extensions[extension] then
+                --             log.info(
+                --                 "adding `--unstable-component` to enable formatting of .%s files. see the deno documentation for more information: https://docs.deno.com/runtime/reference/cli/formatter/#formatting-options-unstable-component",
+                --                 extension
+                --             )
+                --             formatter_args = vim.list_extend(formatter_args, { "--unstable-component" })
+                --         end
+                --
+                --         return formatter_args
+                --     end,
+                -- },
                 -- injected = {
                 --  options = {
                 --      -- Set individual option values
