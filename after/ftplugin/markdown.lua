@@ -4,11 +4,10 @@ local opt = vim.opt_local
 opt.tabstop = 2
 opt.shiftwidth = 2
 opt.softtabstop = 2
-
 opt.matchpairs = { "(:)", "[:]", "{:}" }
 opt.commentstring = "<!-- %s -->"
 opt.formatoptions = "qnjl"
-opt.textwidth = 80 
+opt.textwidth = 80
 
 vim.api.nvim_buf_set_keymap(0, "n", "<C-j>", "[s1z=", { desc = "Crect Last Spelling" })
 
@@ -129,9 +128,11 @@ vim.api.nvim_buf_set_keymap(0, 'n', '<C-]>', '', {
         local link = GetLink()
         if link then
             fzf.grep({
-                search = "^(<!-- )?#+\\s+" .. link,
+                search = "^(<!-- )?#+\\s+"
+                    .. link:gsub("([%$%(%))%.%+%*%?%[%]%^%|\\%-%{}])", "\\%1"):gsub("%s+", " "),
                 no_esc = true,
-                rg_opts = "--column --line-number --no-heading --color=always --ignore-case --max-columns=4096 -e"
+                rg_opts =
+                "--column --line-number --no-heading --color=always --ignore-case --type=md --max-columns=4096 -e"
                 -- fzf_opts = {
                 --     ["--select-1"] = true
                 -- }

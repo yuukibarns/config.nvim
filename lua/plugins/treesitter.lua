@@ -1,5 +1,4 @@
 return {
-
     -- treesitter
     {
         "nvim-treesitter/nvim-treesitter",
@@ -20,6 +19,7 @@ return {
                     "markdown",
                     "markdown_inline",
                     "latex",
+                    "html",
                     -- vim
                     "vim",
                     "vimdoc",
@@ -28,8 +28,12 @@ return {
                     "c",
                     "cpp",
                     "python",
+                    "rust",
                     -- shell
                     "bash",
+                    "fish",
+                    -- comment
+                    "comment",
                 },
                 textobjects = {
                     move = {

@@ -11,7 +11,7 @@ opt.smartcase = true
 
 -- 4 displaying text
 opt.smoothscroll = true
-opt.scrolloff = 12
+opt.scrolloff = 2
 opt.linebreak = true
 opt.breakindent = true
 opt.showbreak = "> "
@@ -55,10 +55,10 @@ opt.confirm = true
 opt.clipboard = "unnamedplus"
 
 -- 12 editing text
-opt.undofile = true -- {{{
+opt.undofile = true
 opt.formatoptions = "tcroqnlj"
 -- opt.formatexpr = "v:lua.require'conform'.formatexpr()"
-opt.pumheight = 10 -- }}}
+opt.pumheight = 10
 
 -- 13 tabs and indenting
 opt.tabstop = 4

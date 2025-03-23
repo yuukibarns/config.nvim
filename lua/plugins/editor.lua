@@ -14,9 +14,11 @@ return {
             skip_confirm_for_simple_edits = true,
             keymaps = {
                 ["<C-[>"] = "actions.close",
+                ["<2-LeftMouse>"] = "actions.select",
+                ["<RightMouse>"] = "actions.parent",
             },
         },
-        dependencies = { "echasnovski/mini.icons" },
+        dependencies = { "nvim-tree/nvim-web-devicons" },
     },
 
     -- fzf fuzzy finder
@@ -24,7 +26,7 @@ return {
         "ibhagwan/fzf-lua",
         lazy = false,
         cmd = "FzfLua",
-        dependencies = { "echasnovski/mini.icons" },
+        dependencies = { "nvim-tree/nvim-web-devicons" },
         keys = {
             {
                 "<leader>fb",
@@ -147,8 +149,13 @@ return {
         end,
     },
 
+    {
+        "kiyoon/jupynium.nvim",
+        build = "pip3 install --user .",
+    },
+
     -- fuzzy finder
-    -- {{{{
+    -- {
     --  "nvim-telescope/telescope.nvim",
     --  cmd = "Telescope",
     --  dependencies = { "nvim-lua/plenary.nvim" },
@@ -197,5 +204,5 @@ return {
     --          },
     --      })
     --  end,
-    -- },}}}
+    -- },
 }

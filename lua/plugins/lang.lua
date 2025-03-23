@@ -2,7 +2,7 @@ return {
     -- filesype plugin for markdown
     {
         "yuukibarns/markdown.nvim",
-        ft = { "markdown", "tex" },
+        ft = { "markdown", "tex", "python" },
 
         config = function()
             require("markdown").setup({
@@ -13,7 +13,7 @@ return {
                         "delim",
                         "font",
                         "greek",
-                        --	"mleftright",
+                        "leftright",
                         "math",
                         "script",
                     },
@@ -46,6 +46,7 @@ return {
     -- 		vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
     -- 	end,
     -- },
+
     {
         "iamcco/markdown-preview.nvim",
         cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },

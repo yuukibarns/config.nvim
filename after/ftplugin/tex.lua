@@ -3,7 +3,7 @@ local opt = vim.opt_local
 opt.tabstop = 2
 opt.shiftwidth = 2
 opt.softtabstop = 2
-
+opt.formatoptions = "qnjl"
 opt.textwidth = 80
 
 vim.keymap.set(
@@ -116,7 +116,9 @@ vim.api.nvim_buf_set_keymap(0, 'v', 'im', '', {
     noremap = true,
     silent = true,
     desc = "Inside math",
-    callback = function() handle_latex(false, 'visual', math_delimiter_opening, math_delimiter_closing) end,
+    callback = function()
+        handle_latex(false, 'visual', math_delimiter_opening, math_delimiter_closing)
+    end,
 })
 
 vim.api.nvim_buf_set_keymap(0, 'v', 'am', '', {

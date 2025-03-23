@@ -38,9 +38,18 @@ vim.api.nvim_create_user_command("LspOutgoingCall", function()
     vim.lsp.buf.outgoing_calls()
 end, {})
 
+-- Lsp Signature Help
+vim.keymap.set({ "i", "v" }, "<C-S>", function()
+    vim.lsp.buf.signature_help()
+end, { desc = "Lsp Signature Help" })
+
 -- Toggle transparency in nvchad
 vim.api.nvim_set_keymap("n", "<leader>tt", "", {
     callback = function()
         require("base46").toggle_transparency()
     end
 })
+
+-- Switch between buffers
+vim.keymap.set("n", "]b", "<Cmd>bnext<CR>", { desc = "Next Buffer" })
+vim.keymap.set("n", "[b", "<Cmd>bNext<CR>", { desc = "Previous Buffer" })

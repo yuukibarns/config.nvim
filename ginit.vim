@@ -22,8 +22,8 @@ set linespace=0
 " let g:neovide_light_angle_degrees = 45
 " let g:neovide_light_radius = 5
 " Transparency
-  let g:neovide_transparency = 0.8
-" let g:transparency = 0.8
+let g:neovide_opacity = 0.8
+let g:neovide_normal_opacity = 0.8
 " let g:neovide_background_color = '#111111'
 " Show Border (Currently macOS only)
 " let g:neovide_show_border = v:false
@@ -36,7 +36,7 @@ set linespace=0
 " Underline automatic scaling
 " let g:neovide_underline_stroke_scale = 1.0
 " Theme
-let g:neovide_theme = 'dark'
+let g:neovide_theme = 'auto'
 " Fix border and winbar scrolling glitches
 " let g:neovide_unlink_border_highlights = v:true
 
@@ -101,4 +101,4 @@ let g:neovide_confirm_quit = v:true
 " let g:neovide_cursor_animation_length = 0.13
 
 " Font Settings
-set guifont=JetBrainsMono\ Nerd\ Font:h9
+set guifont=JetBrainsMono\ Nerd\ Font:h11

@@ -1,18 +1,18 @@
 return {
     -- GpChat
     {
-        "jzr/gp.nvim",
+        "yuukibarns/gp.nvim",
         lazy = false,
         keys = {
             {
                 "<leader>gc",
-                "<cmd>GpChatNew tabnew<cr>",
+                "<cmd>GpChatNew<cr>",
                 mode = { "n" },
                 desc = "Open Chat",
             },
             {
                 "<leader>gt",
-                "<cmd>GpChatToggle tabnew<cr>",
+                "<cmd>GpChatToggle<cr>",
                 mode = { "n" },
                 desc = "Resume Last Chat",
             },
@@ -31,21 +31,21 @@ return {
                 chat_shortcut_new = { modes = { "n" }, shortcut = "<leader>gc" },
                 -- chat_user_prefix = "💬:\\",
                 -- chat_assistant_prefix = { "🤖:\\" },
-                toggle_target = "tabnew",
+                toggle_target = "abc",
                 chat_free_cursor = true,
                 providers = {
                     deepseek = {
-                        disable = false,
+                        disable = true,
                         endpoint = "https://api.deepseek.com/chat/completions",
                         secret = os.getenv("DEEPSEEK_API_KEY"),
                     },
                     alibaba = {
-                        disable = false,
+                        disable = true,
                         endpoint = "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
                         secret = os.getenv("DASHSCOPE_API_KEY")
                     },
                     siliconflow = {
-                        disable = false,
+                        disable = true,
                         endpoint = "https://api.siliconflow.cn/v1/chat/completions",
                         secret = os.getenv("SILICONFLOW_API_KEY")
                     },
