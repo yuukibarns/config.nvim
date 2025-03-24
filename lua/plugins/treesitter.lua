@@ -20,6 +20,7 @@ return {
                     "markdown_inline",
                     "latex",
                     "html",
+                    "scheme",
                     -- vim
                     "vim",
                     "vimdoc",

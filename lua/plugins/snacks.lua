@@ -7,26 +7,26 @@ return {
         priority = 1000,
         keys = {
             {
-                "K",
+                "<leader>K",
                 function()
                     Snacks.image.open()
                     Snacks.image.show_src()
                     vim.cmd('normal! \x1b')
                 end,
                 mode = { "n", "v" },
-                ft = { "tex", "markdown" },
+                ft = { "tex", "markdown", "python" },
                 desc = "Open images inline"
             },
             {
-                "L",
+                "<leader>L",
                 function()
                     Snacks.image.close()
                     vim.cmd('normal! \x1b')
                 end,
                 mode = { "n", "v" },
-                ft = { "tex", "markdown" },
+                ft = { "tex", "markdown", "python" },
                 desc = "Close images inline"
-            }
+            },
         },
         ---@type snacks.Config
         opts = {
@@ -51,7 +51,7 @@ return {
                 convert = {
                     magick = {
                         default = { "{src}[0]", "-scale", "1920x1080>" }, -- default for raster images
-                        vector = { "-density", 192, "{src}[0]" }, -- used by vector images like svg
+                        vector = { "-density", 192, "{src}[0]" },         -- used by vector images like svg
                         -- math = { "-density", 96 * 4, "{src}[0]", "-resize", "150%", "-trim" },
                         math = { "-density", 192, "{src}[0]", "-trim" },
                         pdf = { "-density", 192, "{src}[0]", "-background", "white", "-alpha", "remove", "-trim" },

@@ -28,19 +28,20 @@ local function create_cell_overlay(buf, ns, row, symbol, hl_group, line)
     -- Add icon at line start
     vim.api.nvim_buf_set_extmark(buf, ns, row, 0, {
         virt_text = { { icon_text, hl_group } },
-        virt_text_pos = 'inline',
+        virt_text_pos = 'overlay',
         hl_mode = 'combine',
+        spell = false,
         priority = 100,
     })
 
     -- Calculate separator position and length
-    local separator_start = original_len
+    local separator_start = 0
     local separator_length = math.max(0, available_width - separator_start)
 
     if separator_length > 0 then
         local separator = string.rep('═', separator_length)
         vim.api.nvim_buf_set_extmark(buf, ns, row, separator_start, {
-            virt_text = { { separator, '@comment' } },
+            virt_text = { { separator, hl_group } },
             virt_text_pos = 'overlay',
             hl_mode = 'combine',
             priority = 99,
@@ -48,7 +49,7 @@ local function create_cell_overlay(buf, ns, row, symbol, hl_group, line)
     end
 end
 
-vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'TextChanged', 'WinResized', 'OptionSet' }, {
+vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'TextChanged', 'TextChangedI', 'WinResized', 'OptionSet' }, {
     pattern = '*.py',
     callback = function()
         local buf = vim.api.nvim_get_current_buf()
@@ -65,5 +66,29 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'TextChanged', 'WinRes
                 create_cell_overlay(buf, ns, row, symbols.code, 'CodeCell', line)
             end
         end
+    end
+})
+
+
+-- Automatically sync notebook when saving buffer
+vim.api.nvim_create_augroup('jupytext_sync', { clear = true })
+vim.api.nvim_create_autocmd('BufWritePost', {
+    group = 'jupytext_sync',
+    pattern = '*.py',
+    callback = function()
+        local file = vim.fn.expand('%:p')
+        vim.system(
+            { 'jupytext', '--sync', file },
+            { detach = true },
+            function(obj)
+                if obj.stderr then
+                    print(obj.stderr)
+                end
+                if obj.stdout then
+                    print(obj.stdout)
+                    print("[jupytext] Synced " .. file)
+                end
+            end
+        )
     end
 })

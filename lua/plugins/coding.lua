@@ -157,7 +157,7 @@ return {
 
     -- blink
     {
-        'yuukibarns/blink.cmp',
+        'Saghen/blink.cmp',
         dependencies = {
             'yuukibarns/LuaSnip',
             "moyiz/blink-emoji.nvim",
@@ -207,13 +207,6 @@ return {
                     scrollbar = false,
                     draw = {
                         columns = { { 'kind_icon' }, { 'label' } },
-                        -- components = {
-                        --     filter_text = {
-                        --         width = { max = 30 },
-                        --         text = function(ctx) return ctx.filter_text end,
-                        --         highlight = 'BlinkCmpSource',
-                        --     },
-                        -- }
                     }
                 },
                 documentation = { window = { border = "single", scrollbar = false } },
@@ -257,12 +250,9 @@ return {
                 }
             },
             fuzzy = {
-                -- use_frecency = false,
-                -- use_proximity = false,
-                -- implementation = "lua",
                 sorts = {
                     'score',
-                    -- 'sort_text',
+                    'sort_text',
                 }
             }
         },
@@ -284,19 +274,25 @@ return {
 
     -- auto pairs
     {
-        "m4xshen/autoclose.nvim",
+        "yuukibarns/autoclose.nvim",
         event = { "InsertEnter" },
         config = function()
             require("autoclose").setup({
                 keys = {
-                    ['"'] = { escape = true, close = true, pair = '""' },
                     ["'"] = { escape = true, close = true, pair = "''" },
                     ["`"] = { escape = true, close = true, pair = "``" },
+                    -- Resolve conflicts with LuaSnip snippets
+                    ['"'] = { escape = true, close = true, pair = '""', before_cursor_regex = "[%w)%]}]" },
+                    ["("] = { escape = false, close = true, pair = "()", before_cursor_regex = ";" },
+                    ["["] = { escape = false, close = true, pair = "[]", before_cursor_regex = ";" },
+                    ["{"] = { escape = false, close = true, pair = "{}", before_cursor_regex = ";" },
                 },
                 options = {
                     disable_when_touch = true,
                     disable_command_mode = true,
-                    disabled_filetypes = { "tex", "markdown", "gitcommit", "python" },
+                    pair_spaces = true,
+                    auto_indent = true,
+                    disabled_filetypes = { "tex", "markdown", "gitcommit" },
                 },
             })
         end,
