@@ -1,3 +1,5 @@
+local opt = vim.opt_local
+
 vim.api.nvim_buf_set_keymap(0, "n", "<C-j>", "[s1z=", { desc = "Crect Last Spelling" })
 
 -- Define highlights
@@ -69,12 +71,8 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'TextChanged', 'TextCh
     end
 })
 
-
--- Automatically sync notebook when saving buffer
-vim.api.nvim_create_augroup('jupytext_sync', { clear = true })
-vim.api.nvim_create_autocmd('BufWritePost', {
-    group = 'jupytext_sync',
-    pattern = '*.py',
+vim.api.nvim_buf_set_keymap(0, "n", "<leader>js", "", {
+    desc = "Jupytext Sync",
     callback = function()
         local file = vim.fn.expand('%:p')
         vim.system(
@@ -92,3 +90,29 @@ vim.api.nvim_create_autocmd('BufWritePost', {
         )
     end
 })
+
+local JUPYTER_LEVEL = "1" -- Fixed level for all cells
+
+function _G.jupyter_aware_fold(lnum)
+    -- (1) First try Tree-sitter's fold logic
+    local default_fold = vim.treesitter.foldexpr(lnum)
+    if default_fold ~= '0' then
+        if default_fold:match("^>") then
+            local number = default_fold:gsub("^>", "")
+            return ">" .. "1" .. number
+        else
+            return "1" .. default_fold
+        end
+    end
+
+    -- (2) Check for Jupyter cell start
+    local line = vim.fn.getline(lnum)
+    if line:match('^# %%%%') then
+        return '>' .. JUPYTER_LEVEL -- Start fold
+    else
+        return JUPYTER_LEVEL
+    end
+end
+
+-- Custom folding for jupyter notebook
+opt.foldexpr = 'v:lua.jupyter_aware_fold(v:lnum)'

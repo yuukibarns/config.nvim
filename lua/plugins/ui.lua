@@ -18,7 +18,7 @@ return {
     {
         "yuukibarns/alpha-nvim",
         dependencies = {
-            "nvim-tree/nvim-web-devicons",
+            "echasnovski/mini.icons",
             "nvim-lua/plenary.nvim",
         },
         config = function()
@@ -35,32 +35,16 @@ return {
         end,
     },
 
-    -- {
-    --     "akinsho/bufferline.nvim",
-    --     dependencies = { "nvim-tree/nvim-web-devicons" },
-    --     config = function()
-    --         require("bufferline").setup {}
-    --     end
-    -- }
-    --
-    -- {
-    --     "romgrk/barbar.nvim",
-    --     dependencies = {
-    --         'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
-    --         'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
-    --     },
-    -- },
-    --
     -- icons
-    -- {
-    --     "echasnovski/mini.icons",
-    --     lazy = false,
-    --     opts = {
-    --         lsp = {
-    --             ["function"] = { glyph = "" },
-    --             object = { glyph = "" },
-    --             value = { glyph = "" },
-    --         },
-    --     },
-    -- },
+    {
+        "echasnovski/mini.icons",
+        lazy = false,
+        opts = {
+            lsp = {
+                ["function"] = { glyph = "" },
+                object = { glyph = "" },
+                value = { glyph = "" },
+            },
+        },
+    },
 }

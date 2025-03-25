@@ -6,6 +6,7 @@ local options = {
             Conceal = { link = "@function.latex" },
             ["@none.latex"] = { link = "Normal" },
             TreesitterContext = { link = "NONE" },
+            CmpSel = { link = "Visual" },
         },
         integrations = {
             "alpha",
@@ -14,8 +15,8 @@ local options = {
             "leap",
             "lsp",
             "treesitter",
-            "blink",
-            -- "cmp",
+            -- "blink",
+            "cmp",
         },
     },
     ui = {

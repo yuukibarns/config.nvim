@@ -35,7 +35,7 @@ return {
                 chat_free_cursor = true,
                 providers = {
                     deepseek = {
-                        disable = true,
+                        disable = false,
                         endpoint = "https://api.deepseek.com/chat/completions",
                         secret = os.getenv("DEEPSEEK_API_KEY"),
                     },
@@ -67,6 +67,31 @@ return {
                             top_p = 1,
                         },
                         system_prompt = require("gp.defaults").chat_system_prompt,
+                    },
+                    {
+                        name = "DeepSeekChat",
+                        provider = "deepseek",
+                        chat = true,
+                        command = false,
+                        -- string with model name or table with model name and parameters
+                        model = {
+                            model = "deepseek-chat",
+                            temperature = 0.6,
+                            top_p = 1,
+                            min_p = 0.05,
+                        },
+                        system_prompt = require("gp.defaults").chat_system_prompt,
+                    },
+                    {
+                        name = "DeepSeekReasoner",
+                        provider = "deepseek",
+                        chat = true,
+                        command = false,
+                        model = {
+                            model = "deepseek-reasoner",
+                            temperature = 0.6,
+                        },
+                        system_prompt = "",
                     },
                     {
                         name = "DeepSeekChat(alibaba)",

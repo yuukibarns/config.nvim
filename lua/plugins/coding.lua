@@ -40,7 +40,7 @@ return {
     --         "hrsh7th/cmp-path",
     --         "hrsh7th/cmp-emoji",
     --         "lukas-reineke/cmp-rg",
-    --         "saadparwaiz1/cmp_luasnip",
+    --         "yuukibarns/cmp_luasnip",
     --         "echasnovski/mini.icons",
     --         {
     --             "uga-rosa/cmp-dictionary",
@@ -62,7 +62,9 @@ return {
     --         cmp.setup({
     --             mapping = cmp.mapping.preset.insert({
     --                 ["<Tab>"] = cmp.mapping(function(fallback)
-    --                     if luasnip.locally_jumpable() then
+    --                     if luasnip.expandable() then
+    --                         luasnip.expand()
+    --                     elseif luasnip.locally_jumpable() then
     --                         luasnip.jump(1)
     --                     else
     --                         fallback()
@@ -76,13 +78,22 @@ return {
     --                     end
     --                 end, { "i", "s" }),
     --                 ["<C-y>"] = cmp.mapping.confirm({ select = true }),
-    --                 ["<C-l>"] = cmp.mapping(function(fallback)
-    --                     if luasnip.expandable() then
-    --                         luasnip.expand()
+    --                 ["<C-s>"] = function ()
+    --                     if cmp.visible() then
+    --                         if cmp.visible_docs() then
+    --                             cmp.close_docs()
+    --                         else
+    --                             cmp.open_docs()
+    --                         end
     --                     else
-    --                         fallback()
+    --                         cmp.complete()
     --                     end
-    --                 end, { "i" }),
+    --                 end,
+    --                 ["<C-e>"] = function ()
+    --                     if cmp.visible() then
+    --                         cmp.close()
+    --                     end
+    --                 end
     --             }),
     --             snippet = {
     --                 expand = function(args)
@@ -135,6 +146,11 @@ return {
     --                 { name = "dictionary", keyword_length = 1 },
     --                 { name = "emoji" }
     --             }),
+    --             view = {
+    --                 docs = {
+    --                     auto_open = false,
+    --                 }
+    --             }
     --         })
     --
     --         cmp.setup.cmdline({ "/", "?" }, {
@@ -166,8 +182,8 @@ return {
                 dependencies = { 'nvim-lua/plenary.nvim' }
             }
         },
-        -- version = '*',
-        build = 'cargo build --release',
+        version = '*',
+        -- build = 'cargo build --release',
         ---@module 'blink.cmp'
         ---@type blink.cmp.Config
         opts = {
@@ -205,15 +221,19 @@ return {
                 menu = {
                     border = 'single',
                     scrollbar = false,
-                    draw = {
-                        columns = { { 'kind_icon' }, { 'label' } },
-                    }
                 },
                 documentation = { window = { border = "single", scrollbar = false } },
             },
             signature = { window = { border = 'single' } },
             sources = {
-                default = { 'lsp', 'path', 'snippets', 'buffer', 'dictionary', "emoji" },
+                default = function()
+                    local result = { 'lsp', 'path', 'snippets', 'buffer' }
+                    if vim.tbl_contains({ 'markdown', 'tex' }, vim.bo.filetype) then
+                        table.insert(result, 'dictionary')
+                        table.insert(result, 'emoji')
+                    end
+                    return result
+                end,
                 providers = {
                     lsp = {
                         fallbacks = {},
@@ -225,19 +245,15 @@ return {
                     dictionary = {
                         module = 'blink-cmp-dictionary',
                         min_keyword_length = 2,
+                        name = "Dict",
                         -- max_items = 16,
                         opts = {
-                            dictionary_files = function()
-                                if vim.bo.filetype == "markdown" or vim.bo.filetype == "tex" then
-                                    return { vim.fn.stdpath("config") .. "/spell/en.utf-8.add" }
-                                else
-                                    return nil
-                                end
-                            end,
+                            dictionary_files = { vim.fn.stdpath("config") .. "/spell/en.utf-8.add" },
                         }
                     },
                     emoji = {
                         module = "blink-emoji",
+                        name = "Emoji",
                         score_offset = 15,        -- Tune by preference
                         opts = { insert = true }, -- Insert emoji (default) or complete its name
                         should_show_items = function()
@@ -249,12 +265,13 @@ return {
                     }
                 }
             },
-            fuzzy = {
-                sorts = {
-                    'score',
-                    'sort_text',
-                }
-            }
+            -- fuzzy = {
+            --     implementation = "lua",
+            --     sorts = {
+            --         'score',
+            --         'sort_text',
+            --     }
+            -- }
         },
         opts_extend = { "sources.default" }
     },

@@ -18,7 +18,7 @@ return {
                 ["<RightMouse>"] = "actions.parent",
             },
         },
-        dependencies = { "nvim-tree/nvim-web-devicons" },
+        dependencies = { "echasnovski/mini.icons" },
     },
 
     -- fzf fuzzy finder
@@ -26,7 +26,7 @@ return {
         "ibhagwan/fzf-lua",
         lazy = false,
         cmd = "FzfLua",
-        dependencies = { "nvim-tree/nvim-web-devicons" },
+        dependencies = { "echasnovski/mini.icons" },
         keys = {
             {
                 "<leader>fb",
@@ -147,11 +147,6 @@ return {
         config = function()
             require("im_select").setup({})
         end,
-    },
-
-    {
-        "kiyoon/jupynium.nvim",
-        build = "pip3 install --user .",
     },
 
     -- fuzzy finder
