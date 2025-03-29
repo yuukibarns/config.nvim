@@ -47,21 +47,35 @@ return {
     -- 	end,
     -- },
 
+    -- {
+    --     "iamcco/markdown-preview.nvim",
+    --     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    --     ft = { "markdown" },
+    --     build = function()
+    --         require("lazy").load({ plugins = { "markdown-preview.nvim" } })
+    --         vim.fn["mkdp#util#install"]()
+    --     end,
+    --     keys = {
+    --         {
+    --             "<leader>cp",
+    --             ft = "markdown",
+    --             "<cmd>MarkdownPreviewToggle<cr>",
+    --             desc = "Markdown Preview",
+    --         },
+    --     },
+    -- },
+
     {
-        "iamcco/markdown-preview.nvim",
-        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+        "jannis-baum/vivify.vim",
+        cmd = { "Vivify" },
         ft = { "markdown" },
-        build = function()
-            require("lazy").load({ plugins = { "markdown-preview.nvim" } })
-            vim.fn["mkdp#util#install"]()
-        end,
         keys = {
             {
                 "<leader>cp",
                 ft = "markdown",
-                "<cmd>MarkdownPreviewToggle<cr>",
-                desc = "Markdown Preview",
+                "<cmd>Vivify<cr>",
+                desc = "Vivify Preview",
             },
         },
-    },
+    }
 }

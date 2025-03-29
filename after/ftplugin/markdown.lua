@@ -11,6 +11,12 @@ opt.textwidth = 80
 
 vim.api.nvim_buf_set_keymap(0, "n", "<C-j>", "[s1z=", { desc = "Crect Last Spelling" })
 
+vim.keymap.set({ "n", "v" }, 'g>', [[:s/^/> /<CR>:nohlsearch<CR>]], {
+    noremap = true,
+    silent = true,
+    desc = "Add '> ' prefix to selected lines"
+})
+
 vim.api.nvim_buf_create_user_command(0, "FixMath", function()
     -- vim.cmd("%s/\\\\(\\s\\+/$/ge")
     -- vim.cmd("%s/\\s\\+\\\\)/$/ge")
@@ -22,6 +28,43 @@ vim.api.nvim_buf_create_user_command(0, "FixMath", function()
     vim.cmd([[%s/\v(\s*)\$\$(\n)\s*(\S.*)\n\s*\$\$/\1\2\1$$\3$$\r\1/ge]])
     vim.cmd("nohlsearch") -- Clear search highlight
 end, {})
+
+local function GetHeading()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local cursor_pos = vim.api.nvim_win_get_cursor(0)
+    local row, col = cursor_pos[1], cursor_pos[2] -- row (1-based), col (0-based)
+
+    local pos_info = vim.inspect_pos(
+        bufnr,
+        row - 1,
+        col,
+        { treesitter = true, syntax = false, extmarks = false, semantic_tokens = false }
+    )
+
+    if not pos_info.treesitter then return false end
+
+    local is_heading = false
+
+    for _, node in ipairs(pos_info.treesitter) do
+        if node.capture:match("^markup%.heading") then
+            is_heading = true
+            break
+        end
+        if node.capture:match("comment") then
+            local heading = vim.api.nvim_buf_get_lines(0, row - 1, row, false)[1]
+            if heading:match("^<!%-%-%s+#+") then
+                is_heading = true
+                break
+            end
+        end
+    end
+
+    if is_heading then
+        local heading = vim.api.nvim_buf_get_lines(0, row - 1, row, false)[1]
+        heading = heading:gsub("^<!%-%-%s+", ""):gsub("%s+%-%->$", ""):gsub("^#+%s+", "")
+        return heading
+    end
+end
 
 local function GetLink()
     local bufnr = vim.api.nvim_get_current_buf()
@@ -122,6 +165,21 @@ local function GetPath()
     return false
 end
 
+vim.api.nvim_buf_set_keymap(0, 'n', 'grr', '', {
+    desc = "Go to References",
+    callback = function()
+        local heading = GetHeading()
+        if heading then
+            fzf.grep({
+                search = "**" .. heading .. "**",
+                no_esc = false,
+                rg_opts =
+                "--column --line-number --no-heading --color=always --ignore-case --type=md --max-columns=4096 -e"
+            })
+        end
+    end,
+})
+
 vim.api.nvim_buf_set_keymap(0, 'n', '<C-]>', '', {
     desc = "Jump to definition",
     callback = function()
@@ -133,9 +191,6 @@ vim.api.nvim_buf_set_keymap(0, 'n', '<C-]>', '', {
                 no_esc = true,
                 rg_opts =
                 "--column --line-number --no-heading --color=always --ignore-case --type=md --max-columns=4096 -e"
-                -- fzf_opts = {
-                --     ["--select-1"] = true
-                -- }
             })
         end
     end,

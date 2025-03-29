@@ -28,7 +28,10 @@
 (info_string) @label
 
 (pipe_table_header
-  (pipe_table_cell) @markup.heading)
+  (pipe_table_cell) @markup.heading @nospell)
+
+(pipe_table_row
+  (pipe_table_cell) @nospell)
 
 (pipe_table_header
   "|" @punctuation.special)

@@ -17,16 +17,8 @@ return {
 
             -- diagnostics config
             vim.diagnostic.config({
-                virtual_text = { spacing = 4, prefix = "●" },
+                virtual_lines = { current_line = true },
                 severity_sort = true,
-                signs = {
-                    text = {
-                        [vim.diagnostic.severity.ERROR] = " ",
-                        [vim.diagnostic.severity.WARN] = " ",
-                        [vim.diagnostic.severity.INFO] = " ",
-                        [vim.diagnostic.severity.HINT] = " ",
-                    },
-                },
             })
 
             vim.api.nvim_create_autocmd("LspAttach", {
@@ -47,10 +39,6 @@ return {
             -- lspconfig
             -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
             local capabilities = require("blink.cmp").get_lsp_capabilities()
-            local handlers = {
-                ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "single" }),
-                ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "single" })
-            }
 
             local settings = {
                 lua_ls = {
@@ -122,13 +110,11 @@ return {
                 if server == "ruff" then
                     require("lspconfig")[server].setup({
                         capabilities = capabilities,
-                        handlers = handlers,
                         init_options = settings[server],
                     })
                 else
                     require("lspconfig")[server].setup({
                         capabilities = capabilities,
-                        handlers = handlers,
                         settings = settings[server],
                     })
                 end

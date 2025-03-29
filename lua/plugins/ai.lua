@@ -94,64 +94,14 @@ return {
                         system_prompt = "",
                     },
                     {
-                        name = "DeepSeekChat(alibaba)",
-                        provider = "alibaba",
-                        chat = true,
-                        command = false,
-                        -- string with model name or table with model name and parameters
-                        model = {
-                            model = "deepseek-v3",
-                            temperature = 0.6,
-                            top_p = 1,
-                            min_p = 0.05,
-                        },
-                        system_prompt = require("gp.defaults").chat_system_prompt,
-                    },
-                    {
-                        name = "DeepSeekReasoner(alibaba)",
-                        provider = "alibaba",
-                        chat = true,
-                        command = false,
-                        model = {
-                            model = "deepseek-r1",
-                            temperature = 0.6,
-                        },
-                        system_prompt = "",
-                    },
-                    {
-                        name = "DeepSeekChat(siliconflow)",
-                        provider = "siliconflow",
-                        chat = true,
-                        command = false,
-                        -- string with model name or table with model name and parameters
-                        model = {
-                            model = "deepseek-ai/DeepSeek-V3",
-                            temperature = 0.6,
-                            top_p = 1,
-                            min_p = 0.05,
-                        },
-                        system_prompt = require("gp.defaults").chat_system_prompt,
-                    },
-                    {
-                        name = "DeepSeekReasoner(siliconflow)",
-                        provider = "siliconflow",
-                        chat = true,
-                        command = false,
-                        model = {
-                            model = "deepseek-ai/DeepSeek-R1",
-                            temperature = 0.6,
-                        },
-                        system_prompt = "",
-                    },
-                    {
                         name = "DeepSeekChat(volcengine)",
                         provider = "volcengine",
                         chat = true,
                         command = false,
                         -- string with model name or table with model name and parameters
                         model = {
-                            model = "ep-20250213162404-2qbq8",
-                            temperature = 0.6,
+                            model = "deepseek-v3-250324",
+                            temperature = 1.0,
                             top_p = 1,
                             min_p = 0.05,
                         },
@@ -163,7 +113,7 @@ return {
                         chat = true,
                         command = false,
                         model = {
-                            model = "ep-20250213162341-9w8vb",
+                            model = "deepseek-r1-250120",
                             temperature = 0.6,
                         },
                         system_prompt = "",
@@ -173,36 +123,37 @@ return {
             require("gp").setup(conf)
         end,
     },
+
     -- {
-    --  "yetone/avante.nvim",
-    --  event = "VeryLazy",
-    --  lazy = false,
-    --  version = false,
-    --  build = "make",
-    --  dependencies = {
-    --      "stevearc/dressing.nvim",
-    --      "nvim-lua/plenary.nvim",
-    --      "MunifTanjim/nui.nvim",
-    --  },
-    --  opts = {
-    --      provider = "deepseek",
-    --      vendors = {
-    --          deepseek = {
-    --              __inherited_from = "openai",
-    --              api_key_name = "DEEPSEEK_API_KEY",
-    --              endpoint = "https://api.deepseek.com",
-    --              model = "deepseek-chat",
-    --          },
-    --      },
-    --      -- provider = "qianwen",
-    --      -- vendors = {
-    --      --  qianwen = {
-    --      --      __inherited_from = "openai",
-    --      --      api_key_name = "DASHSCOPE_API_KEY",
-    --      --      endpoint = "https://dashscope.aliyuncs.com/compatible-mode/v1",
-    --      --      model = "qwen-coder-plus-latest",
-    --      --  },
-    --      -- },
-    --  },
+    --     "olimorris/codecompanion.nvim",
+    --     config = true,
+    --     dependencies = {
+    --         "nvim-lua/plenary.nvim",
+    --         "nvim-treesitter/nvim-treesitter",
+    --     },
+    -- },
+
+    -- {
+    --     "yetone/avante.nvim",
+    --     event = "VeryLazy",
+    --     lazy = false,
+    --     version = false,
+    --     build = "make",
+    --     dependencies = {
+    --         "stevearc/dressing.nvim",
+    --         "nvim-lua/plenary.nvim",
+    --         "MunifTanjim/nui.nvim",
+    --     },
+    --     opts = {
+    --         provider = "deepseek",
+    --         vendors = {
+    --             deepseek = {
+    --                 __inherited_from = "openai",
+    --                 api_key_name = "DEEPSEEK_API_KEY",
+    --                 endpoint = "https://api.deepseek.com",
+    --                 model = "deepseek-chat",
+    --             },
+    --         },
+    --     },
     -- },
 }

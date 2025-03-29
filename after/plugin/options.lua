@@ -42,6 +42,7 @@ opt.splitright = true
 opt.termguicolors = true
 -- opt.pumblend = 30
 -- opt.winblend = 30
+opt.winborder = "rounded"
 
 -- 9 using the mouse
 opt.mouse = "nvi"

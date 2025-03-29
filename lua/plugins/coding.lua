@@ -6,13 +6,20 @@ return {
         lazy = true,
         --build = "make install_jsregexp",
         dependencies = {
-            -- "yuukibarns/mySnippets",
-            -- url = "git@gitee.com:yuukibarns/mySnippets.git",
-            -- opts = { path = vim.fn.stdpath("data") .. "/lazy/mySnippets/snippets" },
-            "jzr/mySnippets",
-            opts = { path = "~/mySnippets/snippets" },
+            "rafamadriz/friendly-snippets",
+            {
+                -- "yuukibarns/mySnippets",
+                -- url = "git@giee.com:yuukibarns/mySnippets.git",
+                -- opts = { path = vim.fn.stdpath("data") .. "/lazy/mySnippets/snippets" },
+                "jzr/mySnippets",
+                opts = { path = "~/mySnippets/snippets" },
+            }
         },
         config = function()
+            require("luasnip.loaders.from_vscode").lazy_load({
+                include = { "python", "rust" }
+            })
+
             local ls = require("luasnip")
             local types = require("luasnip.util.types")
 
@@ -28,6 +35,168 @@ return {
         end,
     },
 
+    -- blink
+    {
+        'Saghen/blink.cmp',
+        dependencies = {
+            'yuukibarns/LuaSnip',
+            "moyiz/blink-emoji.nvim",
+            "yuukibarns/blink-cmp-rg.nvim",
+            {
+                'Kaiser-Yang/blink-cmp-dictionary',
+                dependencies = { 'nvim-lua/plenary.nvim' }
+            }
+        },
+        -- version = '*',
+        build = 'cargo build --release',
+        ---@module 'blink.cmp'
+        ---@type blink.cmp.Config
+        opts = {
+            snippets = { preset = 'luasnip' },
+            keymap = {
+                preset = 'default',
+                ['<C-S>'] = { 'show', 'show_documentation', 'hide_documentation' },
+                ['<Tab>'] = { function()
+                    local ls = require("luasnip")
+                    if not (ls.expand_or_jumpable() or ls.jumpable(1)) then return end
+                    require("blink.cmp").hide()
+                    vim.schedule(function()
+                        if ls.expandable() then
+                            ls.expand_or_jump()
+                        elseif ls.jumpable(1) then
+                            ls.jump(1)
+                        end
+                    end)
+                    return true
+                end, "fallback" },
+            },
+            appearance = {
+                nerd_font_variant = 'normal'
+            },
+            cmdline = {
+                completion = {
+                    menu = {
+                        auto_show = true
+                    },
+                    list = {
+                        selection = {
+                            preselect = false,
+                            auto_insert = true,
+                        },
+                    },
+                }
+            },
+            completion = {
+                accept = {
+                    dot_repeat = false,
+                },
+                list = {
+                    selection = {
+                        preselect = false,
+                        auto_insert = true,
+                    }
+                },
+                menu = {
+                    border = 'single',
+                    scrollbar = false,
+                },
+                documentation = { window = { border = "single", scrollbar = false } },
+            },
+            signature = { window = { border = 'single' } },
+            sources = {
+                default = function()
+                    local result = { 'lsp', 'path', 'snippets', 'buffer' }
+                    if vim.tbl_contains({ 'markdown', 'tex' }, vim.bo.filetype) then
+                        table.insert(result, 'dictionary')
+                        table.insert(result, 'emoji')
+                        table.insert(result, 'ripgrep')
+                    end
+                    return result
+                end,
+                providers = {
+                    lsp = {
+                        fallbacks = {},
+                    },
+                    snippets = {
+                        score_offset = 3,
+                    },
+                    dictionary = {
+                        module = 'blink-cmp-dictionary',
+                        min_keyword_length = 2,
+                        name = "Dict",
+                        -- max_items = 16,
+                        opts = {
+                            dictionary_files = { vim.fn.stdpath("config") .. "/spell/en.utf-8.add" },
+                        }
+                    },
+                    emoji = {
+                        module = "blink-emoji",
+                        name = "Emoji",
+                        score_offset = 15,        -- Tune by preference
+                        opts = { insert = true }, -- Insert emoji (default) or complete its name
+                        should_show_items = function()
+                            return vim.tbl_contains(
+                                { "gitcommit", "markdown" },
+                                vim.o.filetype
+                            )
+                        end,
+                    },
+                    ripgrep = {
+                        module = "blink-cmp-rg",
+                        name = "Ripgrep",
+                        score_offset = 3,
+                    }
+                }
+            },
+            -- fuzzy = {
+            --     implementation = "lua",
+            --     sorts = {
+            --         'score',
+            --         'sort_text',
+            --     }
+            -- }
+        },
+        opts_extend = { "sources.default" }
+    },
+
+    -- surround
+    {
+        "kylechui/nvim-surround",
+        version = "*",
+        event = "VeryLazy",
+        opts = {
+            move_cursor = "sticky",
+            keymaps = {
+                visual = "gs",
+            },
+        },
+    },
+
+    -- auto pairs
+    {
+        "yuukibarns/autoclose.nvim",
+        event = { "InsertEnter" },
+        config = function()
+            require("autoclose").setup({
+                keys = {
+                    ["'"] = { escape = true, close = true, pair = "''" },
+                    ["`"] = { escape = true, close = true, pair = "``" },
+                    -- Resolve conflicts with LuaSnip snippets
+                    ['"'] = { escape = true, close = true, pair = '""', before_cursor_regex = "[%w)%]}]" },
+                    ["("] = { escape = false, close = true, pair = "()", before_cursor_regex = ";" },
+                    ["["] = { escape = false, close = true, pair = "[]", before_cursor_regex = ";" },
+                    ["{"] = { escape = false, close = true, pair = "{}", before_cursor_regex = ";" },
+                },
+                options = {
+                    disable_when_touch = true,
+                    disable_command_mode = true,
+                    pair_spaces = true,
+                    auto_indent = true,
+                    disabled_filetypes = { "tex", "markdown", "gitcommit" },
+                },
+            })
+        end,
+    },
 
     -- nvim-cmp
     -- {
@@ -171,147 +340,4 @@ return {
     --     end,
     -- },
 
-    -- blink
-    {
-        'Saghen/blink.cmp',
-        dependencies = {
-            'yuukibarns/LuaSnip',
-            "moyiz/blink-emoji.nvim",
-            {
-                'Kaiser-Yang/blink-cmp-dictionary',
-                dependencies = { 'nvim-lua/plenary.nvim' }
-            }
-        },
-        version = '*',
-        -- build = 'cargo build --release',
-        ---@module 'blink.cmp'
-        ---@type blink.cmp.Config
-        opts = {
-            snippets = { preset = 'luasnip' },
-            keymap = {
-                preset = 'default',
-                ['<C-S>'] = { 'show', 'show_documentation', 'hide_documentation' },
-            },
-            appearance = {
-                nerd_font_variant = 'normal'
-            },
-            cmdline = {
-                completion = {
-                    menu = {
-                        auto_show = true
-                    },
-                    list = {
-                        selection = {
-                            preselect = false,
-                            auto_insert = true,
-                        },
-                    },
-                }
-            },
-            completion = {
-                accept = {
-                    dot_repeat = false,
-                },
-                list = {
-                    selection = {
-                        preselect = false,
-                        auto_insert = true,
-                    }
-                },
-                menu = {
-                    border = 'single',
-                    scrollbar = false,
-                },
-                documentation = { window = { border = "single", scrollbar = false } },
-            },
-            signature = { window = { border = 'single' } },
-            sources = {
-                default = function()
-                    local result = { 'lsp', 'path', 'snippets', 'buffer' }
-                    if vim.tbl_contains({ 'markdown', 'tex' }, vim.bo.filetype) then
-                        table.insert(result, 'dictionary')
-                        table.insert(result, 'emoji')
-                    end
-                    return result
-                end,
-                providers = {
-                    lsp = {
-                        fallbacks = {},
-                        score_offset = 3,
-                    },
-                    snippets = {
-                        score_offset = 5,
-                    },
-                    dictionary = {
-                        module = 'blink-cmp-dictionary',
-                        min_keyword_length = 2,
-                        name = "Dict",
-                        -- max_items = 16,
-                        opts = {
-                            dictionary_files = { vim.fn.stdpath("config") .. "/spell/en.utf-8.add" },
-                        }
-                    },
-                    emoji = {
-                        module = "blink-emoji",
-                        name = "Emoji",
-                        score_offset = 15,        -- Tune by preference
-                        opts = { insert = true }, -- Insert emoji (default) or complete its name
-                        should_show_items = function()
-                            return vim.tbl_contains(
-                                { "gitcommit", "markdown" },
-                                vim.o.filetype
-                            )
-                        end,
-                    }
-                }
-            },
-            -- fuzzy = {
-            --     implementation = "lua",
-            --     sorts = {
-            --         'score',
-            --         'sort_text',
-            --     }
-            -- }
-        },
-        opts_extend = { "sources.default" }
-    },
-
-    -- surround
-    {
-        "kylechui/nvim-surround",
-        version = "*",
-        event = "VeryLazy",
-        opts = {
-            move_cursor = "sticky",
-            keymaps = {
-                visual = "gs",
-            },
-        },
-    },
-
-    -- auto pairs
-    {
-        "yuukibarns/autoclose.nvim",
-        event = { "InsertEnter" },
-        config = function()
-            require("autoclose").setup({
-                keys = {
-                    ["'"] = { escape = true, close = true, pair = "''" },
-                    ["`"] = { escape = true, close = true, pair = "``" },
-                    -- Resolve conflicts with LuaSnip snippets
-                    ['"'] = { escape = true, close = true, pair = '""', before_cursor_regex = "[%w)%]}]" },
-                    ["("] = { escape = false, close = true, pair = "()", before_cursor_regex = ";" },
-                    ["["] = { escape = false, close = true, pair = "[]", before_cursor_regex = ";" },
-                    ["{"] = { escape = false, close = true, pair = "{}", before_cursor_regex = ";" },
-                },
-                options = {
-                    disable_when_touch = true,
-                    disable_command_mode = true,
-                    pair_spaces = true,
-                    auto_indent = true,
-                    disabled_filetypes = { "tex", "markdown", "gitcommit" },
-                },
-            })
-        end,
-    },
 }

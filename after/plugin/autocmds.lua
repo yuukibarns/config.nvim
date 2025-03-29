@@ -95,7 +95,7 @@ autocmd("FileType", {
 -- Enable conceal and spell for markup langs
 autocmd("FileType", {
     group = augroup("ConcealSpell", {}),
-    pattern = { "tex", "markdown", "python" },
+    pattern = { "tex", "markdown" },
     callback = function()
         vim.opt_local.conceallevel = 2
         vim.opt_local.spell = true
