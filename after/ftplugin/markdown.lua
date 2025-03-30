@@ -262,119 +262,6 @@ for target, alias_list in pairs(aliases) do
     end
 end
 
--- Special handling for quote alias 'q'
-local function find_quote_pair(around)
-    local line = vim.api.nvim_get_current_line()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0)) -- row (1-based), col (0-based)
-    local quotes = { '"', "'", '`' }
-
-    -- Find nearest opening quote before cursor
-    local start_quote, start_pos = nil, nil
-    for i = col, 0, -1 do
-        local c = line:sub(i + 1, i + 1)
-        if vim.tbl_contains(quotes, c) then
-            start_quote = c
-            start_pos = i
-            break
-        end
-    end
-    if not start_quote then return end
-
-    -- Find matching closing quote after cursor
-    local end_pos = nil
-    for i = start_pos + 1, #line do
-        if line:sub(i + 1, i + 1) == start_quote then
-            end_pos = i
-            break
-        end
-    end
-    if not end_pos then return end
-
-    -- Verify cursor is between quotes
-    if col < start_pos or col > end_pos then return end
-
-    -- Calculate positions based on 'around' flag
-    return {
-        start = around and start_pos or (start_pos + 1),
-        finish = around and end_pos or (end_pos - 1)
-    }
-end
-
-local function handle_quote(around, mode)
-    local pos = find_quote_pair(around)
-    if not pos then return end
-
-    local lnum = vim.fn.line('.') - 1 -- 0-based line number
-    local start_col = pos.start
-    local end_col = pos.finish + 1    -- API uses exclusive end
-
-    if mode == 'visual' then
-        vim.cmd('normal! \x1b')
-        vim.api.nvim_win_set_cursor(0, { vim.fn.line('.'), start_col })
-        vim.cmd('normal! v')
-        vim.api.nvim_win_set_cursor(0, { vim.fn.line('.'), pos.finish })
-    elseif mode == 'delete' then
-        vim.api.nvim_buf_set_text(0, lnum, start_col, lnum, end_col, {})
-    elseif mode == 'change' then
-        vim.api.nvim_buf_set_text(0, lnum, start_col, lnum, end_col, {})
-        vim.cmd('startinsert')
-    end
-end
-
--- Quote mappings using anonymous functions
-vim.api.nvim_buf_set_keymap(0, 'v', 'iq', '', {
-    noremap = true,
-    silent = true,
-    desc = "Inside quote text object",
-    callback = function()
-        handle_quote(false, "visual")
-    end,
-})
-
-vim.api.nvim_buf_set_keymap(0, 'v', 'aq', '', {
-    noremap = true,
-    silent = true,
-    desc = "Around quote text object",
-    callback = function()
-        handle_quote(true, "visual")
-    end,
-})
-
-vim.api.nvim_buf_set_keymap(0, 'n', 'diq', '', {
-    noremap = true,
-    silent = true,
-    desc = "Delete inside quote",
-    callback = function()
-        handle_quote(false, "delete")
-    end,
-})
-
-vim.api.nvim_buf_set_keymap(0, 'n', 'daq', '', {
-    noremap = true,
-    silent = true,
-    desc = "Delete around quote",
-    callback = function()
-        handle_quote(true, "delete")
-    end,
-})
-
-vim.api.nvim_buf_set_keymap(0, 'n', 'ciq', '', {
-    noremap = true,
-    silent = true,
-    desc = "Change inside quote",
-    callback = function()
-        handle_quote(false, "change")
-    end,
-})
-
-vim.api.nvim_buf_set_keymap(0, 'n', 'caq', '', {
-    noremap = true,
-    silent = true,
-    desc = "Change around quote",
-    callback = function()
-        handle_quote(true, "change")
-    end,
-})
 
 local function find_latex_pair(around, opening_delims, closing_delims)
     local line = vim.api.nvim_get_current_line()
@@ -865,49 +752,6 @@ local ALIGN_ENVS = {
     flalign = true,
 }
 
----Calculate concealed length at position for a specific line
----@param line_num_1based integer 1-based line number
----@param pos integer 1-based column position
-local function get_concealed_line_length(line_num_1based, pos)
-    local bufnr = vim.api.nvim_get_current_buf()
-    local line_num = line_num_1based - 1 -- Convert to 0-based
-    -- Get the character under the cursor
-    local line = vim.api.nvim_buf_get_lines(0, line_num, line_num + 1, false)[1]
-    local filter = { syntax = false, treesitter = true, extmarks = false, semantic_tokens = false }
-
-    local concealed_length = 0
-    local in_conceal = false
-    local col = 0
-    local metadata = ""
-
-    while col < pos do
-        local nodes = vim.inspect_pos(bufnr, line_num, col, filter)
-        local is_concealed = false
-        local char = line:sub(col + 1, col + 1)
-
-        for _, node_info in ipairs(nodes.treesitter) do
-            if (node_info.capture or ''):match('conceal') then
-                is_concealed = true
-                if not in_conceal or node_info.metadata.conceal ~= metadata or char == "\\" then
-                    metadata = node_info.metadata.conceal
-                    in_conceal = true
-                    concealed_length = concealed_length + (metadata ~= "" and 1 or 0)
-                end
-                break
-            end
-        end
-
-        if not is_concealed then
-            concealed_length = concealed_length + 1
-            metadata = ""
-            in_conceal = false
-        end
-        col = col + 1
-    end
-
-    return concealed_length
-end
-
 ---Check if cursor is in a LaTeX math alignment environment
 ---@return boolean true if in alignment environment, false otherwise
 local function in_align()
@@ -925,147 +769,6 @@ local function in_align()
     end
     return false
 end
-
-local function get_align_node()
-    local node = vim.treesitter.get_node({ ignore_injections = false })
-    while node and node:type() ~= "math_environment" do node = node:parent() end
-    if not node then return end
-
-    -- Verify environment type
-    local begin = node:child(0)
-    local names = begin and begin:field("name")
-    if not (names and names[1] and ALIGN_ENVS[get_node_text(names[1], 0):gsub("{(%w+)%s*%*?}", "%1")]) then
-        return nil
-    end
-
-    return node
-end
-
-local function normalize_align_environment(s_row, e_row)
-    local lines = vim.api.nvim_buf_get_lines(0, s_row, e_row, false)
-
-    -- Normalization-only processing
-    local normalized_lines = {}
-    for i, line in ipairs(lines) do
-        local indent = line:match('^(%s*)') or ''
-        local content = line:sub(#indent + 1)
-
-        -- Collapse whitespace around ampersands and multiple spaces
-        local processed = content:gsub('%s*&%s*', ' & ') -- Ensure single spaces around &
-            :gsub('^%s+', '')                            -- Trim leading spaces
-            :gsub('%s+$', '')                            -- Trim trailing spaces
-            :gsub('%s+', ' ')                            -- Collapse multiple spaces into one
-
-        normalized_lines[i] = indent .. processed
-    end
-
-    vim.api.nvim_buf_set_lines(0, s_row, e_row, false, normalized_lines)
-end
-
-local function align_ampersands(s_row, e_row)
-    local lines = vim.api.nvim_buf_get_lines(0, s_row, e_row, false)
-
-    -- Find the maximum concealed length before the ampersand
-    local max_concealed_length = 0
-    for i, line in ipairs(lines) do
-        local buf_line = s_row + i
-        local and_pos = line:find('&')
-        if and_pos then
-            local cl = get_concealed_line_length(buf_line, and_pos)
-            max_concealed_length = math.max(max_concealed_length, cl)
-        end
-    end
-
-    -- Apply alignment by adding padding to the head of each line
-    local aligned_lines = {}
-    for i, line in ipairs(lines) do
-        local buf_line = s_row + i
-        local and_pos = line:find('&')
-        if and_pos then
-            local cl = get_concealed_line_length(buf_line, and_pos)
-            local padding = string.rep(' ', max_concealed_length - cl)
-            -- Insert padding before the ampersand
-            local aligned_line = padding .. line
-            aligned_lines[i] = aligned_line
-        else
-            -- If there's no ampersand, keep the line as is
-            aligned_lines[i] = line
-        end
-    end
-
-    vim.api.nvim_buf_set_lines(0, s_row, e_row, false, aligned_lines)
-end
-
--- Inserts a new line with proper alignment characters when in math environment
-vim.keymap.set('i', '<CR>', function()
-    if not in_align() then
-        return "<CR>"
-    end
-
-    local cursor = vim.api.nvim_win_get_cursor(0)
-    local row = cursor[1] - 1 -- Convert to 0-based index
-    local line = vim.api.nvim_buf_get_lines(0, row, row + 1, true)[1]
-    if cursor[2] ~= #line then
-        return "<CR>"
-    end
-
-    local and_pos = line:find('&')
-    if not and_pos then
-        return "<CR>"
-    end
-
-    -- Exit Insert mode first
-    local escape = vim.api.nvim_replace_termcodes('<Esc>', true, true, true)
-    vim.api.nvim_feedkeys(escape, 'n', true)
-
-    -- Schedule buffer modifications after exiting Insert mode
-    vim.schedule(function()
-        local offset = and_pos - get_concealed_line_length(cursor[1], and_pos)
-        -- vim.api.nvim_echo({ { tostring(offset) } }, true, {})
-        -- Calculate indent and create new line
-        local indent = line:sub(1, and_pos - 1)
-        indent = indent:gsub("[^ \t]", " ")
-        indent = indent:sub(1, -(offset + 1))
-        local new_line = indent .. '& \\\\'
-
-        -- Insert the new line below the current line
-        vim.api.nvim_buf_set_lines(0, row + 1, row + 1, true, { new_line })
-
-        -- Move cursor to the new line and position after '&'
-        vim.api.nvim_win_set_cursor(0, { row + 2, #indent })
-        vim.api.nvim_feedkeys('a', 'n', false) -- Enter Insert mode after '&'
-    end)
-
-    -- Return nothing to prevent default <CR> behavior
-    return ""
-end, {
-    expr = true,
-    buffer = 0,
-    noremap = true,
-    silent = true,
-    desc = "Insert new aligned line in LaTeX environment"
-})
-
--- Keymap to trigger alignment
-vim.keymap.set('n', '<leader>la', function()
-    -- Get node and range first before any modifications
-    local node = get_align_node()
-    if not node then return end
-    local s_row, _, e_row, _ = node:range()
-
-    -- Wrap alignment in schedule to ensure buffer updates are processed
-    local align = vim.schedule_wrap(function()
-        align_ampersands(s_row, e_row)
-    end)
-
-    -- First normalization using captured range
-    normalize_align_environment(s_row, e_row)
-
-    align()
-end, {
-    buffer = 0,
-    desc = 'Align & symbols in LaTeX environment with conceal awareness'
-})
 
 -- Inserts a new line with proper alignment characters when in math environment
 vim.keymap.set('n', 'o', function()
@@ -1102,3 +805,302 @@ end, {
     silent = true,
     desc = "Insert new aligned line in LaTeX environment"
 })
+
+-- Special handling for quote alias 'q'
+-- local function find_quote_pair(around)
+--     local line = vim.api.nvim_get_current_line()
+--     local row, col = unpack(vim.api.nvim_win_get_cursor(0)) -- row (1-based), col (0-based)
+--     local quotes = { '"', "'", '`' }
+--
+--     -- Find nearest opening quote before cursor
+--     local start_quote, start_pos = nil, nil
+--     for i = col, 0, -1 do
+--         local c = line:sub(i + 1, i + 1)
+--         if vim.tbl_contains(quotes, c) then
+--             start_quote = c
+--             start_pos = i
+--             break
+--         end
+--     end
+--     if not start_quote then return end
+--
+--     -- Find matching closing quote after cursor
+--     local end_pos = nil
+--     for i = start_pos + 1, #line do
+--         if line:sub(i + 1, i + 1) == start_quote then
+--             end_pos = i
+--             break
+--         end
+--     end
+--     if not end_pos then return end
+--
+--     -- Verify cursor is between quotes
+--     if col < start_pos or col > end_pos then return end
+--
+--     -- Calculate positions based on 'around' flag
+--     return {
+--         start = around and start_pos or (start_pos + 1),
+--         finish = around and end_pos or (end_pos - 1)
+--     }
+-- end
+--
+-- local function handle_quote(around, mode)
+--     local pos = find_quote_pair(around)
+--     if not pos then return end
+--
+--     local lnum = vim.fn.line('.') - 1 -- 0-based line number
+--     local start_col = pos.start
+--     local end_col = pos.finish + 1    -- API uses exclusive end
+--
+--     if mode == 'visual' then
+--         vim.cmd('normal! \x1b')
+--         vim.api.nvim_win_set_cursor(0, { vim.fn.line('.'), start_col })
+--         vim.cmd('normal! v')
+--         vim.api.nvim_win_set_cursor(0, { vim.fn.line('.'), pos.finish })
+--     elseif mode == 'delete' then
+--         vim.api.nvim_buf_set_text(0, lnum, start_col, lnum, end_col, {})
+--     elseif mode == 'change' then
+--         vim.api.nvim_buf_set_text(0, lnum, start_col, lnum, end_col, {})
+--         vim.cmd('startinsert')
+--     end
+-- end
+
+-- Quote mappings using anonymous functions
+-- vim.api.nvim_buf_set_keymap(0, 'v', 'iq', '', {
+--     noremap = true,
+--     silent = true,
+--     desc = "Inside quote text object",
+--     callback = function()
+--         handle_quote(false, "visual")
+--     end,
+-- })
+--
+-- vim.api.nvim_buf_set_keymap(0, 'v', 'aq', '', {
+--     noremap = true,
+--     silent = true,
+--     desc = "Around quote text object",
+--     callback = function()
+--         handle_quote(true, "visual")
+--     end,
+-- })
+--
+-- vim.api.nvim_buf_set_keymap(0, 'n', 'diq', '', {
+--     noremap = true,
+--     silent = true,
+--     desc = "Delete inside quote",
+--     callback = function()
+--         handle_quote(false, "delete")
+--     end,
+-- })
+--
+-- vim.api.nvim_buf_set_keymap(0, 'n', 'daq', '', {
+--     noremap = true,
+--     silent = true,
+--     desc = "Delete around quote",
+--     callback = function()
+--         handle_quote(true, "delete")
+--     end,
+-- })
+--
+-- vim.api.nvim_buf_set_keymap(0, 'n', 'ciq', '', {
+--     noremap = true,
+--     silent = true,
+--     desc = "Change inside quote",
+--     callback = function()
+--         handle_quote(false, "change")
+--     end,
+-- })
+--
+-- vim.api.nvim_buf_set_keymap(0, 'n', 'caq', '', {
+--     noremap = true,
+--     silent = true,
+--     desc = "Change around quote",
+--     callback = function()
+--         handle_quote(true, "change")
+--     end,
+-- })
+
+-- ---Calculate concealed length at position for a specific line
+-- ---@param line_num_1based integer 1-based line number
+-- ---@param pos integer 1-based column position
+-- local function get_concealed_line_length(line_num_1based, pos)
+--     local bufnr = vim.api.nvim_get_current_buf()
+--     local line_num = line_num_1based - 1 -- Convert to 0-based
+--     -- Get the character under the cursor
+--     local line = vim.api.nvim_buf_get_lines(0, line_num, line_num + 1, false)[1]
+--     local filter = { syntax = false, treesitter = true, extmarks = false, semantic_tokens = false }
+--
+--     local concealed_length = 0
+--     local in_conceal = false
+--     local col = 0
+--     local metadata = ""
+--
+--     while col < pos do
+--         local nodes = vim.inspect_pos(bufnr, line_num, col, filter)
+--         local is_concealed = false
+--         local char = line:sub(col + 1, col + 1)
+--
+--         for _, node_info in ipairs(nodes.treesitter) do
+--             if (node_info.capture or ''):match('conceal') then
+--                 is_concealed = true
+--                 if not in_conceal or node_info.metadata.conceal ~= metadata or char == "\\" then
+--                     metadata = node_info.metadata.conceal
+--                     in_conceal = true
+--                     concealed_length = concealed_length + (metadata ~= "" and 1 or 0)
+--                 end
+--                 break
+--             end
+--         end
+--
+--         if not is_concealed then
+--             concealed_length = concealed_length + 1
+--             metadata = ""
+--             in_conceal = false
+--         end
+--         col = col + 1
+--     end
+--
+--     return concealed_length
+-- end
+
+
+-- Inserts a new line with proper alignment characters when in math environment
+-- vim.keymap.set('i', '<CR>', function()
+--     if not in_align() then
+--         return "<CR>"
+--     end
+--
+--     local cursor = vim.api.nvim_win_get_cursor(0)
+--     local row = cursor[1] - 1 -- Convert to 0-based index
+--     local line = vim.api.nvim_buf_get_lines(0, row, row + 1, true)[1]
+--     if cursor[2] ~= #line then
+--         return "<CR>"
+--     end
+--
+--     local and_pos = line:find('&')
+--     if not and_pos then
+--         return "<CR>"
+--     end
+--
+--     -- Exit Insert mode first
+--     local escape = vim.api.nvim_replace_termcodes('<Esc>', true, true, true)
+--     vim.api.nvim_feedkeys(escape, 'n', true)
+--
+--     -- Schedule buffer modifications after exiting Insert mode
+--     vim.schedule(function()
+--         local offset = and_pos - get_concealed_line_length(cursor[1], and_pos)
+--         -- vim.api.nvim_echo({ { tostring(offset) } }, true, {})
+--         -- Calculate indent and create new line
+--         local indent = line:sub(1, and_pos - 1)
+--         indent = indent:gsub("[^ \t]", " ")
+--         indent = indent:sub(1, -(offset + 1))
+--         local new_line = indent .. '& \\\\'
+--
+--         -- Insert the new line below the current line
+--         vim.api.nvim_buf_set_lines(0, row + 1, row + 1, true, { new_line })
+--
+--         -- Move cursor to the new line and position after '&'
+--         vim.api.nvim_win_set_cursor(0, { row + 2, #indent })
+--         vim.api.nvim_feedkeys('a', 'n', false) -- Enter Insert mode after '&'
+--     end)
+--
+--     -- Return nothing to prevent default <CR> behavior
+--     return ""
+-- end, {
+--     expr = true,
+--     buffer = 0,
+--     noremap = true,
+--     silent = true,
+--     desc = "Insert new aligned line in LaTeX environment"
+-- })
+
+-- local function get_align_node()
+--     local node = vim.treesitter.get_node({ ignore_injections = false })
+--     while node and node:type() ~= "math_environment" do node = node:parent() end
+--     if not node then return end
+--
+--     -- Verify environment type
+--     local begin = node:child(0)
+--     local names = begin and begin:field("name")
+--     if not (names and names[1] and ALIGN_ENVS[get_node_text(names[1], 0):gsub("{(%w+)%s*%*?}", "%1")]) then
+--         return nil
+--     end
+--
+--     return node
+-- end
+--
+-- local function normalize_align_environment(s_row, e_row)
+--     local lines = vim.api.nvim_buf_get_lines(0, s_row, e_row, false)
+--
+--     -- Normalization-only processing
+--     local normalized_lines = {}
+--     for i, line in ipairs(lines) do
+--         local indent = line:match('^(%s*)') or ''
+--         local content = line:sub(#indent + 1)
+--
+--         -- Collapse whitespace around ampersands and multiple spaces
+--         local processed = content:gsub('%s*&%s*', ' & ') -- Ensure single spaces around &
+--             :gsub('^%s+', '')                            -- Trim leading spaces
+--             :gsub('%s+$', '')                            -- Trim trailing spaces
+--             :gsub('%s+', ' ')                            -- Collapse multiple spaces into one
+--
+--         normalized_lines[i] = indent .. processed
+--     end
+--
+--     vim.api.nvim_buf_set_lines(0, s_row, e_row, false, normalized_lines)
+-- end
+--
+-- local function align_ampersands(s_row, e_row)
+--     local lines = vim.api.nvim_buf_get_lines(0, s_row, e_row, false)
+--
+--     -- Find the maximum concealed length before the ampersand
+--     local max_concealed_length = 0
+--     for i, line in ipairs(lines) do
+--         local buf_line = s_row + i
+--         local and_pos = line:find('&')
+--         if and_pos then
+--             local cl = get_concealed_line_length(buf_line, and_pos)
+--             max_concealed_length = math.max(max_concealed_length, cl)
+--         end
+--     end
+--
+--     -- Apply alignment by adding padding to the head of each line
+--     local aligned_lines = {}
+--     for i, line in ipairs(lines) do
+--         local buf_line = s_row + i
+--         local and_pos = line:find('&')
+--         if and_pos then
+--             local cl = get_concealed_line_length(buf_line, and_pos)
+--             local padding = string.rep(' ', max_concealed_length - cl)
+--             -- Insert padding before the ampersand
+--             local aligned_line = padding .. line
+--             aligned_lines[i] = aligned_line
+--         else
+--             -- If there's no ampersand, keep the line as is
+--             aligned_lines[i] = line
+--         end
+--     end
+--
+--     vim.api.nvim_buf_set_lines(0, s_row, e_row, false, aligned_lines)
+-- end
+
+-- Keymap to trigger alignment
+-- vim.keymap.set('n', '<leader>la', function()
+--     -- Get node and range first before any modifications
+--     local node = get_align_node()
+--     if not node then return end
+--     local s_row, _, e_row, _ = node:range()
+--
+--     -- Wrap alignment in schedule to ensure buffer updates are processed
+--     local align = vim.schedule_wrap(function()
+--         align_ampersands(s_row, e_row)
+--     end)
+--
+--     -- First normalization using captured range
+--     normalize_align_environment(s_row, e_row)
+--
+--     align()
+-- end, {
+--     buffer = 0,
+--     desc = 'Align & symbols in LaTeX environment with conceal awareness'
+-- })

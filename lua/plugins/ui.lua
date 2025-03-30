@@ -7,6 +7,7 @@ return {
             require("base46").load_all_highlights()
         end,
     },
+
     {
         "nvchad/ui",
         dependencies = { "nvim-tree/nvim-web-devicons", lazy = true },
@@ -14,6 +15,7 @@ return {
             require("nvchad")
         end,
     },
+
     -- starter
     {
         "yuukibarns/alpha-nvim",
@@ -34,6 +36,9 @@ return {
             require("alpha").setup(theta.config)
         end,
     },
+
+    -- dead color column
+    { "Bekaboo/deadcolumn.nvim" },
 
     -- icons
     {

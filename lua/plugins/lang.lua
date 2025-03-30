@@ -25,6 +25,20 @@ return {
     -- Faster LuaLS setup for Neovim
     { "folke/lazydev.nvim", ft = "lua", config = true },
 
+    {
+        "jannis-baum/vivify.vim",
+        cmd = { "Vivify" },
+        ft = { "markdown" },
+        keys = {
+            {
+                "<leader>cp",
+                ft = "markdown",
+                "<cmd>Vivify<cr>",
+                desc = "Vivify Preview",
+            },
+        },
+    }
+
     -- markdown preview
     -- {
     -- 	"toppair/peek.nvim",
@@ -64,18 +78,4 @@ return {
     --         },
     --     },
     -- },
-
-    {
-        "jannis-baum/vivify.vim",
-        cmd = { "Vivify" },
-        ft = { "markdown" },
-        keys = {
-            {
-                "<leader>cp",
-                ft = "markdown",
-                "<cmd>Vivify<cr>",
-                desc = "Vivify Preview",
-            },
-        },
-    }
 }

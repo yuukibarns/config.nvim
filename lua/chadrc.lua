@@ -1,11 +1,12 @@
 local options = {
     base46 = {
-        theme = "doomchad",
+        theme = "gruvbox",
         transparency = false,
         hl_add = {
             Conceal = { link = "@function.latex" },
             ["@none.latex"] = { link = "Normal" },
             TreesitterContext = { link = "NONE" },
+            TreesitterContextBottom = { undercurl = true, sp = "#458588" },
             CmpSel = { link = "Visual" },
         },
         integrations = {
