@@ -27,8 +27,8 @@ return {
 
     {
         "jannis-baum/vivify.vim",
+        lazy = true,
         cmd = { "Vivify" },
-        ft = { "markdown" },
         keys = {
             {
                 "<leader>cp",

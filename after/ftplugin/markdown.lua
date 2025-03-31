@@ -210,6 +210,41 @@ vim.api.nvim_buf_set_keymap(0, 'n', 'gf', '', {
     end,
 })
 
+vim.api.nvim_buf_set_keymap(0, 'n', '<2-LeftMouse>', '', {
+    desc = "Go to",
+    callback = function()
+        local link = GetLink()
+        if link then
+            fzf.grep({
+                search = "^(<!-- )?#+\\s+"
+                    .. link:gsub("([%$%(%))%.%+%*%?%[%]%^%|\\%-%{}])", "\\%1"):gsub("%s+", " "),
+                no_esc = true,
+                rg_opts =
+                "--column --line-number --no-heading --color=always --ignore-case --type=md --max-columns=4096 -e"
+            })
+            return true
+        end
+        local path = GetPath()
+        if path then
+            fzf.files({
+                query = path,
+            })
+            return true
+        end
+        local heading = GetHeading()
+        if heading then
+            fzf.grep({
+                search = "**" .. heading .. "**",
+                no_esc = false,
+                rg_opts =
+                "--column --line-number --no-heading --color=always --ignore-case --type=md --max-columns=4096 -e"
+            })
+            return true
+        end
+        return false
+    end
+})
+
 -- Alias configuration: {target_char = {'alias1', 'alias2'}}
 local aliases = {
     ['$'] = { 'm' },
