@@ -27,6 +27,7 @@ opt.numberwidth = 4
 opt.cursorline = true
 -- opt.guicursor = "n-v-c-sm:block-blinkwait700-blinkon400-blinkoff250,i-ci-ve:ver25-blinkwait700-blinkon400-blinkoff250,r-cr-o:hor20-blinkwait700-blinkon400-blinkoff250"
 opt.spelllang = "en_gb,en_us"
+opt.fileencodings = "ucs-bom,utf-8,default,cp932,cp936,latin1"
 
 -- opt.spellfile = "~/.config/nvim/spell/en.utf-8.add"
 
