@@ -91,10 +91,30 @@ return {
         "lewis6991/gitsigns.nvim",
         lazy = false,
         keys = {
+            -- {
+            --     "vih",
+            --     "<Cmd>Gitsigns select_hunk<CR>",
+            --     desc = "Select Hunk",
+            -- },
             {
-                "vih",
-                "<Cmd>Gitsigns select_hunk<CR>",
-                desc = "Select Hunk",
+                "]h",
+                "<Cmd>Gitsigns next_hunk<CR>",
+                desc = "Next Hunk",
+            },
+            {
+                "[h",
+                "<Cmd>Gitsigns prev_hunk<CR>",
+                desc = "Prev Hunk",
+            },
+            {
+                "<leader>hr",
+                "<Cmd>Gitsigns reset_hunk<CR>",
+                desc = "Hunk Reset"
+            },
+            {
+                "<leader>hp",
+                "<Cmd>Gitsigns preview_hunk<CR>",
+                desc = "Hunk Preview",
             }
         },
         opts = {

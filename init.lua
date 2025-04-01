@@ -8,6 +8,9 @@ vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
 vim.g.loaded_perl_provider = 0
 
+-- DISABLE ASYNC TO PREVENT FLICKERING
+vim.g._ts_force_sync_parsing = true
+
 -- MAPLEADER
 vim.g.mapleader = " "
 
