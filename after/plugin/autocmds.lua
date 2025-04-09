@@ -107,15 +107,17 @@ autocmd("FileType", {
 })
 
 -- Opens non-text files in the default program instead of in Neovim
-autocmd("BufReadPost", {
-    group = augroup("openFile", {}),
-    pattern = { "*.jpeg", "*.jpg", "*.pdf", "*.png" },
-    callback = function(ev)
-        vim.fn.jobstart("open '" .. vim.fn.expand("%") .. "'", { detach = true })
-        vim.api.nvim_buf_delete(ev.buf, {})
-    end,
-    desc = "Open File",
-})
+-- autocmd("BufReadPost", {
+--     group = augroup("openFile", {}),
+--     pattern = { "*.jpeg", "*.jpg", "*.pdf", "*.png", "*.exe" },
+--     callback = function(ev)
+--         -- vim.fn.jobstart("open '" .. vim.fn.expand("%") .. "'", { detach = true })
+--         print(vim.fn.expand("%"))
+--         vim.system({ "open", vim.fn.expand("%") }, { detach = true })
+--         vim.api.nvim_buf_delete(ev.buf, {})
+--     end,
+--     desc = "Open File",
+-- })
 
 -- automatically regenerate spell file after editing dictionary
 autocmd("BufWritePost", {

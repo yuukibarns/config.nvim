@@ -9,7 +9,7 @@ vim.g.loaded_node_provider = 0
 vim.g.loaded_perl_provider = 0
 
 -- DISABLE ASYNC TO PREVENT FLICKERING
-vim.g._ts_force_sync_parsing = true
+vim.g._ts_force_sync_parsing = false
 
 -- MAPLEADER
 vim.g.mapleader = " "
@@ -21,6 +21,9 @@ vim.g.tex_flavor = "latex"
 vim.g.markdown_fenced_languages = {
     "ts=typescript"
 }
+
+-- MKDP
+vim.g.mkdp_theme = "light"
 
 -- NVCHAD
 vim.g.base46_cache = vim.fn.stdpath("data") .. "/base46_cache/"

@@ -7,7 +7,6 @@ local options = {
             ["@none.latex"] = { link = "Normal" },
             TreesitterContext = { link = "NONE" },
             TreesitterContextBottom = { undercurl = true, sp = "#458588" },
-            CmpSel = { link = "Visual" },
         },
         integrations = {
             "alpha",
@@ -22,6 +21,9 @@ local options = {
         },
     },
     ui = {
+        cmp = {
+            style = "default",
+        },
         statusline = {
             enabled = true,
             order = { "file", "git", "modified", "%=", "lsp_msg", "diagnostics", "lsp", "cursor" },

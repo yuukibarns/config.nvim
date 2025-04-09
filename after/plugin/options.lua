@@ -17,6 +17,7 @@ opt.breakindent = true
 opt.showbreak = "> "
 opt.fillchars = { diff = "╱", eob = " ", fold = "." }
 -- opt.cmdheight = 0
+opt.signcolumn = "number"
 opt.number = true
 opt.relativenumber = true
 opt.numberwidth = 4
@@ -98,4 +99,3 @@ opt.updatetime = 200
 
 -- 24 various
 opt.virtualedit = "block"
-opt.signcolumn = "yes"

@@ -7,6 +7,7 @@ return {
         keys = { { "<leader>o", "<Cmd>Oil<CR>", desc = "Open Oil" } },
         opts = {
             default_file_explorer = true,
+            delete_to_trash = true,
             columns = {
                 "icon",
                 "size",
@@ -91,11 +92,6 @@ return {
         "lewis6991/gitsigns.nvim",
         lazy = false,
         keys = {
-            -- {
-            --     "vih",
-            --     "<Cmd>Gitsigns select_hunk<CR>",
-            --     desc = "Select Hunk",
-            -- },
             {
                 "]h",
                 "<Cmd>Gitsigns next_hunk<CR>",
@@ -119,6 +115,8 @@ return {
         },
         opts = {
             preview_config = { border = "rounded" },
+            signcolumn = false,
+            numhl = true,
         },
     },
 

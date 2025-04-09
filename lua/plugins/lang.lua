@@ -2,6 +2,7 @@ return {
     -- filesype plugin for markdown
     {
         "yuukibarns/markdown.nvim",
+        lazy = false,
         ft = { "markdown", "tex", "python" },
 
         config = function()
@@ -27,7 +28,7 @@ return {
 
     {
         "jannis-baum/vivify.vim",
-        lazy = true,
+        lazy = false,
         cmd = { "Vivify" },
         keys = {
             {
@@ -37,28 +38,29 @@ return {
                 desc = "Vivify Preview",
             },
         },
-    }
+    },
 
     -- markdown preview
     -- {
-    -- 	"toppair/peek.nvim",
-    -- 	ft = { "markdown" },
-    -- 	cmd = { "PeekOpen", "PeekClose" },
-    -- 	build = "deno task --quiet build:fast",
-    -- 	keys = {
-    -- 		{
-    -- 			"<leader>cp",
-    -- 			ft = "markdown",
-    -- 			"<cmd>PeekOpen<cr>",
-    -- 		}
-    -- 	},
-    -- 	config = function()
-    -- 		require("peek").setup({
-    -- 			app = "browser",
-    -- 		})
-    -- 		vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
-    -- 		vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
-    -- 	end,
+    --     "yuukibarns/peek.nvim",
+    --     ft = { "markdown" },
+    --     cmd = { "PeekOpen", "PeekClose" },
+    --     build = "deno task --quiet build:fast",
+    --     keys = {
+    --         {
+    --             "<leader>cpp",
+    --             ft = "markdown",
+    --             "<cmd>PeekOpen<cr>",
+    --         }
+    --     },
+    --     config = function()
+    --         require("peek").setup({
+    --             app = "browser",
+    --             theme = "light",
+    --         })
+    --         vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+    --         vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+    --     end,
     -- },
 
     -- {

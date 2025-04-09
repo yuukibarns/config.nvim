@@ -6,7 +6,7 @@
 ((html_block) @injection.content
   (#set! injection.language "html")
   ; (#set! injection.combined)
-  ; (#set! injection.include-children)
+  (#set! injection.include-children)
   )
 
 ((minus_metadata) @injection.content
