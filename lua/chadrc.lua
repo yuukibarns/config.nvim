@@ -1,12 +1,13 @@
 local options = {
     base46 = {
         theme = "gruvbox",
-        transparency = false,
+        transparency = true,
         hl_add = {
             Conceal = { link = "@function.latex" },
             ["@none.latex"] = { link = "Normal" },
             TreesitterContext = { link = "NONE" },
             TreesitterContextBottom = { undercurl = true, sp = "#458588" },
+            StatusLine = { link = "NormalFloat" }
         },
         integrations = {
             "alpha",
@@ -25,7 +26,7 @@ local options = {
             style = "default",
         },
         statusline = {
-            enabled = true,
+            enabled = false,
             order = { "file", "git", "modified", "%=", "lsp_msg", "diagnostics", "lsp", "cursor" },
             modules = {
                 modified = " %h%m%r",

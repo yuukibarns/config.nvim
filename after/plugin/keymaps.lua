@@ -5,6 +5,9 @@ vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, si
 -- terminal
 vim.keymap.set("n", "<leader>tm", "<Cmd>new term://%:p:h//fish<CR>", { desc = "Open Terminal Below(half height)" })
 
+-- Buffer
+vim.keymap.set("n", "<leader>bd", "<Cmd>bd<CR>", { desc = "Buffer Delete" })
+
 -- Toggle transparency in nvchad
 vim.api.nvim_set_keymap("n", "<leader>tt", "", {
     callback = function()
